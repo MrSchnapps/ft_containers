@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 14:52:10 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/01 17:56:37 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/02 22:49:23 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 #include <iostream>
 #include <list>
 
-template <typename T>
-struct testi
-{
-	T val;
 
-	testi()
-	:	val(19)
-	{}
-
-	testi(T &data)
-	: val(data)
-	{}
-};
 
 int main()
 {
-	int d = 5;
+
+	std::list<int> test;
+
+	test.push_back(5);
+	test.push_back(7);
+	test.push_back(48);
+	test.push_back(19);
+	test.push_back(24);
+
+	std::list<int>::reverse_iterator rit = test.rbegin();
+	
+	std::cout << "Rbegin --> " << *rit << std::endl;
+
+	rit++;
+	std::cout << "Rbegin --> " << *rit << std::endl;
+	/*int d = 5;
 	testi<int> *l = new (testi<int>);
-	std::cout << l->val << std::endl;
+	std::cout << l->val << std::endl;*/
 	//delete l;
 	
 	/*std::list<char> li;
