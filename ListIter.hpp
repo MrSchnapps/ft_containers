@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 16:55:57 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/02 16:11:32 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/08 02:15:14 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class ListIter : public Iterator<ft::bidirectionnal_iterator_tag, T>
 {
 	public:
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::value_type		value_type;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type	differenec_type;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type	difference_type;
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference		reference;
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer			pointer;
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer_category	pointer_category;
@@ -50,6 +50,11 @@ class ListIter : public Iterator<ft::bidirectionnal_iterator_tag, T>
 
 		reference	operator*() {return (_elem->val);};
 
+		pointer		operator->()
+		{
+			return (&(this->operator*()));
+		}
+		
 		ListIter&	operator++()
 		{
 			_elem = _elem->next;
@@ -60,6 +65,19 @@ class ListIter : public Iterator<ft::bidirectionnal_iterator_tag, T>
 		{
 			ListIter tmp(*this);
 			operator++();
+			return (tmp);
+		}
+
+		ListIter&	operator--()
+		{
+			_elem = _elem->prev;
+			return (*this);
+		}
+
+		ListIter	operator--(int)
+		{
+			ListIter tmp(*this);
+			operator--();
 			return (tmp);
 		}
 
@@ -82,7 +100,7 @@ class ListIterConst : public Iterator<ft::bidirectionnal_iterator_tag, T>
 {
 	public:
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::value_type				value_type;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type			differenec_type;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type			difference_type;
 		typedef const typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference			reference;
 		typedef const typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer			pointer;
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer_category			pointer_category;
@@ -102,7 +120,15 @@ class ListIterConst : public Iterator<ft::bidirectionnal_iterator_tag, T>
 			return (*this);
 		}
 
-		reference	operator*() {return (_elem->val);};
+		reference	operator*()
+		{
+			return (_elem->val);
+		}
+
+		pointer		operator->()
+		{
+			return (&(this->operator*()));
+		}
 
 		ListIterConst&	operator++()
 		{

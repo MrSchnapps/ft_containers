@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:42:00 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/02 15:02:09 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/08 02:41:35 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ class List
 		typedef typename allocator_type::const_pointer					const_pointer;
 		typedef	ft::ListIter<T>											iterator;
 		typedef ft::ListIterConst<T>									const_iterator;
-		//typedef	ft::ListIter<T>								reverse_iterator; //modifier literateur en reverse wsh
-		// ... other iterators
-		//other
+		typedef	ft::reverse_iterator<iterator>							reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 		typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 		typedef size_t													size_type;
 
@@ -82,15 +81,26 @@ class List
 			return (iterator(_endlist));
 		}
 
-		/*reverse_iterator	rbegin()
+		const_iterator		begin() const
 		{
-			
+			return (iterator(_endlist->next));
+		}
+
+		const_iterator 		end() const
+		{
+			return (iterator(_endlist));
+		}
+
+		reverse_iterator	rbegin()
+		{
+			return (reverse_iterator(end()));
 		}
 
 		reverse_iterator	rend()
 		{
-			
-		}*/
+			return (reverse_iterator(begin()));
+		}
+
 
 		/*
 		**	Capacity

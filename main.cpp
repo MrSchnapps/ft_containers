@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:33:18 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/01 21:16:15 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/08 01:58:31 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include "ListIter.hpp"
 #include "List.hpp"
+#include "Iterators.hpp"
 
 int main()
 {
@@ -51,6 +53,18 @@ int main()
 		std::cout << *it << std::endl;
 		it++;
 	}
+
+	std::cout << "Reverse iterator --------" << std::endl;
+	ft::List<int>::reverse_iterator rit;
+	ft::List<int>::reverse_iterator reit;
+	rit = li.rbegin();
+	reit = li.rend();
+	while (rit != reit)
+	{
+		std::cout << *rit << std::endl;
+		rit++;
+	}
+
 	std::cout << "--------------------------- VRAI -----------------------------------" << std::endl;
 
 	std::list<int> li2;
@@ -81,6 +95,17 @@ int main()
 	{
 		std::cout << *it2 << std::endl;
 		it2++;
+	}
+
+	std::cout << "Reverse iterator --------" << std::endl;
+	std::list<int>::reverse_iterator rlit;
+	std::list<int>::reverse_iterator rleit;
+	rlit = li2.rbegin();
+	rleit = li2.rend();
+	while (rlit != rleit)
+	{
+		std::cout << *rlit << std::endl;
+		rlit++;
 	}
 	return (0);
 }
