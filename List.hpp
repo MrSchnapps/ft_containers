@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:42:00 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/11 03:08:03 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/12 18:24:51 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class List
 		explicit List (const allocator_type& alloc = allocator_type())
 		:	_endlist(NULL)
 		{
+			(void)alloc; ////////////// A VIRER
 			_endlist = new (DL_List<T>);
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
@@ -265,6 +266,60 @@ class List
 			_endlist->prev = _endlist;
 		}
 
+	/*
+	** Operations
+	*/
+	void splice (iterator position, List& x)
+	{
+		iterator	x_first = x.begin();
+		iterator	x_last = x.end();
+		iterator	x_tmp;
+
+		while (x_first != x_last)
+		{
+			x_tmp = ++x_first;
+			--x_first;
+			x.disconnect_elem(x_first._elem);
+			add_elem_before(x_first._elem, position._elem);
+			x_first = x_tmp;
+		}
+	}
+
+	void splice (iterator position, List& x, iterator i)
+	{
+		x.disconnect_elem(i._elem);
+		add_elem_before(i._elem, position._elem);
+	}
+
+	void splice (iterator position, List& x, iterator first, iterator last)
+	{
+		iterator x_tmp;
+
+		while (first != last)
+		{
+			x_tmp = ++first;
+			--first;
+			x.disconnect_elem(first._elem);
+			add_elem_before(first._elem, position._elem);
+			first = x_tmp;
+		}
+	}
+
+	void remove(const value_type& val)
+	{
+		iterator first = begin();
+		iterator last = end();
+		iterator tmp;
+
+		while (first != last)
+		{
+			tmp = (++first)--;
+			if (*first == value)
+				del_one(first._elem);
+			first = tmp;
+		}
+	}
+
 	private :
 		/*  
 		** Allocator size for max_size
@@ -283,7 +338,7 @@ class List
 		** Using allocator for destroy / deallocate a node
 		** https://stackoverflow.com/questions/26667026/difference-between-destroy-destructor-deallocate-in-stdallocator
 		*/
-		void	del_one(DL_List<T> *_elem)
+		void		del_one(DL_List<T> *_elem)
 		{
 			_elem->prev->next = _elem->next;
 			_elem->next->prev = _elem->prev;
@@ -291,7 +346,7 @@ class List
 			node_allocator().deallocate(_elem, 1);
 		}
 
-		DL_List<T> *new_elem(const value_type &val)
+		DL_List<T>	*new_elem(const value_type &val)
 		{
 			DL_List<T> *n = new (DL_List<T>);
 
@@ -301,7 +356,7 @@ class List
 			return (n);
 		}
 
-		void	add_elem_back(DL_List<T> *elem)
+		void		add_elem_back(DL_List<T> *elem)
 		{
 			elem->prev = _endlist->prev;
 			elem->next = _endlist;
@@ -312,7 +367,7 @@ class List
 			_endlist->prev = elem;
 		}
 
-		void	add_elem_front(DL_List<T> *elem)
+		void		add_elem_front(DL_List<T> *elem)
 		{
 			elem->next = _endlist->next;
 			elem->prev = _endlist;
@@ -331,6 +386,16 @@ class List
 			pos->prev = add;
 			return (add);
 		}
+
+		void		disconnect_elem(DL_List<T> *elem)
+		{
+			if (elem->prev)
+				elem->prev->next = elem->next;
+			if (elem->next)
+				elem->next->prev = elem->prev;
+			elem->prev = NULL;
+			elem->next = NULL;
+		}	
 };
 } // end namespace ft
 

@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:33:18 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/11 03:04:40 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/12 17:50:20 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@
 #include "Iterators.hpp"
 
 template <class T>
-void	print_list(ft::List<T> &list)
+void	print_list(ft::List<T> &list, std::string name)
 {
 	ft::List<int>::iterator first = list.begin();
 	ft::List<int>::iterator last = list.end();
 	size_t 					i = 0;
 
-	//std::cout << "Print values :" << std::endl;
+	std::cout << name << "|" << std::endl;
 	while (first != last)
 	{
 		std::cout << "Val : " << i << " --> " << *first << std::endl;
 		++i;
 		++first;
 	}
-	std::cout << std::endl;
+	std::cout << "|" << std::endl << std::endl;
 }
 
 template <class T>
@@ -192,37 +192,67 @@ void	reset(ft::List<T> &l1, ft::List<T> &l2)
 
 int main()
 {
-	ft::List<int> l1;
-	ft::List<int> l2;
+	ft::List<int>			l1;
+	ft::List<int>			l2;
+	ft::List<int>::iterator	it1;
+	ft::List<int>::iterator	it2;
 
 	basic_values(l1, l2);
 	std::cout << "=======   SWAP   =======" << std::endl;
 
 	std::cout << "Before : " << std::endl;
 	std::cout << "-- L1 --" << std::endl;
-	print_list(l1);
+	print_list(l1, "l1");
 	std::cout << "-- L2 --" << std::endl;
-	print_list(l2);
+	print_list(l2, "l2");
 
 	l1.swap(l2);
 	std::cout << "After : " << std::endl;
 	std::cout << "-- L1 --" << std::endl;
-	print_list(l1);
+	print_list(l1, "l1");
 	std::cout << "-- L2 --" << std::endl;
-	print_list(l2);
+	print_list(l2, "l2");
 
 	reset(l1, l2);
 	
 	std::cout << "=======   RESIZE   =======" << std::endl;
-	print_list(l1);
+	print_list(l1, "l1");
 	
 	l1.resize(3);
 
 	std::cout << "l1.resize(3);" << std::endl;
-	print_list(l1);
+	print_list(l1, "l1");
 	l1.resize(8, 19);
 	std::cout << "l1.resize(8, 19);" << std::endl;
-	print_list(l1);
+	print_list(l1, "l1");
 
 	reset(l1, l2);
+
+	std::cout << "=======   RESIZE   =======" << std::endl;
+	it1 = l1.begin();
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+	++it1;
+	++it1;
+
+	std::cout << "Splice 1" << std::endl;
+	l1.splice(it1, l2);
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+
+	std::cout << "Splice 2" << std::endl;
+	l2.splice(l2.begin(), l1, it1);
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+
+	it1 = l1.begin();
+	++it1;
+	it2 = l1.begin();
+	for (int i = 0; i < 6; i++)
+		++it2;
+
+	std::cout << "Splice 3" << std::endl;
+	l2.splice(l2.begin(), l1, it1, it2);
+	print_list(l1, "l1");
+	print_list(l2, "l2");
 }
