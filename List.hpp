@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:42:00 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/12 18:24:51 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/13 18:03:22 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <memory>
 # include "Utils.hpp"
 # include "ListIter.hpp"
-
+# include <time.h>
+# include <unistd.h>
+ 
 namespace ft
 {
 template <class T, class Alloc = std::allocator<T> > 
@@ -269,7 +271,7 @@ class List
 	/*
 	** Operations
 	*/
-	void splice (iterator position, List& x)
+	void	splice (iterator position, List& x)
 	{
 		iterator	x_first = x.begin();
 		iterator	x_last = x.end();
@@ -285,13 +287,13 @@ class List
 		}
 	}
 
-	void splice (iterator position, List& x, iterator i)
+	void	splice (iterator position, List& x, iterator i)
 	{
 		x.disconnect_elem(i._elem);
 		add_elem_before(i._elem, position._elem);
 	}
 
-	void splice (iterator position, List& x, iterator first, iterator last)
+	void	splice (iterator position, List& x, iterator first, iterator last)
 	{
 		iterator x_tmp;
 
@@ -305,7 +307,7 @@ class List
 		}
 	}
 
-	void remove(const value_type& val)
+	void	remove(const value_type& val)
 	{
 		iterator first = begin();
 		iterator last = end();
@@ -314,9 +316,178 @@ class List
 		while (first != last)
 		{
 			tmp = (++first)--;
-			if (*first == value)
+			if (*first == val)
 				del_one(first._elem);
 			first = tmp;
+		}
+	}
+
+	template <class Predicate>
+	void	remove_if(Predicate pred)
+	{
+		iterator first = begin();
+		iterator last = end();
+		iterator tmp;
+
+		while (first != last)
+		{
+			tmp = (++first)--;
+			if (pred(*first))
+				del_one(first._elem);
+			first = tmp;
+		}
+	}
+
+	void	unique()
+	{
+		iterator first = begin();
+		iterator second = begin();
+		iterator last = end();
+		iterator tmp;
+
+		++second;
+		while (second != last)
+		{
+			tmp = (++second)--;
+			if (*second == *first)
+				del_one(second._elem);
+			else
+				++first;
+			second = tmp;
+		}
+	}
+
+	template <class BinaryPredicate>
+	void	unique(BinaryPredicate binary_pred)
+	{
+		iterator first = begin();
+		iterator second = begin();
+		iterator last = end();
+		iterator tmp;
+
+		++second;
+		while (second != last)
+		{
+			tmp = (++second)--;
+			if (binary_pred(*second, *first) == true)
+				del_one(second._elem);
+			else
+				++first;
+			second = tmp;
+		}
+	}
+
+	void	merge(List& x)
+	{
+		if (&x == this)
+			return ;
+		iterator x_first = x.begin();
+		iterator x_last = x.end();
+		iterator first = begin();
+		iterator tmp;
+
+		while (x_first != x_last)
+		{
+			tmp = (++x_first)--;
+			if (*first < *x_first && first != end())
+				++first;
+			else
+			{
+				x.disconnect_elem(x_first._elem);
+				add_elem_before(x_first._elem, first._elem);
+				x_first = tmp;
+			}
+		}
+	}
+
+	template <class Compare>
+	void	merge(List& x, Compare comp)
+	{
+		if (&x == this)
+			return ;
+		iterator x_first = x.begin();
+		iterator x_last = x.end();
+		iterator first = begin();
+		iterator tmp;
+
+		while (x_first != x_last)
+		{
+			tmp = (++x_first)--;
+			if (comp(*first, *x_first) && first != end())
+				++first;
+			else
+			{
+				x.disconnect_elem(x_first._elem);
+				add_elem_before(x_first._elem, first._elem);
+				x_first = tmp;
+			}
+		}
+	}
+
+	void	sort()
+	{
+		DL_List<T>	*first;
+		DL_List<T>	*tmp;
+		bool		sorted = false;
+
+		if (empty())
+			return ;
+		while (sorted == false)
+		{
+			sorted = true;
+			first = _endlist->next;
+			while (first->next != _endlist)
+			{
+				if (std::less<T>{}(first->next->val, first->val))
+				{
+					swap_elem(first, first->next);
+					sorted = false;
+				}
+				else
+					first = first->next;	
+			}
+		}
+	}
+
+	template <class Compare>
+	void	sort(Compare comp)
+	{
+		DL_List<T>	*first;
+		DL_List<T>	*tmp;
+		bool		sorted = false;
+
+		if (empty())
+			return ;
+		while (sorted == false)
+		{
+			sorted = true;
+			first = _endlist->next;
+			while (first->next != _endlist)
+			{
+				if (comp(first->next->val, first->val))
+				{
+					swap_elem(first, first->next);
+					sorted = false;
+				}
+				else
+					first = first->next;	
+			}
+		}
+	}
+
+	void	reverse()
+	{
+		DL_List<T>	*tmp;
+		DL_List<T>	*first = _endlist->next;
+
+		_endlist->next = _endlist->prev;
+		_endlist->prev = first;
+		while (first != _endlist)
+		{
+			tmp = first->prev;
+			first->prev = first->next;
+			first->next = tmp;
+			first = first->prev;
 		}
 	}
 
@@ -395,7 +566,21 @@ class List
 				elem->next->prev = elem->prev;
 			elem->prev = NULL;
 			elem->next = NULL;
-		}	
+		}
+
+		void		swap_elem(DL_List<T> *e1, DL_List<T> *e2)
+		{
+			DL_List<T> *tmp = e1->prev;
+
+			e1->prev->next = e2;
+			e2->next->prev = e1;
+
+			e1->next = e2->next;
+			e1->prev = e2;
+
+			e2->next = e1;
+			e2->prev = tmp;
+		}
 };
 } // end namespace ft
 

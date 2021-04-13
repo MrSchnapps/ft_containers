@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:33:18 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/04/12 17:50:20 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/04/13 18:06:12 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,21 @@
 #include "ListIter.hpp"
 #include "List.hpp"
 #include "Iterators.hpp"
+#include "Utils.hpp"
+
+bool binary13(int &val, int &val2)
+{
+	if (val % 13 == 0 && val2 % 13 == 0)
+		return (true);
+	return (false);
+}
+
+bool test_pair(int &val)
+{
+	if (val % 2)
+		return (false);
+	return (true);
+}
 
 template <class T>
 void	print_list(ft::List<T> &list, std::string name)
@@ -59,136 +74,9 @@ void	reset(ft::List<T> &l1, ft::List<T> &l2)
 	l2.clear();
 	basic_values(l1, l2);
 }
-/*int main()
-{
-	std::cout << "--------------------------- Mien -----------------------------------" << std::endl;
-	ft::List<int> li;
-	ft::List<int>::iterator it;
-	ft::List<int>::iterator itend;
-	
-	li.push_back(5);
-	li.push_back(9);
 
-	
-	it = li.begin();
-	std::cout << "Begin1 --> " << *it << std::endl;
 
-	li.push_front(7);
-	it = li.begin();
-	std::cout << "Begin2 --> " << *it << std::endl;
-
-	std::cout << "Size_max : " << li.max_size() << std::endl;
-	std::cout << "Front : " << li.front() << std::endl;
-	std::cout << "Back : " << li.back() << std::endl;
-
-	itend = li.end();
-	while (it != itend)
-	{
-		std::cout << *it << std::endl;
-		++it;
-	}
-	it = li.begin();
-	while (it != itend)
-	{
-		std::cout << *it << std::endl;
-		it++;
-	}
-
-	std::cout << "Reverse iterator --------" << std::endl;
-	ft::List<int>::reverse_iterator rit;
-	ft::List<int>::reverse_iterator reit;
-	rit = li.rbegin();
-	reit = li.rend();
-	while (rit != reit)
-	{
-		std::cout << *rit << std::endl;
-		rit++;
-	}
-
-	std::cout << "Print function --------" << std::endl;
-	li.print_elem();
-	li.erase(li.begin());
-	li.print_elem();
-	li.pop_front();
-	li.print_elem();
-
-	std::cout << "--------------------------- VRAI -----------------------------------" << std::endl;
-
-	std::list<int> li2;
-	std::list<int>::iterator it2;
-	std::list<int>::iterator itend2;
-	li2.push_back(5);
-	li2.push_back(9);
-
-	it2 = li2.begin();
-	std::cout << "Begin1 --> " << *it2 << std::endl;
-
-	li2.push_front(7);
-	it2 = li2.begin();
-	std::cout << "Begin2 --> " << *it2 << std::endl;
-
-	std::cout << "Size_max : " << li2.max_size() << std::endl;
-	std::cout << "Front : " << li2.front() << std::endl;
-	std::cout << "Back : " << li2.back() << std::endl;
-
-	itend2 = li2.end();
-	while (it2 != itend2)
-	{
-		std::cout << *it2 << std::endl;
-		++it2;
-	}
-	it2 = li2.begin();
-	while (it2 != itend2)
-	{
-		std::cout << *it2 << std::endl;
-		it2++;
-	}
-
-	std::cout << "Reverse iterator --------" << std::endl;
-	std::list<int>::reverse_iterator rlit;
-	std::list<int>::reverse_iterator rleit;
-	rlit = li2.rbegin();
-	rleit = li2.rend();
-	while (rlit != rleit)
-	{
-		std::cout << *rlit << std::endl;
-		rlit++;
-	}
-	return (0);
-}*/
-
-/*int main ()
-{
-  ft::List<int> mylist;
-  ft::List<int>::iterator it;
-
-  // set some initial values:
-  for (int i=1; i<=5; ++i) mylist.push_back(i); // 1 2 3 4 5
-
-  it = mylist.begin();
-  ++it;       // it points now to number 2           ^
-
-  mylist.insert(it,10);                        // 1 10 2 3 4 5
-
-  // "it" still points to number 2                      ^
-  mylist.insert(it,size_t(2),20);                      // 1 10 20 20 2 3 4 5
-
-  --it;       // it points now to the second 20            ^
-
-  ft::List<int> myvector; //(2,30);
-  myvector.push_back(30);
-  myvector.push_back(40);
-  mylist.insert (it, myvector.begin(), myvector.end());
-                                                // 1 10 20 30 30 20 2 3 4 5
-                                                //               ^
-  std::cout << "mylist contains:";
-  for (it=mylist.begin(); it!=mylist.end(); ++it)
-    std::cout << ' ' << *it;
-  std::cout << '\n';
-
-  return 0;
-}*/
-
+// ajouter autres fct avt le swap !!
 
 int main()
 {
@@ -228,7 +116,7 @@ int main()
 
 	reset(l1, l2);
 
-	std::cout << "=======   RESIZE   =======" << std::endl;
+	std::cout << "=======   SPLICE   =======" << std::endl;
 	it1 = l1.begin();
 	print_list(l1, "l1");
 	print_list(l2, "l2");
@@ -255,4 +143,122 @@ int main()
 	l2.splice(l2.begin(), l1, it1, it2);
 	print_list(l1, "l1");
 	print_list(l2, "l2");
+
+	reset(l1, l2);
+	
+	std::cout << "=======   REMOVE   =======" << std::endl;
+	l1.push_back(4);
+	l1.push_back(9);
+	l1.push_back(4);
+
+	std::cout << "Before remove :" << std::endl;
+	print_list(l1, "l1");
+	l1.remove(4);
+	P("l1.remove(4);");
+	print_list(l1, "l1");
+
+	reset(l1, l2);
+	
+	P("=======   REMOVE IF   =======");
+	P("Before remove_if :");
+	print_list(l1, "l1");
+	
+	l1.remove_if(test_pair);
+	P("l1.remove_if(test_pair);");
+	print_list(l1, "l1");
+
+	reset(l1, l2);
+	
+	P("=======   UNIQUE   =======");
+	l1.push_front(1);
+	l1.push_back(5);
+	l1.push_back(5);
+	l1.push_front(2);
+	P("Before unique :");
+	print_list(l1, "l1");
+
+	l1.unique();
+	P("l1.unique();");
+	print_list(l1, "l1");
+
+
+	reset(l1, l2);
+	l1.push_front(13);
+	l1.push_front(26);
+	l1.push_front(39);
+	l1.push_front(26);
+	l1.push_back(26);
+	l1.push_back(39);
+	P("Before unique binary :");
+	print_list(l1, "l1");
+
+	l1.unique(binary13);
+	P("l1.unique(binary13());");
+	print_list(l1, "l1");
+
+	reset(l1, l2);
+
+	P("=======   MERGE   =======");
+	P("Before merge :");
+	l2.sort();
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+
+	l1.merge(l2);
+	P("l1.merge(l2);");
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+
+	reset(l1, l2);
+
+	P("Before merge binary :");
+	l2.sort();
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+
+	l1.merge(l2, std::less<int>());
+	P("l1.merge(l2);");
+	print_list(l1, "l1");
+	print_list(l2, "l2");
+
+	reset(l1, l2);
+
+	P("=======   SORT   =======");
+	l1.push_front(19);
+	l1.push_back(42);
+	l1.push_back(-15);
+	l1.push_front(27);
+	l1.push_front(27);
+	P("Before sort :");
+	print_list(l1, "l1");
+
+	l1.sort();
+	P("l1.sort();");
+	print_list(l1, "l1");
+
+	reset(l1, l2);
+
+	l1.push_front(19);
+	l1.push_back(42);
+	l1.push_back(-15);
+	l1.push_front(27);
+	P("Before sort compare :");
+	print_list(l1, "l1");
+
+	l1.sort(std::less<int>());
+	P("l1.sort(std::less<int>());");
+	print_list(l1, "l1");
+
+	reset(l1, l2);
+
+	P("=======   REVERSE   =======");
+	P("Before reverse :");
+	l1.push_back(19);
+	print_list(l1, "l1");
+
+	l1.reverse();
+	P("l1.reverse();");
+	print_list(l1, "l1");
+
+	return (0);
 }
