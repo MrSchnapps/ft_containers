@@ -19,6 +19,12 @@
 # include <time.h>
 # include <unistd.h>
  
+
+/*
+** TODO
+** constructeurs etc
+*/
+
 namespace ft
 {
 template <class T, class Alloc = std::allocator<T> > 
@@ -35,7 +41,7 @@ class List
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
 		typedef	ft::ListIter<T>											iterator;
-		typedef const ft::ListIterConst<T>									const_iterator;
+		typedef ft::ListIterConst<T>									const_iterator;
 		//typedef ft::ListIterConst<T>									const_iterator;
 		typedef	ft::reverse_iterator<iterator>							reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
@@ -46,18 +52,32 @@ class List
 		** Constructor - Destructor - Copy
 		*/
 		explicit List (const allocator_type& alloc = allocator_type())
-		:	_endlist(NULL)
+		:	_alloc(alloc)
 		{
-			(void)alloc; ////////////// A VIRER
 			_endlist = new (DL_List<T>);
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
-		};
+		}
 
 		List(T val)
-		:	_endlist(NULL)
 		{
 			add_elem_back(new_elem(val));
+		}
+
+		List (const List& x)
+		: _alloc(x._alloc)
+		{
+			_endlist = new (DL_List<T>);
+			_endlist->next = _endlist;
+			_endlist->prev = _endlist;
+
+			const_iterator b = x.begin();
+			const_iterator e = x.end();
+			while (b != e)
+			{
+				add_elem_before(new_elem(*b), _endlist);
+				(++b);
+			}
 		}
 
 		virtual ~List()
@@ -117,8 +137,9 @@ class List
 		/*
 		**	Capacity
 		*/
-		bool 		empty()
+		bool		empty() const
 		{
+			//std::cout << "empt()" << std::endl;
 			if (size() == 0)
 				return (true);
 			else
@@ -130,8 +151,11 @@ class List
 			size_type			sz = 0;
 			DL_List<value_type>	*tmp = _endlist->next;
 
+			//if (_endlist->next == _endlist)
+			//	P("TRUEe");
 			while (tmp != _endlist)
 			{
+				//std::cout << "empt()" << std::endl;
 				++sz;
 				tmp = tmp->next;
 			}
@@ -498,8 +522,9 @@ class List
 		** Doc https://stackoverflow.com/questions/14148756/what-does-template-rebind-do 
 		*/
 		typedef typename allocator_type::template rebind<DL_List<T> >::other node_allocator;
-
-		DL_List<T>	*_endlist;
+		
+		allocator_type	_alloc;
+		DL_List<T>		*_endlist;
 
 		/*
 		** Other

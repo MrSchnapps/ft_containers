@@ -16,6 +16,7 @@
 # include <cstddef>
 
 # define P(x) std::cout << x << std::endl;
+# define PP(x) std::cout << "|" << x << "|" << std::endl;
 
 namespace ft
 {

@@ -20,6 +20,7 @@
 #include "List.hpp"
 #include "Iterators.hpp"
 #include "Utils.hpp"
+#include "Stack.hpp"
 
 bool binary13(int &val, int &val2)
 {
@@ -75,15 +76,15 @@ void	reset(ft::List<T> &l1, ft::List<T> &l2)
 	basic_values(l1, l2);
 }
 
-
-// ajouter autres fct avt le swap !!
-
-int main()
+void	test_list()
 {
+	std::cout << "###############  LIST ###############" << std::endl;
 	ft::List<int>			l1;
 	ft::List<int>			l2;
 	ft::List<int>::iterator	it1;
 	ft::List<int>::iterator	it2;
+
+	std::cout << "Empty ? " << l1.empty();
 
 	basic_values(l1, l2);
 	std::cout << "=======   SWAP   =======" << std::endl;
@@ -259,6 +260,57 @@ int main()
 	l1.reverse();
 	P("l1.reverse();");
 	print_list(l1, "l1");
+ 
+}
 
+void	test_stack()
+{
+	P("###############  STACK  ###############");
+	ft::stack<int> st;
+
+	std::cout << "Stack empty? : ";
+	if (st.empty())
+	{
+		P("Yes.");
+	}
+	else
+		P("No");
+	std::cout << "  Size stack : " << st.size() << std::endl;
+	P("Push des valeurs  :");
+	for (int i = 1; i < 10; i++)
+	{
+		std::cout << "Push : " << i << std::endl;
+		st.push(i);
+	}
+	std::cout << "Stack empty? : ";
+	if (st.empty())
+	{
+		P("Yes.");
+	}
+	else
+		P("No");
+	P("Contenu de la stack : ");
+	for (int i = 1; i < 10; i++)
+	{
+		std::cout << "  Top stack  : " << st.top() << std::endl;
+		std::cout << "  Size stack : " << st.size() << std::endl;
+		P("______________");
+		st.pop();
+	}
+	std::cout << "  Size stack : " << st.size() << std::endl;
+	std::cout << "Stack empty? : ";
+	if (st.empty())
+	{
+		P("Yes.");
+	}
+	else
+		P("No");
+}
+// ajouter autres fct avt le swap !!
+
+int main()
+{
+	//test_list();
+	test_stack();
 	return (0);
 }
