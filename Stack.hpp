@@ -22,7 +22,7 @@
 
 namespace ft
 {
-template <class T, class Container = ft::List<T> >
+template <class T, class Container = ft::list<T> >
 class stack
 {
 	public:
@@ -75,10 +75,60 @@ class stack
 		_cont.pop_back();
 	}
 
+	template <class Tx, class ContainerX>
+  		friend bool operator== (const ft::stack<Tx,ContainerX>& lhs, const ft::stack<Tx,ContainerX>& rhs);
+	template <class Tx, class ContainerX>
+		friend bool operator!= (const ft::stack<Tx,ContainerX>& lhs, const ft::stack<Tx,ContainerX>& rhs);
+	template <class Tx, class ContainerX>
+		friend bool operator<  (const ft::stack<Tx,ContainerX>& lhs, const ft::stack<Tx,ContainerX>& rhs);
+	template <class Tx, class ContainerX>
+		friend bool operator<= (const ft::stack<Tx,ContainerX>& lhs, const ft::stack<Tx,ContainerX>& rhs);
+	template <class Tx, class ContainerX>
+		friend bool operator>  (const ft::stack<Tx,ContainerX>& lhs, const ft::stack<Tx,ContainerX>& rhs);
+	template <class Tx, class ContainerX>
+		friend bool operator>= (const ft::stack<Tx,ContainerX>& lhs, const ft::stack<Tx,ContainerX>& rhs);
+
 	protected:
 		container_type _cont;
 
 };
+
+template <class T, class Container>
+  bool operator== (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
+  {
+	  return (lhs._cont == rhs._cont);
+  }
+
+template <class T, class Container>
+  bool operator!= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
+  {
+	  return (lhs._cont != rhs._cont);
+  }
+
+template <class T, class Container>
+  bool operator<  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
+  {
+	  return (lhs._cont < rhs._cont);
+  }
+
+template <class T, class Container>
+  bool operator<= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
+  {
+	  return (lhs._cont <= rhs._cont);
+  }
+
+template <class T, class Container>
+  bool operator>  (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
+  {
+	  return (lhs._cont > rhs._cont);
+  }
+
+template <class T, class Container>
+  bool operator>= (const ft::stack<T,Container>& lhs, const ft::stack<T,Container>& rhs)
+  {
+	  return (lhs._cont >= rhs._cont);
+  }
+
 } // end namespace ft
 
 #endif

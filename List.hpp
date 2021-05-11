@@ -22,13 +22,14 @@
 
 /*
 ** TODO
-** constructeurs etc
+** commentires a remove au swap
+** checker si les itérateur reçus sont du bon type
 */
 
 namespace ft
 {
 template <class T, class Alloc = std::allocator<T> > 
-class List
+class list
 {
 	public :
 		/*
@@ -42,7 +43,6 @@ class List
 		typedef typename allocator_type::const_pointer					const_pointer;
 		typedef	ft::ListIter<T>											iterator;
 		typedef ft::ListIterConst<T>									const_iterator;
-		//typedef ft::ListIterConst<T>									const_iterator;
 		typedef	ft::reverse_iterator<iterator>							reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 		typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
@@ -51,7 +51,7 @@ class List
 		/*
 		** Constructor - Destructor - Copy
 		*/
-		explicit List (const allocator_type& alloc = allocator_type())
+		explicit list (const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc)
 		{
 			_endlist = new (DL_List<T>);
@@ -59,13 +59,27 @@ class List
 			_endlist->prev = _endlist;
 		}
 
-		List(T val)
+		explicit list (size_type n, const value_type& val =  value_type(), const allocator_type& alloc = allocator_type())
+		:	_alloc(alloc)
 		{
-			add_elem_back(new_elem(val));
+			_endlist = new (DL_List<T>);
+			_endlist->next = _endlist;
+			_endlist->prev = _endlist;
+			insert(end(), n, val);
 		}
 
-		List (const List& x)
-		: _alloc(x._alloc)
+		template <class InputIterator>
+		list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+		:	_alloc(alloc)
+		{
+			_endlist = new (DL_List<T>);
+			_endlist->next = _endlist;
+			_endlist->prev = _endlist;
+			insert(end(), first, last);
+		}
+
+		list (const list& x)
+		:	_alloc(x._alloc)
 		{
 			_endlist = new (DL_List<T>);
 			_endlist->next = _endlist;
@@ -80,7 +94,7 @@ class List
 			}
 		}
 
-		virtual ~List()
+		~list()
 		{
 			//del_list();
 			clear();
@@ -247,7 +261,7 @@ class List
 			return (ret);
 		}
 
-		void		swap(List &x)
+		void		swap(list &x)
 		{
 			/*if (x == *this)
 				return ;*/
@@ -295,7 +309,7 @@ class List
 	/*
 	** Operations
 	*/
-	void	splice (iterator position, List& x)
+	void	splice (iterator position, list& x)
 	{
 		iterator	x_first = x.begin();
 		iterator	x_last = x.end();
@@ -311,13 +325,13 @@ class List
 		}
 	}
 
-	void	splice (iterator position, List& x, iterator i)
+	void	splice (iterator position, list& x, iterator i)
 	{
 		x.disconnect_elem(i._elem);
 		add_elem_before(i._elem, position._elem);
 	}
 
-	void	splice (iterator position, List& x, iterator first, iterator last)
+	void	splice (iterator position, list& x, iterator first, iterator last)
 	{
 		iterator x_tmp;
 
@@ -401,7 +415,7 @@ class List
 		}
 	}
 
-	void	merge(List& x)
+	void	merge(list& x)
 	{
 		if (&x == this)
 			return ;
@@ -425,7 +439,7 @@ class List
 	}
 
 	template <class Compare>
-	void	merge(List& x, Compare comp)
+	void	merge(list& x, Compare comp)
 	{
 		if (&x == this)
 			return ;
@@ -607,6 +621,63 @@ class List
 			e2->prev = tmp;
 		}
 };
+	
+template <class T, class Alloc>
+bool operator== (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	typename ft::list<T>::const_iterator it1 = lhs.begin();
+	typename ft::list<T>::const_iterator it2 = rhs.begin();
+	while (it1 != lhs.end())
+	{
+		if (it2 == rhs.end() || *it1 != *it2)
+			return (false);
+		++it1;
+		++it2;
+	}
+	return (true);
+}
+
+template <class T, class Alloc>
+bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+{
+	return (!(lhs == rhs));
+}
+
+
+template <class T, class Alloc>
+  bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+{
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+}
+
+template <class T, class Alloc>
+  bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template <class T, class Alloc>
+  bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+{
+	return (rhs < lhs);
+}
+
+template <class T, class Alloc>
+  bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+{
+	return (!(lhs < rhs));
+}
+  
+template <class T, class Alloc>
+  void swap (list<T,Alloc>& x, list<T,Alloc>& y)
+{
+	x.swap(y);
+}
+
+
+
 } // end namespace ft
 
 #endif
