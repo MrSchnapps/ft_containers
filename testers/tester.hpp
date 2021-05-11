@@ -19,10 +19,12 @@
 # include <string>
 # include <list>
 # include <vector>
-# include "ListIter.hpp"
-# include "List.hpp"
-# include "Iterators.hpp"
-# include "Utils.hpp"
-# include "Stack.hpp"
+# include "../containers/list.hpp"
+# include "../containers/stack.hpp"
+# include "../utils/Iterators.hpp"
+# include "../utils/Utils.hpp"
+# include "../utils/ListIter.hpp"
 
+void	test_list();
+void	test_stack();
 #endif

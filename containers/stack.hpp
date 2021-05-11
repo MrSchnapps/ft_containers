@@ -13,8 +13,8 @@
 #ifndef __STACK_HPP__
 # define __STACK_HPP__
 
-#include <deque> // A VirEerrr // modif std::deque -> ft::deque
-#include "List.hpp"
+# include <deque> // A VirEerrr // modif std::deque -> ft::deque
+# include "list.hpp"
 
 /*
 ** TODO

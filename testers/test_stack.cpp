@@ -110,8 +110,8 @@ void	test_stack()
 		std::cout << "false" << std::endl;
 }
 
-int main()
+/*int main()
 {
 	test_stack();
 	return (0);
-}
+}*/

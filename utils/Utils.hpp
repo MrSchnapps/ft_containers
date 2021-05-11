@@ -59,6 +59,7 @@ struct DL_List
 		prev(NULL)
 	{}
 };
+
 } //end namespace ft
 
 #endif

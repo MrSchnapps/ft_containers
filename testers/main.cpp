@@ -1,17 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_list.cpp                                      :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/11 01:42:04 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/05/11 01:42:04 by judecuyp         ###   ########.fr       */
+/*   Created: 2021/03/22 14:33:18 by judecuyp          #+#    #+#             */
+/*   Updated: 2021/04/13 18:06:12 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*#include <deque>
+#include <stack>
+#include <iostream>
+#include <string>
+#include <list>
+#include <vector>
+#include "ListIter.hpp"
+#include "List.hpp"
+#include "Iterators.hpp"
+#include "Utils.hpp"
+#include "Stack.hpp"
+*/
 #include "tester.hpp"
 
+/*
 bool binary13(int &val, int &val2)
 {
 	if (val % 13 == 0 && val2 % 13 == 0)
@@ -298,22 +311,70 @@ void	test_list()
 	print_list(l1, "l1");
 	print_list(l2, "l2");
 
-	P("constructor tester");
-	P(" - ft::list<int>	l3((size_t)5, 300)");
-	ft::list<int>	l3((size_t)5, 300);
-	print_list(l3, "l3");
-
-	P(" - ft::list<int>	l4(l1.begin(),l1.end());");
-	ft::list<int>	l4(l1.begin(),l1.end());
-	print_list(l4, "l4");
-
-	P(" - ft::list<int>	l5(l2);");
-	ft::list<int>	l5(l2);
-	print_list(l5, "l5");
 }
 
-int main()
+void	test_stack()
+{ 
+	P("###############  STACK  ###############");
+	ft::stack<int> st;
+	ft::stack<int> st2;
+
+	std::cout << "Stack empty? : ";
+	if (st.empty())
+	{
+		P("Yes.");
+	}
+	else
+		P("No");
+	std::cout << "  Size stack : " << st.size() << std::endl;
+	P("Push des valeurs  :");
+	for (int i = 1; i < 10; i++)
+	{
+		std::cout << "Push : " << i << std::endl;
+		st.push(i);
+	}
+	std::cout << "Stack empty? : ";
+	if (st.empty())
+	{
+		P("Yes.");
+	}
+	else
+		P("No");
+	P("Contenu de la stack : ");
+	for (int i = 1; i < 10; i++)
+	{
+		std::cout << "  Top stack  : " << st.top() << std::endl;
+		std::cout << "  Size stack : " << st.size() << std::endl;
+		P("______________");
+		st.pop();
+	}
+	std::cout << "  Size stack : " << st.size() << std::endl;
+	std::cout << "Stack empty? : ";
+	if (st.empty())
+	{
+		P("Yes.");
+	}
+	else
+		P("No");
+
+	P("Non member operators overload == != > >= < <=");
+	
+}
+// ajouter autres fct avt le swap !!
+*/
+int main(int argc, char **argv)
 {
-	test_list();
+	std::string test;
+
+	if (argc < 2)
+	{
+		test_list();
+		test_stack();
+	}
+	test = argv[1];
+	if (test == "list")
+		test_list();
+	else if (test == "stack")
+		test_stack();
 	return (0);
 }

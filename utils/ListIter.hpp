@@ -166,6 +166,7 @@ class ListIterConst : public Iterator<ft::bidirectionnal_iterator_tag, T>
 			return (it1._elem != it2._elem);
 		}
 };
+
 } //end namespace ft
 
 
