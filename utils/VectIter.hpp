@@ -32,8 +32,111 @@ class VectIter : public ft::Iterator<ft::random_access_iterator_tag, T>
 	typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::reference			reference;
 	typedef typename ft::Iterator<ft::random_access_iterator_tag, T>::iterator_category	iterator_category;
 
-	VectIter() {}
-	~VectIter() {}
+	/*
+	** Constructot - Destructor - Copy
+	*/
+	VectIter()
+	:	_tab(NULL)
+	{}
+
+	VectIter(pointer tab)
+	:	_tab(tab)
+	{}
+
+	VectIter(const VectIter &cpy)
+	:	_tab(cpy._tab)
+	{}
+
+	virtual ~VectIter() {}
+
+	VectIter operator=(const VectIter &op)
+	{
+		if (this == &op)
+			return (*this);
+		this->_tab = op._tab;
+		return (*this);
+	}
+
+	/*
+	** Operators
+	*/
+		reference	operator*() const {return (*_tab);}
+
+		pointer		operator->()
+		{
+			return (&(this->operator*()));
+		}
+		
+		VectIter&	operator++()
+		{
+			++_tab;
+			return (*this);
+		}
+
+		VectIter	operator++(int)
+		{
+			VectIter tmp(*this);
+			operator++();
+			return (tmp);
+		}
+
+		VectIter&	operator--()
+		{
+			--_tab;
+			return (*this);
+		}
+
+		VectIter	operator--(int)
+		{
+			VectIter tmp(*this);
+			operator--();
+			return (tmp);
+		}
+
+		VectIter	operator+(difference_type n) const
+		{
+			return (_tab + n);
+		}
+
+		VectIter	operator-(difference_type n) const
+		{
+			return (_tab - n);
+		}
+
+		VectIter	operator+=(difference_type n) const
+		{
+			_tab += n;
+			return (*this);
+		}
+
+		VectIter	operator-=(difference_type n) const
+		{
+			_tab -= n;
+			return (*this);
+		}
+
+		VectIter	operator[](difference_type n) const
+		{
+			return (*(operator+(n)));
+		}
+
+		operator VectIter<const T> () const
+		{
+			return (VectIter<const T>(this->_tab));
+		}
+
+		friend bool operator==(const VectIter<T> &it1, const VectIter<T> &it2)
+		{
+			return (it1 == it2);
+		}
+
+		friend bool operator!=(const VectIter<T> &it1, const VectIter<T> &it2)
+		{
+			return (it1._elem != it2._elem);
+		}
+
+	private:
+		pointer _tab;
 
 };
 

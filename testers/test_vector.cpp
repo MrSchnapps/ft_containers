@@ -17,4 +17,5 @@ void	test_vector()
 	ft::vector<int> vct;
 
 	vct.reserve(10);
+	vct.insert(vct.end(), 3);
 }

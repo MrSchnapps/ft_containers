@@ -478,7 +478,8 @@ class list
 			first = _endlist->next;
 			while (first->next != _endlist)
 			{
-				if (std::less<T>{}(first->next->val, first->val))
+				//if (std::less<T>{}(first->next->val, first->val))
+				if (first->next->val < first->val)
 				{
 					swap_elem(first, first->next);
 					sorted = false;

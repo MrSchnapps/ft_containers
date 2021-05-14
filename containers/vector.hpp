@@ -199,8 +199,18 @@ class vector
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			if (n == 0)
-				return ;
+			if (_end == _max_size)
+				reserve(size() == 0 ? 1 : size() * 2);
+			iterator itend = end();
+			++_end;
+			while (--itend != position)
+				*(itend + 1) = *itend;
+			
+			
+			
+			return (iterator(_start));
+
+
 		}
 		
    		void insert (iterator position, size_type n, const value_type& val);
