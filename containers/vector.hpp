@@ -173,21 +173,18 @@ class vector
 				pointer tmp_end = this->_end;
 				size_t tmp_max_size = this->capacity();
 
-				this->_start = _alloc.allocate(n);//new value_type[n];
+				this->_start = _alloc.allocate(n); //new value_type[n];
 				this->_end = this->_start;
 				while (tmp_i != tmp_end)
 				{
-					*_end = *tmp_i;
+					_alloc.construct(_end, *tmp_i);
 					tmp_i++;
 					_end++;
 				}
 				_max_size = _start + n;
-				//delete [] tmp_start;$
 				_alloc.deallocate(tmp_start, tmp_max_size);
 			}
 		}
-
-
 
 		/*
 		** Elements access
@@ -200,23 +197,50 @@ class vector
 		iterator insert (iterator position, const value_type& val)
 		{
 			if (_end == _max_size)
-				reserve(size() == 0 ? 1 : size() * 2);
+			{
+				int last_pos = &(*position) - _start;
+				reserve(capacity() == 0 ? 1 : capacity() * 2);
+				position = iterator(_start + last_pos);
+			}
 			iterator itend = end();
 			++_end;
-			while (--itend != position)
-				*(itend + 1) = *itend;
-			
-			
-			
-			return (iterator(_start));
-
-
+			if (itend != position)
+			{
+				while (itend != position)
+				{
+					--itend;
+					_alloc.construct(&(*(itend + 1)), *itend);
+				}
+			}
+			_alloc.construct(&(*itend), val);
+			return (itend);
 		}
 		
-   		void insert (iterator position, size_type n, const value_type& val);
+   		void insert (iterator position, size_type n, const value_type& val)
+		{
+			/*if (_end + n >= _max_size)
+			{
+				int last_pos = &(*position) - _start;
+				reserve(capacity() == 0 ? 1 : capacity() * 2);
+				position = iterator(_start + last_pos);
+			}*/
+			while (n > 0)
+			{
+				--n;
+				position = insert(position, val);
+			}
+		}
 
 		template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last);
+			void insert (iterator position, InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert(position, *first);
+				++position;
+				++first;
+			}
+		}
 	
 	private:
 		allocator_type	_alloc;

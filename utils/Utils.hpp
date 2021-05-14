@@ -17,6 +17,7 @@
 
 # define P(x) std::cout << x << std::endl;
 # define PP(x) std::cout << "|" << x << "|" << std::endl;
+# define PL(name, x) std::cout << name << x << std::endl;
 
 namespace ft
 {
