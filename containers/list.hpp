@@ -24,6 +24,7 @@
 ** TODO
 ** commentires a remove au swap
 ** checker si les itérateur reçus sont du bon type
+** checker pour les const machin là
 */
 
 namespace ft
@@ -41,8 +42,9 @@ class list
 		typedef typename allocator_type::const_reference				const_reference;
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
-		typedef	ft::ListIter<T>											iterator;
-		typedef ft::ListIterConst<T>									const_iterator;
+		typedef	ft::ListIter<value_type>								iterator;
+		typedef ft::ListIterConst<value_type>							const_iterator;
+		//typedef ft::ListIter<const value_type>							const_iterator;
 		typedef	ft::reverse_iterator<iterator>							reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 		typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;

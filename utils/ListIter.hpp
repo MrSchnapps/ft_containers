@@ -24,19 +24,20 @@ namespace ft
 ** its a bidirectionnal iterator
 */
 template <class T>
-class ListIter : public Iterator<ft::bidirectionnal_iterator_tag, T>
+class ListIter : public ft::Iterator<ft::bidirectionnal_iterator_tag, T>
 {
 	public:
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::value_type		value_type;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type	difference_type;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference		reference;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer			pointer;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer_category	pointer_category;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::value_type			value_type;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type		difference_type;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference			reference;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer				pointer;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::iterator_category	iterator_category;
 
 		DL_List<T>*	_elem;
 
 		ListIter() {};
 		ListIter(DL_List<T> *elem): _elem(elem) {};
+		//ListIter(DL_List<T> *elem): _elem(elem) {};
 		ListIter(const ListIter &copy): _elem(copy._elem) {};
 		virtual ~ListIter() {};
 
@@ -103,7 +104,7 @@ class ListIterConst : public Iterator<ft::bidirectionnal_iterator_tag, T>
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type			difference_type;
 		typedef const typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference			reference;
 		typedef const typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer			pointer;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer_category			pointer_category;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::iterator_category		iterator_category;
 
 		DL_List<T>*	_elem;
 

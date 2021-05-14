@@ -21,10 +21,12 @@
 # include <vector>
 # include "../containers/list.hpp"
 # include "../containers/stack.hpp"
+# include "../containers/vector.hpp"
 # include "../utils/Iterators.hpp"
 # include "../utils/Utils.hpp"
 # include "../utils/ListIter.hpp"
 
 void	test_list();
 void	test_stack();
+void	test_vector();
 #endif

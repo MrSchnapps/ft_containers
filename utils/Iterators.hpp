@@ -28,7 +28,7 @@ struct Iterator
 	typedef Distance	difference_type;
 	typedef Pointer		pointer;
 	typedef Reference	reference;
-	typedef Category	pointer_category;
+	typedef Category	iterator_category;
 };
 
 /*
@@ -45,11 +45,11 @@ template <class Iterator>
 class iterator_traits
 {
 	public:
-		typedef typename Iterator::value_type		value_type;
-		typedef typename Iterator::difference_type	difference_type;
-		typedef typename Iterator::pointer			pointer;
-		typedef typename Iterator::reference		reference;
-		typedef typename Iterator::pointer_category	iterator_category;
+		typedef typename Iterator::value_type			value_type;
+		typedef typename Iterator::difference_type		difference_type;
+		typedef typename Iterator::pointer				pointer;
+		typedef typename Iterator::reference			reference;
+		typedef typename Iterator::iterator_category	iterator_category;
 };
 
 template <class T>
