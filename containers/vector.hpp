@@ -13,12 +13,14 @@
 #ifndef __VECTOR_HPP__
 # define __VECTOR_HPP__
 
+# include <stdexcept>
 # include "../utils/VectIter.hpp"
 # include "../utils/Iterators.hpp"
 
 /*
 ** TODO
-** Check pour return end() si ya rien de retourner _start
+** return error en cas de n qui depasse size etc
+** throw des out of range au at etc
 */
 
 namespace ft
@@ -88,6 +90,7 @@ class vector
 
 		~vector()
 		{
+			clear();
 			_alloc.deallocate(_start, capacity());
 			//delete [] _start;
 		}
@@ -104,42 +107,42 @@ class vector
 		/*
 		** Iterators
 		*/
-		iterator begin()
+		iterator				begin()
 		{
 			return (iterator(_start));
 		}
 
-		const_iterator begin() const
+		const_iterator			begin() const
 		{
 			return (const_iterator(_start));
 		}
 
-		iterator end()
+		iterator				end()
 		{
 			return (iterator(_end));
 		}
 	
-		const_iterator end() const
+		const_iterator			end() const
 		{
 			return (const_iterator(_end));
 		}
 
-		reverse_iterator rbegin()
+		reverse_iterator		rbegin()
 		{
 			return (reverse_iterator(_end));
 		}
 
-		const_reverse_iterator rbegin() const
+		const_reverse_iterator	rbegin() const
 		{
 			return (const_reverse_iterator(_end));
 		}
 	
-		reverse_iterator rend()
+		reverse_iterator		rend()
 		{
 			return (reverse_iterator(_start));
 		}
 
-		const_reverse_iterator rend() const
+		const_reverse_iterator	rend() const
 		{
 			return (const_reverse_iterator(_start));
 		}
@@ -147,22 +150,47 @@ class vector
 		/*
 		** Capacity
 		*/
-		size_type size() const
+		size_type	size() const
 		{
 			return (this->_end - this->_start);
 		}
 
-		size_type max_size() const
+		size_type	max_size() const
 		{
 			return (allocator_type().max_size());
 		}
 
-		size_type capacity() const
+		void		resize (size_type n, value_type val = value_type())
+		{
+			//if (n > max_size() || size() + n > max_size())
+				//return (error jsp quoi);
+			if (n < size())
+			{
+				while (size() > n)
+				{
+					--_end;
+					_alloc.destroy(_end);
+				}
+			}
+			else if (n > size())
+			{
+				insert(end(), n - size(), val);
+			}
+		}
+
+		size_type	capacity() const
 		{
 			return (this->_max_size - this->_start);
 		}
 
-		void reserve (size_type n)
+		bool		empty() const
+		{
+			if (size() == 0)
+				return (true);
+			return (false);
+		}
+
+		void		reserve (size_type n)
 		{
 			//if (n > this->max_size())
 				//faire erreur;
@@ -189,12 +217,76 @@ class vector
 		/*
 		** Elements access
 		*/
+		reference		operator[] (size_type n)
+		{
+			return (*(_start + n));
+		}
+
+		const_reference	operator[] (size_type n) const
+		{
+			return (*(_start + n));
+		}
+
+		reference		at (size_type n)
+		{
+			if (n >= size())
+				throw std::out_of_range("Out of range");
+			return (*(_start + n));
+		}
+		const_reference	at (size_type n) const
+		{
+			if (n >= size())
+				throw std::out_of_range("Out of range");
+			return (*(_start + n));
+		}
+
+		reference		front()
+		{
+			return (*_start);
+		}
+
+		const_reference	front() const
+		{
+			return (*_start);
+		}
+
+		reference back()
+		{
+			return (*(_end - 1));
+		}
+
+		const_reference back() const
+		{
+			return (*(_end - 1));
+		}
 
 		/*
 		** Modifiers
 		*/
+		template <class InputIterator>
+  		void		assign (InputIterator first, InputIterator last)
+		{
+			clear();
+			insert(end(), first, last);
+		}
 
-		iterator insert (iterator position, const value_type& val)
+		void		assign (size_type n, const value_type& val)
+		{
+			clear();
+			insert(end(), n, val);
+		}
+
+		void push_back (const value_type& val)
+		{
+			insert(end(), val);
+		}
+
+		void pop_back()
+		{
+			//erase(--(end());
+		}
+
+		iterator	insert (iterator position, const value_type& val)
 		{
 			if (_end == _max_size)
 			{
@@ -216,7 +308,7 @@ class vector
 			return (itend);
 		}
 		
-   		void insert (iterator position, size_type n, const value_type& val)
+   		void		insert (iterator position, size_type n, const value_type& val)
 		{
 			/*if (_end + n >= _max_size)
 			{
@@ -232,7 +324,7 @@ class vector
 		}
 
 		template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last)
+			void	insert (iterator position, InputIterator first, InputIterator last)
 		{
 			while (first != last)
 			{
@@ -241,7 +333,40 @@ class vector
 				++first;
 			}
 		}
-	
+
+		/*iterator	erase (iterator position)
+		{
+			pointer	tmp = &(*position);
+			
+			_alloc.destroy(&(*position));
+			if (tmp + 1 != _end)
+			{
+				++tmp;
+				while (tmp < _end - 1)
+				{
+					_alloc.construct(tmp, tmp + 1)
+				}
+			}
+			_alloc.destroy(_end);
+			--_end;
+		}
+
+		iterator	erase (iterator first, iterator last)
+		{
+
+		}*/
+		
+		void		clear()
+		{
+			size_t i = size();
+			while (i > 0)
+			{
+				--i;
+				--_end;
+				_alloc.destroy(_end);
+			}
+		}
+
 	private:
 		allocator_type	_alloc;
 		pointer			_start;
