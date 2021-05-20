@@ -283,7 +283,7 @@ class vector
 
 		void pop_back()
 		{
-			//erase(--(end());
+			erase(--(end()));
 		}
 
 		iterator	insert (iterator position, const value_type& val)

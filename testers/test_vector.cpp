@@ -228,6 +228,9 @@ void	test_vct_ppback()
 	vct.push_back(125);
 	print_vector(vct);
 	P("Pop 2x");
+	vct.pop_back();
+	vct.pop_back();
+	print_vector(vct);
 }
 
 void	test_vct_insert()
@@ -280,8 +283,8 @@ void	test_vct_erase()
 	vct.insert(vct.end(), 190);
 	print_vector(vct);
 	
-	ft::vector<int>::iterator it = vct.begin();
-	++it;
+	ft::vector<int>::iterator it = vct.end();
+	--it;
 	vct.erase(it);
 	print_vector(vct);
 
