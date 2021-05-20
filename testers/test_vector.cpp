@@ -266,6 +266,36 @@ void	test_vct_insert()
 	print_vector(vct, "vct");
 }
 
+void	test_vct_erase()
+{
+	ft::vector<int> vct;
+
+	print_title("Erase");
+	vct.insert(vct.end(), 97);
+	vct.insert(vct.end(), 206);
+	vct.insert(vct.end(), 93);
+	vct.insert(vct.end(), 207);
+	vct.insert(vct.end(), 13);
+	vct.insert(vct.end(), 14);
+	vct.insert(vct.end(), 190);
+	print_vector(vct);
+	
+	ft::vector<int>::iterator it = vct.begin();
+	++it;
+	vct.erase(it);
+	print_vector(vct);
+
+	it = vct.begin();
+	++it;
+	ft::vector<int>::iterator it2 = vct.begin();
+	++it2;
+	++it2;
+	++it2;
+	++it2;
+	vct.erase(it, it2);
+	print_vector(vct);
+}
+
 void	test_vct_clear()
 {
 	ft::vector<int> vct;
@@ -312,6 +342,8 @@ void	test_vector()
 	test_vct_ppback();
 	P("");
 	test_vct_insert();
+	P("");
+	test_vct_erase();
 	P("");
 	test_vct_clear();
 	P("");

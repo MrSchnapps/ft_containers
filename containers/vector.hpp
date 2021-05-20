@@ -334,27 +334,33 @@ class vector
 			}
 		}
 
-		/*iterator	erase (iterator position)
+		iterator	erase (iterator position)
 		{
 			pointer	tmp = &(*position);
 			
 			_alloc.destroy(&(*position));
-			if (tmp + 1 != _end)
+			while (tmp + 1 != _end)
 			{
+				_alloc.construct(&(*tmp), *(&(*tmp) + 1));
+				_alloc.destroy(&(*tmp) + 1);
 				++tmp;
-				while (tmp < _end - 1)
-				{
-					_alloc.construct(tmp, tmp + 1)
-				}
 			}
-			_alloc.destroy(_end);
+			//_alloc.destroy(_end);
 			--_end;
+			return (position);
 		}
 
 		iterator	erase (iterator first, iterator last)
 		{
-
-		}*/
+			iterator tmp = first;
+	
+			while (first != last)
+			{
+				tmp = erase(tmp);
+				++first;
+			}
+			return (tmp);
+		}
 		
 		void		clear()
 		{
