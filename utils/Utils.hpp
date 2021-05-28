@@ -14,6 +14,13 @@
 # define __UTILS_HPP__
 
 # include <cstddef>
+# include "Itertors.hpp"
+# include "ListIter.hpp"
+# include "VectIter.hpp"
+# include "../containers/list.hpp"
+# include "../containers/vector.hpp"
+# include "../containers/stack.hpp"
+# include "../containers/queue.hpp"
 
 # define P(x) std::cout << x << std::endl;
 # define PP(x) std::cout << "|" << x << "|" << std::endl;
