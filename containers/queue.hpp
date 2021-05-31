@@ -6,7 +6,7 @@
 /*   By: judecuyp <judecuyp@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 13:25:30 by judecuyp          #+#    #+#             */
-/*   Updated: 2021/05/28 14:57:09 by judecuyp         ###   ########.fr       */
+/*   Updated: 2021/05/31 16:21:35 by judecuyp         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace ft
 
 template <class T, class Container = ft::list<T> >
 	class queue
-{ft::
+{
 	public:
 		/*
 		** Member types
@@ -33,10 +33,10 @@ template <class T, class Container = ft::list<T> >
 		** Constructor - Destructor - Copy
 		*/
 		explicit queue (const container_type& ctnr = container_type())
-		:	_cont(cntr)
+		:	_cont(ctnr)
 		{}
 
-		~queue();
+		~queue() {}
 
 		/*
 		** Member functions

@@ -19,9 +19,13 @@
 # include <string>
 # include <list>
 # include <vector>
+# include <stack>
+# include <queue>
+# include <map>
 # include "../containers/list.hpp"
 # include "../containers/stack.hpp"
 # include "../containers/vector.hpp"
+# include "../containers/queue.hpp"
 # include "../utils/Iterators.hpp"
 # include "../utils/Utils.hpp"
 # include "../utils/ListIter.hpp"
@@ -29,4 +33,15 @@
 void	test_list();
 void	test_stack();
 void	test_vector();
+void	test_queue();
+
+template <class T>
+void	print_comp(std::string title, T a, T b)
+{
+	if (!title.empty())
+		std::cout << title << std::endl;
+	std::cout << "Miens : " << a << std::endl;
+	std::cout << "Vraie : " << b << std::endl;
+	std::cout << std::endl;
+} 
 #endif

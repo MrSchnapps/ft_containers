@@ -30,5 +30,7 @@ int main(int argc, char **argv)
 		test_stack();
 	else if (test == "vector")
 		test_vector();
+	else if (test == "queue")
+		test_queue();
 	return (0);
 }
