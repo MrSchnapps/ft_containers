@@ -419,11 +419,24 @@ void	test_vct_op()
 
 	print_vector(vct1, "VCT1");
 	print_vector(vct2, "VCT2");
-	P("vct1 == vct2 : ");
-	if (vct1 == vct2)
-	{
-		std::cout << "Same" << std::endl;
-	}
+	PL("vct1 == vct2 : ", (vct1 == vct2));
+	PL("vct1 != vct2 : ", (vct1 != vct2));
+	PL("vct1 < vct2 : ", (vct1 < vct2));
+	PL("vct1 <= vct2 : ", (vct1 <= vct2));
+	PL("vct1 > vct2 : ", (vct1 > vct2));
+	PL("vct1 >= vct2 : ", (vct1 >= vct2));
+
+	P("vct 1 pop_back() and insert(2, 19)");
+	vct1.pop_back();
+	vct1.insert(++(vct1.begin()), 19);
+	print_vector(vct1, "VCT1");
+	print_vector(vct2, "VCT2");
+	PL("vct1 == vct2 : ", (vct1 == vct2));
+	PL("vct1 != vct2 : ", (vct1 != vct2));
+	PL("vct1 < vct2 : ", (vct1 < vct2));
+	PL("vct1 <= vct2 : ", (vct1 <= vct2));
+	PL("vct1 > vct2 : ", (vct1 > vct2));
+	PL("vct1 >= vct2 : ", (vct1 >= vct2));
 }
 
 void	test_vector()
