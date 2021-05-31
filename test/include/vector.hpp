@@ -54,43 +54,39 @@ class vector
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
-		{}
+		{
+			
+		}
 
-		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+		/*explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc),
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
 		{
-			while (n > 0)
-			{
-				push_back(val);
-				--n;
-			}
+
 		}
 							
 		template <class InputIterator>
 				vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc),
+			_alloc(alloc),
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
 		{
-			while (first != last)
-			{
-				push_back(*first);
-				++first;
-			}
+
 		}
 
 		vector (const vector& x)
-		:	_alloc(x._alloc),
+		:	_alloc(alloc),
+			_alloc(alloc),
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
 		{
-			this->insert(this->end(), x.begin(), x.end());
-		}
+
+		}*/
 
 		~vector()
 		{
@@ -204,6 +200,7 @@ class vector
 				pointer tmp_i = this->_start;
 				pointer tmp_end = this->_end;
 				size_t tmp_max_size = this->capacity();
+
 				this->_start = _alloc.allocate(n); //new value_type[n];
 				this->_end = this->_start;
 				while (tmp_i != tmp_end)
@@ -291,11 +288,9 @@ class vector
 
 		iterator	insert (iterator position, const value_type& val)
 		{
-			size_t last_pos;
-
 			if (_end == _max_size)
 			{
-				last_pos = &(*position) - _start;
+				int last_pos = &(*position) - _start;
 				reserve(capacity() == 0 ? 1 : capacity() * 2);
 				position = iterator(_start + last_pos);
 			}
@@ -315,6 +310,12 @@ class vector
 		
    		void		insert (iterator position, size_type n, const value_type& val)
 		{
+			/*if (_end + n >= _max_size)
+			{
+				int last_pos = &(*position) - _start;
+				reserve(capacity() == 0 ? 1 : capacity() * 2);
+				position = iterator(_start + last_pos);
+			}*/
 			while (n > 0)
 			{
 				--n;
@@ -327,7 +328,8 @@ class vector
 		{
 			while (first != last)
 			{
-				position = insert(position, *first);
+				insert(position, *first);
+				++position;
 				++first;
 			}
 		}
@@ -385,43 +387,5 @@ class vector
 };
 
 } // end namespace ft
-
-
-/*
-** TESTEEERSSSS
-*/
-template <typename T>
-inline void check(std::string name, T a, T b)
-{
-	std::string margin(38 - name.length(), ' ');
-	if (a == b)
-		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET*/ << std::endl;
-	else
-		std::cout << name << ": " << margin /*<< FAIL*/ << std::endl;
-};
-
-inline void check(std::string name, bool good)
-{
-	std::string margin(38 - name.length(), ' ');
-	if (good)
-		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET */<< std::endl;
-	else
-		std::cout << name << ": " << margin /*<< FAIL */<< std::endl;
-};
-
-template <typename T>
-bool operator==(ft::vector<T> &a, std::vector<T> &b)
-{
-	if (a.size() != b.size())
-		return (false);
-	if (a.empty() != b.empty())
-		return (false);
-	for (size_t i = 0; i < a.size(); i++)
-	{
-		if (a[i] != b[i])
-			return (false);
-	}
-	return (true);
-};
 
 #endif

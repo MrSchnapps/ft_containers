@@ -37,6 +37,42 @@ void	print_title(std::string title)
 }
 
 /*
+** Constructors etc
+*/
+
+void	test_vct_construct()
+{
+	ft::vector<int> vct;
+
+	vct.insert(vct.begin(), (size_t)4, 100);
+	print_vector(vct, "vct vide : vct.insert(vct.begin(), (size_t)4, 100);");
+
+	ft::vector<int> vct2((size_t)7, 19);
+	print_vector(vct2, "vct(7, 19)");
+
+	ft::vector<int> vct3(vct2.begin(), vct2.end());
+	print_vector(vct3, "vct(first, last)");
+
+
+
+	ft::vector<int> vct4;
+
+	//vct4.push_back(4);
+	//vct4.push_back(5);
+	ft::vector<int>::iterator it = vct4.begin();
+
+
+	vct4.insert(it, vct.begin(), vct.end());
+//	ft::vector<int> vct4(vct3);
+	print_vector(vct4, "vct(autre vct)");
+
+/*	std::vector<int> vct41;
+	std::vector<int> vct21((size_t)7, 19);
+
+	vct41.insert(vct41.begin(), vct21.begin(), vct21.end());*/
+}
+
+/*
 ** Iterators
 */
 void	test_vct_iterators()
@@ -111,6 +147,17 @@ void	test_vct_resize()
 	vct.resize(7, 19);
 	std::cout << "vct.resize(7, 19), size : " << vct.size() << std::endl;
 	print_vector(vct);
+
+	P("");
+	ft::vector<std::string> v1;
+	std::vector<std::string> v2;
+	v1.resize(10, "test");
+	v2.resize(10, "test");
+
+	check("v1 == v2", (v1 == v2));
+	v1.resize(2, "42");
+	v2.resize(2, "42");
+	check("v1 == v2", (v1 == v2));
 }
 
 void	test_vct_capacity()
@@ -214,6 +261,19 @@ void	test_vct_assign()
 	vct.assign((size_t)6, 137);
 	P("vct.assign(6, 137);");
 	print_vector(vct, "vct");
+
+	std::string test[] = {"Hey", "what's", "up", "?"};
+	ft::vector<std::string> v1;
+	ft::vector<std::string> s1;
+	std::vector<std::string> v2;
+	std::vector<std::string> s2;
+	v1.assign(s1.begin(), s1.end());
+	v2.assign(s2.begin(), s2.end());
+	check("v1 == v2", v1 == v2);
+	v1.assign(5, "?");
+	v2.assign(5, "?");
+	check("v1 == v2", v1 == v2);
+	//print_vector(v1);
 }
 
 void	test_vct_ppback()
@@ -263,10 +323,10 @@ void	test_vct_insert()
 	vct2.insert(vct2.end(), 13);
 	print_vector(vct2, "vct2");
 	it = vct.begin();
-	++it;
+	//++it;
 
 	vct.insert(it, vct2.begin(), vct2.end());
-	print_vector(vct, "vct");
+	print_vector(vct, "vct(begin, end)");
 }
 
 void	test_vct_erase()
@@ -311,13 +371,29 @@ void	test_vct_clear()
 	P("Clear");
 	vct.clear();
 	print_vector(vct);
+	ft::vector<std::string> v1;
+	std::vector<std::string> v2;
+	v1.push_back("1");
+	v2.push_back("1");
+	v1.push_back("2");
+	v2.push_back("2");
+	v1.push_back("3");
+	v2.push_back("3");
+	v1.erase(v1.begin() + 2);
+	v2.erase(v2.begin() + 2);
+	check("v1 == v2", v1 == v2);
+	v1.clear();
+	v2.clear();
+	check("v1 == v2", v1 == v2);
 }
 //void	fill_container
 
 void	test_vector()
 {
-
-	P("           #################   ITERATORS   #################");
+	P("           #################   CONSTRUCTORS   #################");
+	test_vct_construct();
+	P("");
+	/*P("           #################   ITERATORS   #################");
 	test_vct_iterators();
 	P("");
 
@@ -325,10 +401,10 @@ void	test_vector()
 	test_vct_size();
 	P("");
 	test_vct_max_size();
-	P("");
-	test_vct_resize();
-	P("");
-	test_vct_capacity();
+	P("");*/
+	//test_vct_resize();
+	//P("");
+	/*test_vct_capacity();
 	P("");
 	test_vct_empty();
 	P("");
@@ -339,16 +415,16 @@ void	test_vector()
 	test_vct_elem_access();
 	P("");
 	
-	P("           #################   MODIFIERS   #################");
-	test_vct_assign();
-	P("");
-	test_vct_ppback();
-	P("");
-	test_vct_insert();
-	P("");
-	test_vct_erase();
-	P("");
-	test_vct_clear();
-	P("");
+	P("           #################   MODIFIERS   #################");*/
+	//test_vct_assign();
+	//P("");
+	//test_vct_ppback();
+	//P("");
+	//test_vct_insert();
+	//P("");
+	//test_vct_erase();
+	//P("");
+	//test_vct_clear();
+	//P("");
 
 }
