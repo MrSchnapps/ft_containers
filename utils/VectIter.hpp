@@ -130,7 +130,7 @@ class VectIter : public ft::Iterator<ft::random_access_iterator_tag, T>
 
 		friend bool operator==(const VectIter<T> &it1, const VectIter<T> &it2)
 		{
-			return (it1 == it2);
+			return (it1._tab == it2._tab);
 		}
 
 		friend bool operator!=(const VectIter<T> &it1, const VectIter<T> &it2)

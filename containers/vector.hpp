@@ -103,8 +103,8 @@ class vector
 		{
 			if (x == *this)
 				return (*this);
-			//this->clear();
-			//this->insert(this->end(), x.begin(), x.end());
+			this->clear();
+			this->insert(this->end(), x.begin(), x.end());
 			return (*this);
 		}
 
@@ -362,7 +362,22 @@ class vector
 
 		void swap (vector& x)
 		{
-			P("Not implemented ahah");
+			if (x == *this)
+				return ;
+			allocator_type	tmp_alloc = _alloc;
+			pointer			tmp_start = _start;
+			pointer			tmp_end = _end;
+			pointer			tmp_max_size = _max_size;
+
+			_alloc = x._alloc;
+			_start = x._start;
+			_end = x._end;
+			_max_size = x._max_size;
+
+			x._alloc = tmp_alloc;
+			x._start = tmp_start;
+			x._end = tmp_end;
+			x._max_size = tmp_max_size;
 		}
 
 		void		clear()
@@ -384,7 +399,63 @@ class vector
 
 };
 
+template <class T, class Alloc>
+bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	typename ft::vector<T>::const_iterator it = lhs.begin();
+	typename ft::vector<T>::const_iterator it2 = rhs.begin();
+
+	while (it2 != rhs.end())
+	{
+		if (it2 == rhs.end() || *it != *it2)
+			return (false);
+		++it;
+		++it2;
+	}
+	return (true);
+}
+
+template <class T, class Alloc>
+bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (!(lhs == rhs));
+}
+
+/*template <class T, class Alloc>
+bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+
+}
+
+template <class T, class Alloc>
+bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+
+}
+
+template <class T, class Alloc>
+bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+
+}
+
+template <class T, class Alloc>
+bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+
+}*/
+
+
+template <class T, class Alloc>
+void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
+{
+	x.swap(y);
+}
+
 } // end namespace ft
+
 
 
 /*

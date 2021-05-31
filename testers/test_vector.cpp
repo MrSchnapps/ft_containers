@@ -386,7 +386,45 @@ void	test_vct_clear()
 	v2.clear();
 	check("v1 == v2", v1 == v2);
 }
-//void	fill_container
+
+void	test_vct_swap()
+{
+	ft::vector<int> vct1((size_t)5, 7);
+	ft::vector<int> vct2((size_t)9, 19);
+
+	print_vector(vct1, "VCT1");
+	print_vector(vct2, "VCT2");
+
+	P("SWAP");
+	vct1.swap(vct2);
+	print_vector(vct1, "VCT1");
+	print_vector(vct2, "VCT2");
+
+	ft::vector<int>::iterator it = vct1.begin(); 
+	ft::vector<int>::iterator itend = vct1.end();
+	
+	P("SWAP");
+	vct1.swap(vct2);
+	while (it != itend)
+	{
+		std::cout << *it << std::endl;
+		++it;
+	}
+}
+
+void	test_vct_op()
+{
+	ft::vector<int> vct1((size_t)5, 7);
+	ft::vector<int> vct2((size_t)5, 7);
+
+	print_vector(vct1, "VCT1");
+	print_vector(vct2, "VCT2");
+	P("vct1 == vct2 : ");
+	if (vct1 == vct2)
+	{
+		std::cout << "Same" << std::endl;
+	}
+}
 
 void	test_vector()
 {
@@ -426,5 +464,8 @@ void	test_vector()
 	//P("");
 	//test_vct_clear();
 	//P("");
-
+	test_vct_swap();
+	P("");
+	test_vct_op();
+	P("");
 }

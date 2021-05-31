@@ -15,16 +15,29 @@
 int main(int argc, char **argv)
 {
 	std::string test;
+	size_t		i;
 
 	if (argc < 2)
+	{
+		std::cout << "Unkown command" << std::endl;
+		return (1);
+	}
+
+	test = argv[1];
+	while (i < test.size())
+	{
+		test[i] = tolower(test[i]);
+		++i;
+	}
+
+	if (test == "all")
 	{
 		test_list();
 		test_stack();
 		test_vector();
-		return (0);
+		test_queue();
 	}
-	test = argv[1];
-	if (test == "list")
+	else if (test == "list")
 		test_list();
 	else if (test == "stack")
 		test_stack();
@@ -32,5 +45,10 @@ int main(int argc, char **argv)
 		test_vector();
 	else if (test == "queue")
 		test_queue();
+	else
+	{
+		std::cout << "Unkown command" << std::endl;
+		return (1);
+	}
 	return (0);
 }
