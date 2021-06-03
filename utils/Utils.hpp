@@ -48,6 +48,20 @@ template <class InputIterator1, class InputIterator2>
 	return (first2 != last2);
 }
 
+template <typename K, typename V>
+struct BST_List
+{
+	BST_List	*right;
+	BST_List	*left;
+	K			key;
+	V			value;
+
+	BST_List()
+	:	next(NULl),
+		prev(NULL)
+	{}
+}
+
 template <typename T>
 struct DL_List
 {

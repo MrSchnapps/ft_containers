@@ -10,6 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef __MAP_HPP__
+# define __MAP_HPP__
+
+# include "../utils/Utils.hpp"
 namespace ft
 {
 template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
@@ -18,12 +22,27 @@ class map
 	/*
 	** Member types
 	*/
-	typedef Key key_type;
-	typedef T mapped_type;	
-	//typedef pair<const key_type,mapped_type> value_type;
-	//typdedef Compare key_compare;
-	//value_compare	Nested function class to compare elements	see value_comp
-	typedef Alloc allocator_type;
+	typedef Key											key_type;
+	typedef T											mapped_type;	
+	typedef std::pair<const key_type, mapped_type>		value_type;
+	typdedef Compare									key_compare;
+	class value_compare : ft::binary_function<value_type, value_type, bool>
+	{
+		friend class map<key_type, mapped_type, key_compare, Alloc>;
+
+		protected:
+			Compare comp;
+			value_compare (Compare c) : comp(c) {}
+
+		public:
+			bool operator() (const value_type& x, const value_type& y) const
+			{
+				return comp(x.first, y.first);
+			}
+
+
+	};
+	typedef Alloc										allocator_type;
 	typedef typename allocator_typr::reference			reference;
 	typedef typename allocator_type::const_reference	const_reference;
 	typedef typename allocator_type::pointer			pointer;
@@ -38,10 +57,23 @@ class map
 	/*
 	** Constructor - Destructor - Copy
 	*/
+	explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+	{}
+
+	template <class InputIterator>
+	map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+	{}
 	
+	map (const map& x)
+	{}
 	
 	~map()
 	{}
+
+	private:
+		BST_List _cont;
 };
 
 } // end namespace ft
+
+#endif
