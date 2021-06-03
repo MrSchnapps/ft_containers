@@ -96,7 +96,6 @@ class vector
 		{
 			clear();
 			_alloc.deallocate(_start, capacity());
-			//delete [] _start;
 		}
 
 		vector& operator= (const vector& x)
@@ -343,7 +342,6 @@ class vector
 				_alloc.destroy(&(*tmp) + 1);
 				++tmp;
 			}
-			//_alloc.destroy(_end);
 			--_end;
 			return (position);
 		}

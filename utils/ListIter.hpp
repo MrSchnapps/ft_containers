@@ -37,7 +37,6 @@ class ListIter : public ft::Iterator<ft::bidirectionnal_iterator_tag, T>
 
 		ListIter() {};
 		ListIter(DL_List<T> *elem): _elem(elem) {};
-		//ListIter(DL_List<T> *elem): _elem(elem) {};
 		ListIter(const ListIter &copy): _elem(copy._elem) {};
 		virtual ~ListIter() {};
 

@@ -53,23 +53,13 @@ void	test_vct_construct()
 	ft::vector<int> vct3(vct2.begin(), vct2.end());
 	print_vector(vct3, "vct(first, last)");
 
-
-
-	ft::vector<int> vct4;
-
-	//vct4.push_back(4);
-	//vct4.push_back(5);
-	ft::vector<int>::iterator it = vct4.begin();
-
-
-	vct4.insert(it, vct.begin(), vct.end());
-//	ft::vector<int> vct4(vct3);
+	ft::vector<int> vct4(vct3);
 	print_vector(vct4, "vct(autre vct)");
 
-/*	std::vector<int> vct41;
-	std::vector<int> vct21((size_t)7, 19);
-
-	vct41.insert(vct41.begin(), vct21.begin(), vct21.end());*/
+	ft::vector<int> vct5 = vct4;
+	print_vector(vct5, "vct5 = vct4");
+	vct5 = vct;
+	print_vector(vct5, "vct5 = vct");
 }
 
 /*
@@ -444,7 +434,7 @@ void	test_vector()
 	P("           #################   CONSTRUCTORS   #################");
 	test_vct_construct();
 	P("");
-	/*P("           #################   ITERATORS   #################");
+	P("           #################   ITERATORS   #################");
 	test_vct_iterators();
 	P("");
 
@@ -452,10 +442,10 @@ void	test_vector()
 	test_vct_size();
 	P("");
 	test_vct_max_size();
-	P("");*/
-	//test_vct_resize();
-	//P("");
-	/*test_vct_capacity();
+	P("");
+	test_vct_resize();
+	P("");
+	test_vct_capacity();
 	P("");
 	test_vct_empty();
 	P("");
@@ -466,17 +456,17 @@ void	test_vector()
 	test_vct_elem_access();
 	P("");
 	
-	P("           #################   MODIFIERS   #################");*/
-	//test_vct_assign();
-	//P("");
-	//test_vct_ppback();
-	//P("");
-	//test_vct_insert();
-	//P("");
-	//test_vct_erase();
-	//P("");
-	//test_vct_clear();
-	//P("");
+	P("           #################   MODIFIERS   #################");
+	test_vct_assign();
+	P("");
+	test_vct_ppback();
+	P("");
+	test_vct_insert();
+	P("");
+	test_vct_erase();
+	P("");
+	test_vct_clear();
+	P("");
 	test_vct_swap();
 	P("");
 	test_vct_op();
