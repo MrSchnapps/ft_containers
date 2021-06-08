@@ -53,14 +53,15 @@ struct BST_List
 {
 	BST_List	*right;
 	BST_List	*left;
-	K			key;
-	V			value;
-
+	//K			key;
+	//V			value;
+	std::pair<K, T>;
+	
 	BST_List()
 	:	next(NULl),
 		prev(NULL)
 	{}
-}
+};
 
 template <typename T>
 struct DL_List
