@@ -71,7 +71,8 @@ class map
 	{}
 
 	private:
-		BST_List _cont;
+		BST_List	*_root;
+		Alloc 		_alloc:	
 };
 
 } // end namespace ft

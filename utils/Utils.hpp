@@ -51,15 +51,16 @@ template <class InputIterator1, class InputIterator2>
 template <typename K, typename V>
 struct BST_List
 {
+	BST_List	*parent;
 	BST_List	*right;
 	BST_List	*left;
-	//K			key;
-	//V			value;
-	std::pair<K, T>;
-	
+
+	std::pair<K, V> elem;
+
 	BST_List()
-	:	next(NULl),
-		prev(NULL)
+	:	right(NULl),
+		left(NULL),
+		parent(NULL)
 	{}
 };
 
