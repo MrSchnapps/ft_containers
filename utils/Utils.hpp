@@ -49,19 +49,61 @@ template <class InputIterator1, class InputIterator2>
 }
 
 template <typename K, typename V>
+std::pair<K, V>	make_pair(K key, V value)
+{
+	std::pair<K, V> p;
+
+	p.first = key;
+	p.second = value;
+	return (p);
+}
+
+template <typename T>
 struct BST_List
 {
 	BST_List	*parent;
 	BST_List	*right;
 	BST_List	*left;
 
-	std::pair<K, V> elem;
+	T _v;
 
 	BST_List()
-	:	right(NULl),
+	:	right(NULL),
 		left(NULL),
 		parent(NULL)
 	{}
+
+	BST_List(BST_List *p = NULL, BST_List *r = NULl, BST_List *l = NULL, const T &v)
+	:	_v(v)
+		right(r),
+		left(l),
+		parent(p)
+	{}
+
+	BST_List(const BST_List &copy)
+	:	_v(copy._v)
+		right(copy.right),
+		left(copy.left),
+		parent(copy.parent)
+	{}
+
+	BST_List	&operator=(const BST_List &op)
+	{
+		if (*op == *this)
+			return (*this);
+		_v = op._v;
+		right = op.right;
+		left = op.left;
+		parent = op.parent;
+		return (*this);
+	}
+
+	virtual ~BST_List() {}
+
+	bool operator==(const BST_List &cmp)
+	{
+		return ((_v == cmp._v));
+	}
 };
 
 template <typename T>

@@ -52,7 +52,7 @@ class VectIter : public ft::Iterator<ft::random_access_iterator_tag, T>
 
 	virtual ~VectIter() {}
 
-	VectIter operator=(const VectIter &op)
+	VectIter &operator=(const VectIter &op)
 	{
 		if (this == &op)
 			return (*this);
