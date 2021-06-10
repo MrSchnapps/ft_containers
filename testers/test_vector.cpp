@@ -144,10 +144,10 @@ void	test_vct_resize()
 	v1.resize(10, "test");
 	v2.resize(10, "test");
 
-	check("v1 == v2", (v1 == v2));
+	//check("v1 == v2", (v1 == v2));
 	v1.resize(2, "42");
 	v2.resize(2, "42");
-	check("v1 == v2", (v1 == v2));
+	//check("v1 == v2", (v1 == v2));
 }
 
 void	test_vct_capacity()
@@ -259,10 +259,10 @@ void	test_vct_assign()
 	std::vector<std::string> s2;
 	v1.assign(s1.begin(), s1.end());
 	v2.assign(s2.begin(), s2.end());
-	check("v1 == v2", v1 == v2);
+	//check("v1 == v2", v1 == v2);
 	v1.assign(5, "?");
 	v2.assign(5, "?");
-	check("v1 == v2", v1 == v2);
+	//check("v1 == v2", v1 == v2);
 	//print_vector(v1);
 }
 
@@ -371,10 +371,10 @@ void	test_vct_clear()
 	v2.push_back("3");
 	v1.erase(v1.begin() + 2);
 	v2.erase(v2.begin() + 2);
-	check("v1 == v2", v1 == v2);
+	//check("v1 == v2", v1 == v2);
 	v1.clear();
 	v2.clear();
-	check("v1 == v2", v1 == v2);
+	//check("v1 == v2", v1 == v2);
 }
 
 void	test_vct_swap()

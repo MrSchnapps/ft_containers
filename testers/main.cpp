@@ -45,6 +45,8 @@ int main(int argc, char **argv)
 		test_vector();
 	else if (test == "queue")
 		test_queue();
+	else if (test == "map")
+		test_map();
 	else
 	{
 		std::cout << "Unkown command" << std::endl;

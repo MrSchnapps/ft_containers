@@ -14,6 +14,9 @@
 # define __UTILS_HPP__
 
 # include <cstddef>
+# include <utility>
+# include <iostream>
+# include <string>
 
 # define P(x) std::cout << x << std::endl;
 # define PP(x) std::cout << "|" << x << "|" << std::endl;
@@ -73,15 +76,15 @@ struct BST_List
 		parent(NULL)
 	{}
 
-	BST_List(BST_List *p = NULL, BST_List *r = NULl, BST_List *l = NULL, const T &v)
-	:	_v(v)
+	BST_List(const T &v, BST_List *p = NULL, BST_List *r = NULL, BST_List *l = NULL)
+	:	_v(v),
 		right(r),
 		left(l),
 		parent(p)
 	{}
 
 	BST_List(const BST_List &copy)
-	:	_v(copy._v)
+	:	_v(copy._v),
 		right(copy.right),
 		left(copy.left),
 		parent(copy.parent)

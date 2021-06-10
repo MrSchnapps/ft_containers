@@ -20,18 +20,18 @@ namespace ft
 {
 
 template <typename T, class Compare>
-class MapIter : /*public ft::Iterator<ft::bidirectionnal_iterator_tag, T>*/
+class MapIter /*public ft::Iterator<ft::bidirectionnal_iterator_tag, T>*/
 {
 	public:
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::value_type			value_type;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type		difference_type;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference			reference;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer				pointer;
-		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::iterator_category	iterator_category;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, BST_List<T> >::value_type		value_type;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, BST_List<T> >::difference_type	difference_type;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, BST_List<T> >::reference			reference;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, BST_List<T> >::pointer			pointer;
+		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, BST_List<T> >::iterator_category	iterator_category;
 
 	BST_List<T>	*_elem;
 	BST_List<T>	*_endlist;
-	Comp		_comp;
+	Compare		_comp;
 
 	/*
 	** Constructor - Destructor - Copy
@@ -81,7 +81,25 @@ class MapIter : /*public ft::Iterator<ft::bidirectionnal_iterator_tag, T>*/
 
 	MapIter &operator++()
 	{
-		T* tmp = _elem;
+		pointer tmp = _elem;
+
+		if (tmp->right == _endlist)
+		{
+			tmp = _elem->parent;
+			while (tmp != _endlist && comp(tmp->_v->first, _elem->_v->first))
+				tmp = tmp->parent;
+			_elem = tmp;
+		}
+		else if (tmp == _endlist)
+			tmp = _endlist->right;
+		else
+		{
+			tmp = _elem->right;
+			while (tmp->left != _endlist)
+				tmp = tmp->left;
+
+		}
+		return (*this);
 	}
 
 	MapIter &operator++(int)
@@ -93,7 +111,24 @@ class MapIter : /*public ft::Iterator<ft::bidirectionnal_iterator_tag, T>*/
 
 	MapIter &operator--()
 	{
-		
+		pointer tmp = _elem;
+
+		if (tmp->left == _endlist)
+		{
+			tmp = _elem->parent;
+			while (tmp != _endlist && comp(_elem->_v->first, tmp->_v->first))
+				tmp = tmp->parent;
+			_elem = tmp;
+		}
+		else if (tmp == _endlist)
+			_elem = _endlist->left;
+		else
+		{
+			tmp = _elem->left;
+			while (tmp->right != _endlist)
+				tmp = tmp->right;
+		}
+		return (*this);
 	}
 
 	MapIter &operator--(int)
@@ -103,12 +138,12 @@ class MapIter : /*public ft::Iterator<ft::bidirectionnal_iterator_tag, T>*/
 		return(tmp);
 	}
 
-	friend bool	operator==(const MapIter &it)
+	bool	operator==(const MapIter &it)
 	{
 		return ((this->_elem == it._elem));
 	}
 
-	friend bool	operator!=(const MapIter &it)
+	bool	operator!=(const MapIter &it)
 	{
 		return ((this->_elem->p != it._elem->p));
 	}

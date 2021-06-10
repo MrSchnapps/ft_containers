@@ -10,11 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../containers/map.hpp"
-#include "../utils/MapIter.hpp"
-#include "../utils/Utils.hpp"
+#include "tester.hpp"
 
-int main()
+/*
+** constructor copy etc
+*/
+
+void    test_map_construct()
 {
-	
+    ft::map<int, std::string> m;
+}
+
+
+void test_map()
+{
+    P("           &&&&&&&&&&&&&&&&&   MAP   &&&&&&&&&&&&&&&&&");
+    P("           #################   CONSTRUCTORS   #################");
+	test_map_construct();
+	P("");
 }
