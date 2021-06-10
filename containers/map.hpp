@@ -63,10 +63,20 @@ class map
 		** Constructor - Destructor - Copy
 		*/
 		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+		:	_alloc(alloc),
+			_comp(comp),
+			_root(NULL),
+			_endlist(NULL)
+
 		{}
 
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+		:	_alloc(alloc),
+			_comp(comp),
+			_root(NULL),
+			_endlist
+
 		{}
 		
 		map (const map& x)
@@ -74,9 +84,28 @@ class map
 		
 		~map() {}
 
+
+		/*
+		** Modifiers
+		*/
+		pair<iterator,bool> insert (const value_type& val)
+		{
+
+		}
+
+		iterator insert (iterator position, const value_type& val)
+		{
+
+		}
+		
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last);
+
 	private:
 		BST_List<T>	*_root;
+		BST_List<T>	*_endlist;
 		Alloc 		_alloc;
+		key_compare	_comp;
 
 };
 
