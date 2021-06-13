@@ -15,7 +15,7 @@
 int main(int argc, char **argv)
 {
 	std::string test;
-	size_t		i;
+	size_t		i = 0;
 
 	if (argc < 2)
 	{

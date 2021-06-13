@@ -120,6 +120,12 @@ struct DL_List
 	:	next(NULL),
 		prev(NULL)
 	{}
+
+	DL_List(T v, DL_List *nxt = NULL, DL_List *prv = NULL)
+	:	next(nxt),
+		prev(prv),
+		val(v)
+	{}
 };
 
 } //end namespace ft

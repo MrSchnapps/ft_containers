@@ -83,6 +83,7 @@ class MapIter /*public ft::Iterator<ft::bidirectionnal_iterator_tag, T>*/
 	{
 		pointer tmp = _elem;
 
+		tmp = tmp->next;
 		if (tmp->right == _endlist)
 		{
 			tmp = _elem->parent;
