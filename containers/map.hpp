@@ -15,21 +15,21 @@
 
 # include "../utils/Utils.hpp"
 # include "../utils/MapIter.hpp"
-# include <utility>
+//# include <utility>
 
 namespace ft
 {
 
-template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key,T> > >
+template < class Key, class T, class Compare = ft::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
 class map
 {
 	public:
 		/*
 		** Member types
-		*/
+		*/  
 		typedef Key											key_type;
 		typedef T											mapped_type;	
-		typedef std::pair<key_type, mapped_type>			value_type;
+		typedef ft::pair<key_type, mapped_type>			value_type;
 		typedef Compare										key_compare;
 		class value_compare : ft::binary_function<value_type, value_type, bool>
 		{
@@ -68,21 +68,43 @@ class map
 		:	_alloc(alloc),
 			_comp(comp)
 		{
-			_endlist = new (DL_List<std::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist = new (DL_List<ft::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
 		}
 
-		/*template <class InputIterator>
+		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc),
 			_comp(comp),
 			_endlist(NULL)
 
-		{}
+		{
+			_endlist = new (DL_List<ft::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist->next = _endlist;
+			_endlist->prev = _endlist;
+			while (first != last)
+			{
+				//std::cout << "Ici ?? " << (*first).first  << " " << (*first).second << std::endl;
+				insert(*first);
+				//std::cout << "Ici ?? " << (*first).first  << " " << (*first).second << std::endl;
+				++first;
+			}
+		}
 		
 		map (const map& x)
-		{}*/
+		{
+			_endlist = new (DL_List<ft::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist->next = _endlist;
+			_endlist->prev = _endlist;
+			const_iterator start = x.begin();
+			
+			while (start != x.end())
+			{
+				insert(*start);
+				++start;
+			}
+		}
 		
 		~map()
 		{
@@ -116,33 +138,51 @@ class map
 		/*
 		** Modifiers
 		*/
-		std::pair<iterator,bool> insert (const value_type& val)
+		ft::pair<iterator,bool> insert (const value_type& val)
 		{
 			DL_List<value_type> *to_add;
 			DL_List<value_type> *tmp = _endlist->next;
 
 			//BST_List<T> *new_elem = new BST_List<T>();
-			while (tmp != _endlist && tmp->val.first < val.first)
+			while (tmp != _endlist && key_compare()(tmp->val.first, val.first)/*tmp->val.first < val.first*/)
 			{
 				tmp = tmp->next;
 			}
 			if (tmp != _endlist && tmp->val.first == val.first)
-				return (std::pair<iterator, bool>(iterator(tmp), false));
+				return (ft::pair<iterator, bool>(iterator(tmp), false));
 			to_add = new_elem(val);
 			add_elem_before(to_add, tmp);
-			return (std::pair<iterator, bool>(iterator(to_add), true));
+			return (ft::pair<iterator, bool>(iterator(to_add), true));
 		}
 
-		/*iterator insert (iterator position, const value_type& val)
+		iterator insert (iterator position, const value_type& val)
 		{
+			DL_List<value_type> *to_add;
+			// iterator tmp = position;
 
+			while (position._elem != _endlist && key_compare()(val.first, (*position).first))
+				--position;
+			if (position._elem != _endlist && (*position).first == val.first)
+				return (position);
+			while (position._elem != _endlist && key_compare()((*position).first, val.first))
+				++position;
+			if (position._elem != _endlist && (*position).first == val.first)
+				return (position);
+			// insert(val);
+			to_add = new_elem(val);
+			add_elem_before(to_add, position._elem);
+			return (iterator(to_add));
 		}
 		
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last)
 		{
-
-		}*/
+			while (first != last)
+			{
+				insert(*first);
+				++first;
+			}
+		}
 
 		void clear()
 		{

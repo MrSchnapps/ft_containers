@@ -35,6 +35,18 @@ struct binary_function {
 	typedef Result result_type;
 };
 
+template <class T>
+struct less : binary_function<T, T, bool>
+{
+	bool operator() (const T& x, const T& y) const { return (x < y); }
+};
+
+template <class T>
+struct more : binary_function<T, T, bool>
+{
+	bool operator() (const T& x, const T& y) const { return (x > y); }
+};
+
 template <class InputIterator1, class InputIterator2>
   bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
                                 InputIterator2 first2, InputIterator2 last2)
@@ -51,10 +63,43 @@ template <class InputIterator1, class InputIterator2>
 	return (first2 != last2);
 }
 
-template <typename K, typename V>
-std::pair<K, V>	make_pair(K key, V value)
+template <class T1, class T2>
+struct pair
 {
-	std::pair<K, V> p;
+	typedef T1 first_type;
+	typedef T2 second_type;
+	
+	first_type first;
+	second_type second;
+
+	pair()
+	:	first(), second()
+	{}
+
+	template<class U, class V>
+	pair (const pair<U,V>& pr)
+	:	first(pr.first), second(pr.second)
+	{}
+	
+	
+	pair (const first_type& a, const second_type& b)
+	:	first(a), second(b)
+	{}
+
+	pair& operator= (const pair& pr)
+	{
+		if (*this == pr)
+			return (*this);
+		this->first = pr.first;
+		this->second = pr.second;
+		return (*this);
+	}
+};
+
+template <typename K, typename V>
+ft::pair<K, V>	make_pair(K key, V value)
+{
+	ft::pair<K, V> p;
 
 	p.first = key;
 	p.second = value;
