@@ -96,6 +96,18 @@ struct pair
 	}
 };
 
+// template <class T1, class T2>
+// bool operator== (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+// {
+//	return (lhs.first == rhs.first && lhs.second == rhs.second);
+// }
+
+template <class T1, class T2>
+bool operator== (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+{
+	return (lhs.first == rhs.first && lhs.second == rhs.second);
+}
+
 template <typename K, typename V>
 ft::pair<K, V>	make_pair(K key, V value)
 {
@@ -159,6 +171,7 @@ struct DL_List
 {
 	DL_List *next;
 	DL_List *prev;
+
 	T 		val;
 
 	DL_List()
@@ -171,6 +184,11 @@ struct DL_List
 		prev(prv),
 		val(v)
 	{}
+
+	bool operator==(const DL_List &cmp)
+	{
+		return ((val == cmp.val));
+	}
 };
 
 } //end namespace ft

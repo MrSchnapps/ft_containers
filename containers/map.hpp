@@ -15,7 +15,6 @@
 
 # include "../utils/Utils.hpp"
 # include "../utils/MapIter.hpp"
-//# include <utility>
 
 namespace ft
 {
@@ -29,7 +28,7 @@ class map
 		*/  
 		typedef Key											key_type;
 		typedef T											mapped_type;	
-		typedef ft::pair<key_type, mapped_type>			value_type;
+		typedef ft::pair<key_type, mapped_type>				value_type;
 		typedef Compare										key_compare;
 		class value_compare : ft::binary_function<value_type, value_type, bool>
 		{
@@ -47,28 +46,27 @@ class map
 
 
 		};
-		typedef Alloc											allocator_type;
-		typedef typename allocator_type::reference				reference;
-		typedef typename allocator_type::const_reference		const_reference;
-		typedef typename allocator_type::pointer				pointer;
-		typedef typename allocator_type::const_pointer			const_pointer;
-		//typedef ft::MapIter<value_type, key_compare>			iterator;
-		typedef ft::ListIter<value_type>						iterator;
-		typedef ft::ListIterConst<value_type>					const_iterator;
-		//typedef	reverse_iterator;
-		//typedef	const_reverse_iterator;
-		//typedef	difference_type;
-		typedef size_t size_type;
+		typedef Alloc													allocator_type;
+		typedef typename allocator_type::reference						reference;
+		typedef typename allocator_type::const_reference				const_reference;
+		typedef typename allocator_type::pointer						pointer;
+		typedef typename allocator_type::const_pointer					const_pointer;
+		//typedef ft::MapIter<value_type, key_compare>					iterator;
+		typedef ft::ListIter<value_type>								iterator;
+		typedef ft::ListIterConst<value_type>							const_iterator;
+		typedef	ft::reverse_iterator<iterator>							reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+		typedef	typename ft::iterator_traits<iterator>::difference_type	difference_type;
+		typedef size_t													size_type;
 
 		/*
 		** Constructor - Destructor - Copy
-		** endlist is set to pair<int, mapped type> int is for stock the number of elements (in ubuntu if we print end()->first we can see the size) ??? a voir
 		*/
 		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc),
 			_comp(comp)
 		{
-			_endlist = new (DL_List<ft::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);  //Voir si on enleve pas ça mdr
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
 		}
@@ -80,7 +78,7 @@ class map
 			_endlist(NULL)
 
 		{
-			_endlist = new (DL_List<ft::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);  //Voir si on enleve pas ça mdr
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
 			while (first != last)
@@ -94,7 +92,7 @@ class map
 		
 		map (const map& x)
 		{
-			_endlist = new (DL_List<ft::pair<int, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);  //Voir si on enleve pas ça mdr
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
 			const_iterator start = x.begin();
@@ -133,6 +131,71 @@ class map
 		const_iterator end() const
 		{
 			return (const_iterator(_endlist));
+		}
+
+		reverse_iterator rbegin()
+		{
+			return (reverse_iterator(end()));
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return (const_reverse_iterator(end()));
+		}
+
+		reverse_iterator rend()
+		{
+			return (reverse_iterator(begin()));
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return (const_reverse_iterator(begin()));
+		}
+
+		/*
+		** Capacity
+		*/
+		bool empty() const
+		{
+			if (_endlist->next == _endlist && _endlist->prev == _endlist)
+				return (true);
+			return (false);
+		}
+
+		size_type size() const
+		{
+			DL_List<value_type>	*tmp = _endlist;
+			size_type			s = 0;
+
+			while (tmp->next != _endlist)
+			{
+				++s;
+				tmp = tmp->next;
+			}
+			return (s);
+		}
+
+		size_type max_size() const
+		{
+			return (DL_List_allocator().max_size());
+		}
+
+		/*
+		** Elements Access
+		*/
+		mapped_type& operator[] (const key_type& k)
+		{
+			iterator tmp = find(k);
+
+			if (tmp == end())
+			{
+				insert(ft::make_pair(k, mapped_type()));
+				tmp = find(k);
+				
+				return ((*tmp).second);
+			}
+			return ((*tmp).second);
 		}
 
 		/*
@@ -184,6 +247,45 @@ class map
 			}
 		}
 
+		void erase (iterator position)
+		{
+			del_one(position._elem);
+		}
+
+		size_type erase (const key_type& k)
+		{
+			element_type *tmp = _endlist->next;
+
+			while (tmp != _endlist)
+			{
+				if (tmp->val.first == k)
+				{
+					del_one(tmp);
+					return ((size_type)1);
+				}
+				tmp = tmp->next;
+			}
+			return ((size_type)0);
+		}
+
+     	void erase (iterator first, iterator last)
+		{
+			iterator tmp;
+
+			while (first != last)
+			{
+				tmp = ++first;
+				--first;
+				del_one(first._elem);
+				first = tmp;
+			}
+		}
+
+		void swap (map& x)
+		{
+			swap_list(_endlist, x._endlist);
+		}
+	
 		void clear()
 		{
 			DL_List<value_type> *node = _endlist->next;
@@ -200,6 +302,130 @@ class map
 			_endlist->prev = _endlist;
 		}
 
+		/*
+		** Observers
+		*/
+		key_compare key_comp() const
+		{
+			return (key_compare());
+		}
+
+		value_compare value_comp() const
+		{
+			return (value_compare(key_compare()));
+		}
+
+		/*
+		** Operations
+		*/
+		iterator find (const key_type& k)
+		{
+			iterator tmp = begin();
+			
+			while (tmp != end())
+			{
+				
+				if ((*tmp).first == k)
+					return (tmp);
+				++tmp;
+			}
+			return (tmp);
+		}
+
+		const_iterator find (const key_type& k) const
+		{
+			const_iterator tmp = begin();
+			
+			while (tmp != end())
+			{
+				if ((*tmp).first == k)
+					return (tmp);
+				++tmp;
+			}
+			return (tmp);
+		}
+
+		size_type count (const key_type& k) const
+		{
+			element_type *tmp = _endlist->next;
+
+			while (tmp != _endlist)
+			{
+				if (tmp->val.first == k)
+					return ((size_type)1);
+				tmp = tmp->next;
+			}
+			return ((size_type)0);
+		}
+
+		iterator lower_bound (const key_type& k)
+		{
+			iterator tmp = begin();
+
+			while (tmp != end())
+			{
+				if (key_compare()(tmp->first, k) == false)
+					return (tmp);
+				++tmp;
+			}
+			return (tmp);
+		}
+
+		const_iterator lower_bound (const key_type& k) const
+		{
+			const_iterator tmp = begin();
+
+			while (tmp != end())
+			{
+				if (key_compare()(tmp->first, k) == false)
+					return (tmp);
+				++tmp;
+			}
+			return (tmp);
+		}
+
+		iterator upper_bound (const key_type& k)
+		{
+			iterator tmp = begin();
+
+			while (tmp != end())
+			{
+				if (key_compare()(k, tmp->first) == true)
+					return (tmp);
+				++tmp;
+			}
+			return (tmp);
+		}
+
+		const_iterator upper_bound (const key_type& k) const
+		{
+			const_iterator tmp = begin();
+
+			while (tmp != end())
+			{
+				if (key_compare()(k, tmp->first) == true)
+					return (tmp);
+				++tmp;
+			}
+			return (tmp);
+		}
+		
+		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+		{
+			const_iterator low = lower_bound(k);
+			const_iterator upper = upper_bound(k);
+
+			return (ft::make_pair<const_iterator, const_iterator>(low, upper));
+		}
+
+		pair<iterator,iterator>             equal_range (const key_type& k)
+		{
+			iterator low = lower_bound(k);
+			iterator upper = upper_bound(k);
+			return (ft::make_pair<iterator, iterator>(low, upper));
+		}
+
+
 	private:
 		/*
 		** Attributs
@@ -207,6 +433,7 @@ class map
 		/*BST_List<T>	*_root;
 		BST_List<T>	*_endlist;*/
 		typedef typename allocator_type::template rebind<DL_List<value_type> >::other DL_List_allocator;
+		typedef DL_List<value_type> element_type;
 
 		DL_List<value_type> *_endlist;
 		allocator_type 		_alloc;
@@ -233,27 +460,27 @@ class map
 			return (n);
 		}
 
-		void		add_elem_back(DL_List<value_type> *elem)
-		{
-			elem->prev = _endlist->prev;
-			elem->next = _endlist;
-			if (_endlist->next == _endlist)
-				_endlist->next = elem;
-			else
-				_endlist->prev->next = elem;
-			_endlist->prev = elem;
-		}
+		// void		add_elem_back(DL_List<value_type> *elem)
+		// {
+		// 	elem->prev = _endlist->prev;
+		// 	elem->next = _endlist;
+		// 	if (_endlist->next == _endlist)
+		// 		_endlist->next = elem;
+		// 	else
+		// 		_endlist->prev->next = elem;
+		// 	_endlist->prev = elem;
+		// }
 
-		void		add_elem_front(DL_List<value_type> *elem)
-		{
-			elem->next = _endlist->next;
-			elem->prev = _endlist;
-			if (_endlist->prev == _endlist)
-				_endlist->prev = elem;
-			else
-				_endlist->next->prev = elem;
-			_endlist->next = elem;
-		}
+		// void		add_elem_front(DL_List<value_type> *elem)
+		// {
+		// 	elem->next = _endlist->next;
+		// 	elem->prev = _endlist;
+		// 	if (_endlist->prev == _endlist)
+		// 		_endlist->prev = elem;
+		// 	else
+		// 		_endlist->next->prev = elem;
+		// 	_endlist->next = elem;
+		// }
 
 		DL_List<value_type>	*add_elem_before(DL_List<value_type> *add, DL_List<value_type> *pos)
 		{
@@ -288,6 +515,12 @@ class map
 			e2->prev = tmp;
 		}
 
+		void	swap_list(DL_List<value_type> *e1, DL_List<value_type> *e2)
+		{
+			DL_List<value_type> *tmp = e1;
+			e1 = e2;
+			e2 = tmp;
+		}
 };
 
 } // end namespace ft

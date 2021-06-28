@@ -83,7 +83,7 @@ class ListIter : public ft::Iterator<ft::bidirectionnal_iterator_tag, T>
 
 		friend bool operator==(const ListIter<T> &it1, const ListIter<T> &it2)
 		{
-			return (it1 == it2);
+			return (it1._elem == it2._elem);
 		}
 
 		friend bool operator!=(const ListIter<T> &it1, const ListIter<T> &it2)
