@@ -54,53 +54,56 @@ class vector
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
-		{
-			
-		}
+		{}
 
-		/*explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+		explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc),
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
 		{
-
+			while (n > 0)
+			{
+				push_back(val);
+				--n;
+			}
 		}
 							
 		template <class InputIterator>
 				vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
 		:	_alloc(alloc),
-			_alloc(alloc),
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
 		{
-
+			while (first != last)
+			{
+				push_back(*first);
+				++first;
+			}
 		}
 
 		vector (const vector& x)
-		:	_alloc(alloc),
-			_alloc(alloc),
+		:	_alloc(x._alloc),
 			_start(NULL),
 			_end(NULL),
 			_max_size(NULL)
 		{
-
-		}*/
+			this->insert(this->end(), x.begin(), x.end());
+		}
 
 		~vector()
 		{
 			clear();
 			_alloc.deallocate(_start, capacity());
-			//delete [] _start;
 		}
 
 		vector& operator= (const vector& x)
 		{
 			if (x == *this)
 				return (*this);
-			//this->clear();
-			//this->insert(this->end(), x.begin(), x.end());
+			this->clear();
+			this->insert(this->end(), x.begin(), x.end());
 			return (*this);
 		}
 
@@ -200,7 +203,6 @@ class vector
 				pointer tmp_i = this->_start;
 				pointer tmp_end = this->_end;
 				size_t tmp_max_size = this->capacity();
-
 				this->_start = _alloc.allocate(n); //new value_type[n];
 				this->_end = this->_start;
 				while (tmp_i != tmp_end)
@@ -288,9 +290,11 @@ class vector
 
 		iterator	insert (iterator position, const value_type& val)
 		{
+			size_t last_pos;
+
 			if (_end == _max_size)
 			{
-				int last_pos = &(*position) - _start;
+				last_pos = &(*position) - _start;
 				reserve(capacity() == 0 ? 1 : capacity() * 2);
 				position = iterator(_start + last_pos);
 			}
@@ -310,12 +314,6 @@ class vector
 		
    		void		insert (iterator position, size_type n, const value_type& val)
 		{
-			/*if (_end + n >= _max_size)
-			{
-				int last_pos = &(*position) - _start;
-				reserve(capacity() == 0 ? 1 : capacity() * 2);
-				position = iterator(_start + last_pos);
-			}*/
 			while (n > 0)
 			{
 				--n;
@@ -328,8 +326,7 @@ class vector
 		{
 			while (first != last)
 			{
-				insert(position, *first);
-				++position;
+				position = insert(position, *first);
 				++first;
 			}
 		}
@@ -345,7 +342,6 @@ class vector
 				_alloc.destroy(&(*tmp) + 1);
 				++tmp;
 			}
-			//_alloc.destroy(_end);
 			--_end;
 			return (position);
 		}
@@ -364,7 +360,22 @@ class vector
 
 		void swap (vector& x)
 		{
-			P("Not implemented ahah");
+			if (x == *this)
+				return ;
+			allocator_type	tmp_alloc = _alloc;
+			pointer			tmp_start = _start;
+			pointer			tmp_end = _end;
+			pointer			tmp_max_size = _max_size;
+
+			_alloc = x._alloc;
+			_start = x._start;
+			_end = x._end;
+			_max_size = x._max_size;
+
+			x._alloc = tmp_alloc;
+			x._start = tmp_start;
+			x._end = tmp_end;
+			x._max_size = tmp_max_size;
 		}
 
 		void		clear()
@@ -386,6 +397,100 @@ class vector
 
 };
 
+template <class T, class Alloc>
+bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	typename ft::vector<T>::const_iterator it = lhs.begin();
+	typename ft::vector<T>::const_iterator it2 = rhs.begin();
+
+	while (it2 != rhs.end())
+	{
+		if (it2 == rhs.end() || *it != *it2)
+			return (false);
+		++it;
+		++it2;
+	}
+	return (true);
+}
+
+template <class T, class Alloc>
+bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template <class T, class Alloc>
+bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+}
+
+template <class T, class Alloc>
+bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template <class T, class Alloc>
+bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (rhs < lhs);
+}
+
+template <class T, class Alloc>
+bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (!(lhs < rhs));
+}
+
+
+template <class T, class Alloc>
+void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
+{
+	x.swap(y);
+}
+
 } // end namespace ft
+
+
+
+/*
+** TESTEEERSSSS
+*/
+template <typename T>
+inline void check(std::string name, T a, T b)
+{
+	std::string margin(38 - name.length(), ' ');
+	if (a == b)
+		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET*/ << std::endl;
+	else
+		std::cout << name << ": " << margin /*<< FAIL*/ << std::endl;
+};
+
+inline void check(std::string name, bool good)
+{
+	std::string margin(38 - name.length(), ' ');
+	if (good)
+		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET */<< std::endl;
+	else
+		std::cout << name << ": " << margin /*<< FAIL */<< std::endl;
+};
+
+template <typename T>
+bool operator==(ft::vector<T> &a, std::vector<T> &b)
+{
+	if (a.size() != b.size())
+		return (false);
+	if (a.empty() != b.empty())
+		return (false);
+	for (size_t i = 0; i < a.size(); i++)
+	{
+		if (a[i] != b[i])
+			return (false);
+	}
+	return (true);
+};
 
 #endif

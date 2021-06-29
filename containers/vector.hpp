@@ -100,7 +100,7 @@ class vector
 
 		vector& operator= (const vector& x)
 		{
-			if (x == *this)
+			if (&x == this)
 				return (*this);
 			this->clear();
 			this->insert(this->end(), x.begin(), x.end());
@@ -328,6 +328,7 @@ class vector
 			{
 				position = insert(position, *first);
 				++first;
+				++position;
 			}
 		}
 
@@ -459,26 +460,26 @@ void swap (ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y)
 /*
 ** TESTEEERSSSS
 */
-template <typename T>
-inline void check(std::string name, T a, T b)
-{
-	std::string margin(38 - name.length(), ' ');
-	if (a == b)
-		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET*/ << std::endl;
-	else
-		std::cout << name << ": " << margin /*<< FAIL*/ << std::endl;
-};
+// template <typename T>
+// inline void check(std::string name, T a, T b)
+// {
+// 	std::string margin(38 - name.length(), ' ');
+// 	if (a == b)
+// 		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET*/ << std::endl;
+// 	else
+// 		std::cout << name << ": " << margin /*<< FAIL*/ << std::endl;
+// };
 
-inline void check(std::string name, bool good)
-{
-	std::string margin(38 - name.length(), ' ');
-	if (good)
-		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET */<< std::endl;
-	else
-		std::cout << name << ": " << margin /*<< FAIL */<< std::endl;
-};
+// inline void check(std::string name, bool good)
+// {
+// 	std::string margin(38 - name.length(), ' ');
+// 	if (good)
+// 		std::cout << name << ": " << margin /*<< BOLD << GREEN << GOOD << RESET */<< std::endl;
+// 	else
+// 		std::cout << name << ": " << margin /*<< FAIL */<< std::endl;
+// };
 
-template <typename T>
+/*template <typename T>
 bool operator==(ft::vector<T> &a, std::vector<T> &b)
 {
 	if (a.size() != b.size())
@@ -491,6 +492,6 @@ bool operator==(ft::vector<T> &a, std::vector<T> &b)
 			return (false);
 	}
 	return (true);
-};
+};*/
 
 #endif

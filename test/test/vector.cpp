@@ -57,6 +57,7 @@ static void copy_constructor(void)
 	v1.push_back(1);
 	v1.push_back(2);
 	v1.push_back(3);
+
 	v2.push_back(1);
 	v2.push_back(2);
 	v2.push_back(3);
@@ -238,7 +239,7 @@ static void swap(void)
 	check("v3 == v4", v3 == v4);
 }
 
-/*
+
 static void operators(void)
 {
 	print_header("Operators");
@@ -276,7 +277,7 @@ static void operators(void)
 	check("v1 < v2", (v1 < v3), (v2 < v4));
 	check("v1 >= v2", (v1 >= v3), (v2 >= v4));
 	check("v1 <= v2", (v1 <= v3), (v2 <= v4));
-}*/
+}
 
 void	test_vector(void)
 {
@@ -292,5 +293,5 @@ void	test_vector(void)
 	insert();
 	erase();
 	swap();
-	//operators();
+	operators();
 }

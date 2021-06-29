@@ -7,7 +7,11 @@
 # include <stack>
 # include <queue>
 # include <iostream>
-# include "../include/vector.hpp"
+# include "../../containers/vector.hpp"
+# include "../../containers/stack.hpp"
+# include "../../containers/queue.hpp"
+# include "../../containers/list.hpp"
+# include "../../containers/map.hpp"
 //# include "../include/list.hpp"
 //# include "../include/Map.hpp"
 //# include "../include/stack.hpp"
@@ -15,14 +19,14 @@
 # include <memory>
 # include <time.h>
 # include <unistd.h>
-# include "../utils/Iterators.hpp"
-# include "../utils/Utils.hpp"
-# include "../utils/ListIter.hpp"
-# include "../utils/VectIter.hpp"
-
+# include "../../utils/Iterators.hpp"
+# include "../../utils/Utils.hpp"
+# include "../../utils/ListIter.hpp"
+# include "../../utils/VectIter.hpp"
 
 # ifdef __linux__
 #  define RESET "\e[0m"
+#  define RED "\e[91m"
 #  define GREEN "\e[92m"
 #  define BLUE "\e[94m"
 #  define BOLD "\e[1m"
@@ -30,13 +34,17 @@
 
 # ifdef __APPLE__
 #  define RESET "\e[0m"
+#  define RED "\e[91m"
 #  define GREEN "\e[92m"
 #  define BLUE "\e[94m"
 #  define BOLD "\e[1m"
 # endif
 
-# define GOOD "✓"
-# define FAIL "❌"
+// # define GOOD "✓"
+// # define FAIL "❌"
+
+# define GOOD "GOOD"
+# define FAIL "FAIL"
 
 void	test_vector(void);
 void	test_list(void);
@@ -62,7 +70,7 @@ inline void check(std::string name, T a, T b)
 	if (a == b)
 		std::cout << name << ": " << margin << BOLD << GREEN << GOOD << RESET << std::endl;
 	else
-		std::cout << name << ": " << margin << FAIL << std::endl;
+		std::cout << name << ": " << margin << BOLD << RED << FAIL << RESET << std::endl;
 };
 
 inline void check(std::string name, bool good)
@@ -71,7 +79,7 @@ inline void check(std::string name, bool good)
 	if (good)
 		std::cout << name << ": " << margin << BOLD << GREEN << GOOD << RESET << std::endl;
 	else
-		std::cout << name << ": " << margin << FAIL << std::endl;
+		std::cout << name << ": " << margin << BOLD << RED << FAIL << RESET << std::endl;
 };
 
 
@@ -85,19 +93,22 @@ bool operator==(ft::vector<T> &a, std::vector<T> &b)
 	for (size_t i = 0; i < a.size(); i++)
 	{
 		if (a[i] != b[i])
+		{
+			//std::cout << "a[i] = " << a[i] << " | b[i] == " << b[i] << std::endl;
 			return (false);
+		}
 	}
 	return (true);
 };
 
-/*template <typename T>
-bool operator==(ft::List<T> &a, std::list<T> &b)
+template <typename T>
+bool operator==(ft::list<T> &a, std::list<T> &b)
 {
 	if (a.size() != b.size())
 		return (false);
 	if (a.empty() != b.empty())
 		return (false);
-	typename ft::List<T>::iterator it = a.begin();
+	typename ft::list<T>::iterator it = a.begin();
 	typename std::list<T>::iterator it2 = b.begin();
 	while (it != a.end())
 	{
@@ -110,13 +121,13 @@ bool operator==(ft::List<T> &a, std::list<T> &b)
 };
 
 template <typename T, typename S>
-bool operator==(ft::Map<T, S> &a, std::map<T, S> &b)
+bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
 {
 	if (a.size() != b.size())
 		return (false);
 	if (a.empty() != b.empty())
 		return (false);
-	typename ft::Map<T, S>::iterator it = a.begin();
+	typename ft::map<T, S>::iterator it = a.begin();
 	typename std::map<T, S>::iterator it2 = b.begin();
 	while (it != a.end())
 	{
@@ -127,5 +138,5 @@ bool operator==(ft::Map<T, S> &a, std::map<T, S> &b)
 	}
 	return (true);
 };
-*/
+
 #endif

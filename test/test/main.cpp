@@ -13,10 +13,10 @@ int main(int argc, char **argv)
 		choice = std::string(argv[1]);
 	if (choice == "vector")
 		test_vector();
-	/*if (choice == "list")
+	/*else if (choice == "list")
 		test_list();*/
-	//else if (choice == "map")
-	//	test_map();
+	else if (choice == "map")
+		test_map();
 	/*else if (choice == "stack")
 		test_stack();*/
 	//else if (choice == "queue")

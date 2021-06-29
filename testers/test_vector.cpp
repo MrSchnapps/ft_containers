@@ -42,13 +42,18 @@ void	print_title(std::string title)
 
 void	test_vct_construct()
 {
-	ft::vector<int> vct;
+	/*ft::vector<int> vct;
 
 	vct.insert(vct.begin(), (size_t)4, 100);
-	print_vector(vct, "vct vide : vct.insert(vct.begin(), (size_t)4, 100);");
+	print_vector(vct, "vct vide : vct.insert(vct.begin(), (size_t)4, 100);");*/
 
-	ft::vector<int> vct2((size_t)7, 19);
+	ft::vector<int> vct2((size_t)1, 19);
+	vct2.insert(vct2.begin(), 4);
+	vct2.insert(vct2.begin(), 3);
+	vct2.insert(vct2.begin(), 2);
+	vct2.insert(vct2.begin(), 1);
 	print_vector(vct2, "vct(7, 19)");
+	
 
 	ft::vector<int> vct3(vct2.begin(), vct2.end());
 	print_vector(vct3, "vct(first, last)");
@@ -56,10 +61,10 @@ void	test_vct_construct()
 	ft::vector<int> vct4(vct3);
 	print_vector(vct4, "vct(autre vct)");
 
-	ft::vector<int> vct5 = vct4;
+/*	ft::vector<int> vct5 = vct4;
 	print_vector(vct5, "vct5 = vct4");
 	vct5 = vct;
-	print_vector(vct5, "vct5 = vct");
+	print_vector(vct5, "vct5 = vct");*/
 }
 
 /*
@@ -434,7 +439,7 @@ void	test_vector()
 	P("           #################   CONSTRUCTORS   #################");
 	test_vct_construct();
 	P("");
-	P("           #################   ITERATORS   #################");
+	/*P("           #################   ITERATORS   #################");
 	test_vct_iterators();
 	P("");
 
@@ -450,9 +455,9 @@ void	test_vector()
 	test_vct_empty();
 	P("");
 	test_vct_reserve();
-	P("");
+	P("");*/
 
-	P("           #################   ELEMENT ACCESS   #################");
+/*	P("           #################   ELEMENT ACCESS   #################");
 	test_vct_elem_access();
 	P("");
 	
@@ -470,5 +475,5 @@ void	test_vector()
 	test_vct_swap();
 	P("");
 	test_vct_op();
-	P("");
+	P("");*/
 }

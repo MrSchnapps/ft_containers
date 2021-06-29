@@ -110,15 +110,6 @@ class map
 			delete _endlist;
 		}
 
-		map& operator= (const map& x)
-		{
-			if (&x == this)
-				return (*this);
-			this->clear();
-			this->insert(x.begin(), x.end());
-			return (*this);
-		}
-
 		/*
 		** Iterators
 		*/
