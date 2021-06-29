@@ -292,7 +292,13 @@ class map
 
 		void swap (map& x)
 		{
-			swap_list(_endlist, x._endlist);
+			element_type *tmp = x._endlist;
+
+			x._endlist = _endlist;
+
+			_endlist = tmp;
+
+			//swap_list(_endlist, x._endlist);
 		}
 	
 		void clear()
@@ -510,26 +516,19 @@ class map
 			elem->next = NULL;
 		}
 
-		void		swap_elem(DL_List<value_type> *e1, DL_List<value_type> *e2)
-		{
-			DL_List<value_type> *tmp = e1->prev;
+		// void		swap_elem(DL_List<value_type> *e1, DL_List<value_type> *e2)
+		// {
+		// 	DL_List<value_type> *tmp = e1->prev;
 
-			e1->prev->next = e2;
-			e2->next->prev = e1;
+		// 	e1->prev->next = e2;
+		// 	e2->next->prev = e1;
 
-			e1->next = e2->next;
-			e1->prev = e2;
+		// 	e1->next = e2->next;
+		// 	e1->prev = e2;
 
-			e2->next = e1;
-			e2->prev = tmp;
-		}
-
-		void	swap_list(DL_List<value_type> *e1, DL_List<value_type> *e2)
-		{
-			DL_List<value_type> *tmp = e1;
-			e1 = e2;
-			e2 = tmp;
-		}
+		// 	e2->next = e1;
+		// 	e2->prev = tmp;
+		// }
 };
 
 } // end namespace ft

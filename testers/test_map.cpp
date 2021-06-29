@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "tester.hpp"
+#include <map>
 
 /*
 ** constructor copy etc
@@ -20,6 +21,19 @@ template <class Key, class Val>
 void print_map_values(ft::map<Key, Val> &m, std::string name)
 {
 	typename ft::map<Key, Val>::iterator it = m.begin();
+
+	std::cout << "     ***** Variable name : " << name << std::endl;
+	while (it != m.end())
+	{
+		std::cout << "Key [" << it->first << "]   <>   Value : |" << it->second << "|" << std::endl;
+		++it;
+	}
+}
+
+template <class Key, class Val>
+void print_vraie_map_values(std::map<Key, Val> &m, std::string name)
+{
+	typename std::map<Key, Val>::iterator it = m.begin();
 
 	std::cout << "     ***** Variable name : " << name << std::endl;
 	while (it != m.end())
@@ -200,6 +214,27 @@ void test_map_swap()
 	m.swap(m2);
 	print_map_values(m, "m");
 	print_map_values(m2, "m2");
+
+	P("");
+
+	std::map<int, std::string> m3;
+	m3.insert(std::pair<int, std::string>(1, "Julou"));
+	m3.insert(std::pair<int, std::string>(2, "julou22"));
+	m3.insert(std::pair<int, std::string>(6, "six"));
+	m3.insert(std::pair<int, std::string>(8, "mathildou"));
+	m3.insert(std::pair<int, std::string>(10, "olaaa"));
+	m3.insert(std::pair<int, std::string>(7, "bjr"));
+
+	std::map<int, std::string> m4;
+	m4.insert(std::pair<int, std::string>(42, "JUl"));
+	m4.insert(std::pair<int, std::string>(19, "Bobobo"));
+	
+	print_vraie_map_values(m3, "m3");
+	print_vraie_map_values(m4, "m4");
+	m3.swap(m4);
+	print_vraie_map_values(m3, "m3");
+	print_vraie_map_values(m4, "m4");
+
 }
 
 void 	test_map_observers()
@@ -269,7 +304,7 @@ void	test_map()
 {
 	P("           &&&&&&&&&&&&&&&&&   MAP   &&&&&&&&&&&&&&&&&");
 	
-	test_map_construct();
+	/*test_map_construct();
 	P("");
 	
 	test_map_insert();
@@ -285,14 +320,14 @@ void	test_map()
 	P("");
 
 	test_map_erase();
-	P("");
+	P("");*/
 
 	test_map_swap();
 	P("");
 
-	test_map_observers();
+	/*test_map_observers();
 	P("");
 
 	test_map_operations();
-	P("");
+	P("");*/
 }
