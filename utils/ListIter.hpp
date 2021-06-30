@@ -101,8 +101,10 @@ class ListIterConst : public Iterator<ft::bidirectionnal_iterator_tag, T>
 	public:
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::value_type				value_type;
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::difference_type			difference_type;
-		typedef const typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference			reference;
-		typedef const typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer			pointer;
+		typedef value_type const & 																	reference;
+		typedef value_type const *																	pointer;
+		// typedef typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::reference const 		reference;
+		// typedef typename  ft::Iterator<ft::bidirectionnal_iterator_tag, T>::pointer const			pointer;
 		typedef typename ft::Iterator<ft::bidirectionnal_iterator_tag, T>::iterator_category		iterator_category;
 
 		DL_List<T>*	_elem;

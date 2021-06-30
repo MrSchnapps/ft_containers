@@ -12,6 +12,39 @@
 
 #include "tester.hpp"
 
+void 	print_header(std::string str)
+{
+	int margin = (40 - str.length()) / 2;
+	int width = (margin * 2 + str.length()) + 2;
+
+	std::cout << BOLD << BLUE << std::endl;
+	std::cout << std::string(width, '*') << std::endl;
+	std::cout << '*' << RESET << std::string(margin, ' ') << str << std::string(margin, ' ') << BOLD << BLUE << '*' << std::endl;
+	std::cout << std::string(width, '*') << std::endl;
+	std::cout << RESET << std::endl;
+}
+
+void 	print_title(std::string str)
+{
+	int width = 30;
+
+	std::cout << "- " << str << std::endl;
+	std::cout << BOLD << BLUE << std::string(width, '-') << RESET << std::endl;
+}
+
+void print_error()
+{
+	std::cout << BOLD << RED << "Unkown command." << RESET << std::endl;
+	std::cout << "Pass the name of the test in argument."  << std::endl;
+	std::cout << "List of valid args : "  << std::endl;
+	std::cout << "- list"  << std::endl;
+	std::cout << "- stack"  << std::endl;
+	std::cout << "- vector"  << std::endl;
+	std::cout << "- queue"  << std::endl;
+	std::cout << "- map"  << std::endl;
+	std::cout << "- all"  << std::endl;
+}
+
 int main(int argc, char **argv)
 {
 	std::string test;
@@ -19,7 +52,7 @@ int main(int argc, char **argv)
 
 	if (argc < 2)
 	{
-		std::cout << "Unkown command" << std::endl;
+		print_error();
 		return (1);
 	}
 
@@ -36,6 +69,7 @@ int main(int argc, char **argv)
 		test_stack();
 		test_vector();
 		test_queue();
+		test_map();
 	}
 	else if (test == "list")
 		test_list();
@@ -49,7 +83,7 @@ int main(int argc, char **argv)
 		test_map();
 	else
 	{
-		std::cout << "Unkown command" << std::endl;
+		print_error();
 		return (1);
 	}
 	return (0);

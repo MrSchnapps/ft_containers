@@ -31,10 +31,10 @@ void	print_vector(ft::vector<T> &vct, std::string name="")
 	P("");
 }
 
-void	print_title(std::string title)
+/*void	print_title(std::string title)
 {
 	std::cout << "   *** " << title << " ***" << std::endl;
-}
+}*/
 
 /*
 ** Constructors etc

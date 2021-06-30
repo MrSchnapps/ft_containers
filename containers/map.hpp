@@ -51,7 +51,6 @@ class map
 		typedef typename allocator_type::const_reference				const_reference;
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
-		//typedef ft::MapIter<value_type, key_compare>					iterator;
 		typedef ft::ListIter<value_type>								iterator;
 		typedef ft::ListIterConst<value_type>							const_iterator;
 		typedef	ft::reverse_iterator<iterator>							reverse_iterator;
@@ -78,21 +77,19 @@ class map
 			_endlist(NULL)
 
 		{
-			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
 			while (first != last)
 			{
-				//std::cout << "Ici ?? " << (*first).first  << " " << (*first).second << std::endl;
 				insert(*first);
-				//std::cout << "Ici ?? " << (*first).first  << " " << (*first).second << std::endl;
 				++first;
 			}
 		}
 		
 		map (const map& x)
 		{
-			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);  //Voir si on enleve pas ça mdr
+			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);
 			_endlist->next = _endlist;
 			_endlist->prev = _endlist;
 			const_iterator start = x.begin();
@@ -293,12 +290,8 @@ class map
 		void swap (map& x)
 		{
 			element_type *tmp = x._endlist;
-
 			x._endlist = _endlist;
-
 			_endlist = tmp;
-
-			//swap_list(_endlist, x._endlist);
 		}
 	
 		void clear()
@@ -445,8 +438,6 @@ class map
 		/*
 		** Attributs
 		*/
-		/*BST_List<T>	*_root;
-		BST_List<T>	*_endlist;*/
 		typedef typename allocator_type::template rebind<DL_List<value_type> >::other DL_List_allocator;
 		typedef DL_List<value_type> element_type;
 
@@ -465,37 +456,11 @@ class map
 
 		DL_List<value_type>	*new_elem(const value_type &val)
 		{
-			//DL_List<value_type> *n = new (DL_List<value_type>);
 			DL_List<value_type> *n = DL_List_allocator().allocate(1);
 			DL_List_allocator().construct(n, DL_List<value_type>(val));
-			
-			/*n->next = NULL;
-			n->prev = NULL;*/
-			//n->val = val;
 			return (n);
 		}
 
-		// void		add_elem_back(DL_List<value_type> *elem)
-		// {
-		// 	elem->prev = _endlist->prev;
-		// 	elem->next = _endlist;
-		// 	if (_endlist->next == _endlist)
-		// 		_endlist->next = elem;
-		// 	else
-		// 		_endlist->prev->next = elem;
-		// 	_endlist->prev = elem;
-		// }
-
-		// void		add_elem_front(DL_List<value_type> *elem)
-		// {
-		// 	elem->next = _endlist->next;
-		// 	elem->prev = _endlist;
-		// 	if (_endlist->prev == _endlist)
-		// 		_endlist->prev = elem;
-		// 	else
-		// 		_endlist->next->prev = elem;
-		// 	_endlist->next = elem;
-		// }
 
 		DL_List<value_type>	*add_elem_before(DL_List<value_type> *add, DL_List<value_type> *pos)
 		{
@@ -515,20 +480,6 @@ class map
 			elem->prev = NULL;
 			elem->next = NULL;
 		}
-
-		// void		swap_elem(DL_List<value_type> *e1, DL_List<value_type> *e2)
-		// {
-		// 	DL_List<value_type> *tmp = e1->prev;
-
-		// 	e1->prev->next = e2;
-		// 	e2->next->prev = e1;
-
-		// 	e1->next = e2->next;
-		// 	e1->prev = e2;
-
-		// 	e2->next = e1;
-		// 	e2->prev = tmp;
-		// }
 };
 
 } // end namespace ft

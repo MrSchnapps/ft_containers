@@ -103,6 +103,14 @@ class list
 			delete _endlist;
 		}
 
+		list& operator= (const list& x)
+		{
+			if (&x == this)
+				return (*this);
+			this->clear();
+			insert(end(), x.begin(), x.end());
+			return (*this);
+		}
 		/*
 		** Asked functions
 		*/
@@ -200,7 +208,8 @@ class list
 			clear();
 			while (first != last)
 			{
-				push_back(new_elem(*first));
+				//push_back(new_elem(*first));
+				push_back(*first);
 				++first;
 			}
 		}
@@ -209,7 +218,7 @@ class list
 		{
 			clear();
 			while (n--)
-				push_back(new_elem(val));
+				push_back(val);
 		}
 
 		void		push_front(const value_type &val) {add_elem_front(new_elem(val));}
@@ -254,11 +263,14 @@ class list
 		iterator	erase (iterator first, iterator last)
 		{
 			iterator ret(last._elem->next);
-
+			iterator tmp;
+	
 			while (first != last)
 			{
-				del_one(first._elem);
+				tmp = first;
 				++first;
+				del_one(tmp._elem);
+				
 			}
 			return (ret);
 		}
@@ -329,8 +341,11 @@ class list
 
 	void	splice (iterator position, list& x, iterator i)
 	{
-		x.disconnect_elem(i._elem);
-		add_elem_before(i._elem, position._elem);
+		if (position != i)
+		{
+			x.disconnect_elem(i._elem);
+			add_elem_before(i._elem, position._elem);
+		}
 	}
 
 	void	splice (iterator position, list& x, iterator first, iterator last)
@@ -389,7 +404,7 @@ class list
 		while (second != last)
 		{
 			tmp = (++second)--;
-			if (*second == *first)
+			if (second._elem->prev != _endlist && *second == *first)
 				del_one(second._elem);
 			else
 				++first;
@@ -405,14 +420,15 @@ class list
 		iterator last = end();
 		iterator tmp;
 
-		++second;
+		
 		while (second != last)
 		{
 			tmp = (++second)--;
-			if (binary_pred(*second, *first) == true)
+			//++second;
+			if (second._elem->prev != _endlist && binary_pred(*((--second)++), *second) == true)
 				del_one(second._elem);
-			else
-				++first;
+			// else
+			// 	++first;
 			second = tmp;
 		}
 	}
@@ -429,7 +445,7 @@ class list
 		while (x_first != x_last)
 		{
 			tmp = (++x_first)--;
-			if (*first < *x_first && first != end())
+			if (first != end() && *first < *x_first)
 				++first;
 			else
 			{
@@ -453,7 +469,7 @@ class list
 		while (x_first != x_last)
 		{
 			tmp = (++x_first)--;
-			if (comp(*first, *x_first) && first != end())
+			if (first != end() && !comp(*first, *x_first))
 				++first;
 			else
 			{
@@ -626,7 +642,7 @@ class list
 };
 	
 template <class T, class Alloc>
-bool operator== (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+bool operator== (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 {
 	if (lhs.size() != rhs.size())
 		return (false);
@@ -643,43 +659,41 @@ bool operator== (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
 }
 
 template <class T, class Alloc>
-bool operator!= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+bool operator!= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 {
 	return (!(lhs == rhs));
 }
 
 
 template <class T, class Alloc>
-  bool operator<  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+  bool operator<  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 {
 	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template <class T, class Alloc>
-  bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+  bool operator<= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 {
 	return (!(rhs < lhs));
 }
 
 template <class T, class Alloc>
-  bool operator>  (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+  bool operator>  (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 {
 	return (rhs < lhs);
 }
 
 template <class T, class Alloc>
-  bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+  bool operator>= (const ft::list<T,Alloc>& lhs, const ft::list<T,Alloc>& rhs)
 {
 	return (!(lhs < rhs));
 }
   
 template <class T, class Alloc>
-  void swap (list<T,Alloc>& x, list<T,Alloc>& y)
+  void swap (ft::list<T,Alloc>& x, ft::list<T,Alloc>& y)
 {
 	x.swap(y);
 }
-
-
 
 } // end namespace ft
 
