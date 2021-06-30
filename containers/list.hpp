@@ -469,7 +469,7 @@ class list
 		while (x_first != x_last)
 		{
 			tmp = (++x_first)--;
-			if (first != end() && !comp(*first, *x_first))
+			if (first != end() && !comp(*x_first, *first))
 				++first;
 			else
 			{

@@ -66,7 +66,7 @@ template <typename T>
 inline void check(std::string name, T a, T b)
 {
 	std::string margin(24 - name.length(), ' ');
-	if (a == b)
+	if (a ==  b /*a && b*/)
 		std::cout << name << ": " << margin << BOLD << GREEN << GOOD << RESET << std::endl;
 	else
 		std::cout << name << ": " << margin << BOLD << RED << FAIL << RESET << std::endl;
@@ -151,6 +151,23 @@ bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
 	return (true);
 };
 
+// template <class T>
+// static bool compare_supEq(T a, T b)
+// {
+// 	return (a >= b);
+// }
+
+// template <class T>
+// static bool compare_infEq(T a, T b)
+// {
+// 	return (a <= b);
+// }
+
+// template <class T>
+// static bool compare_eq(T a, T b)
+// {
+// 	return (a == b);
+// }
 
 
 #endif

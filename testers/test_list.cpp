@@ -13,20 +13,6 @@
 #include "tester.hpp"
 #include <list>
 
-bool binary13(int &val, int &val2)
-{
-	if (val % 13 == 0 && val2 % 13 == 0)
-		return (true);
-	return (false);
-}
-
-bool test_pair(int &val)
-{
-	if (val % 2)
-		return (false);
-	return (true);
-}
-
 template <class T>
 void	print_list(ft::list<T> &list, std::string name)
 {
@@ -110,288 +96,43 @@ void	reset(ft::list<T> &l1, ft::list<T> &l2)
 	basic_values(l1, l2);
 }
 
-void	main_test_list()
+static bool compare_supEq(int a, int b)
 {
-	std::cout << "###############  LIST ###############" << std::endl;
-	ft::list<int>			l1;
-	ft::list<int>			l2;
-	ft::list<int>::iterator	it1;
-	ft::list<int>::iterator	it2;
-
-	std::cout << "Empty ? " << l1.empty();
-
-	basic_values(l1, l2);
-	std::cout << "=======   SWAP   =======" << std::endl;
-
-	std::cout << "Before : " << std::endl;
-	std::cout << "-- L1 --" << std::endl;
-	print_list(l1, "l1");
-	std::cout << "-- L2 --" << std::endl;
-	print_list(l2, "l2");
-
-	l1.swap(l2);
-	std::cout << "After : " << std::endl;
-	std::cout << "-- L1 --" << std::endl;
-	print_list(l1, "l1");
-	std::cout << "-- L2 --" << std::endl;
-	print_list(l2, "l2");
-
-	reset(l1, l2);
-	
-	std::cout << "=======   RESIZE   =======" << std::endl;
-	print_list(l1, "l1");
-	
-	l1.resize(3);
-
-	std::cout << "l1.resize(3);" << std::endl;
-	print_list(l1, "l1");
-	l1.resize(8, 19);
-	std::cout << "l1.resize(8, 19);" << std::endl;
-	print_list(l1, "l1");
-
-	reset(l1, l2);
-
-	std::cout << "=======   SPLICE   =======" << std::endl;
-	it1 = l1.begin();
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-	++it1;
-	++it1;
-
-	std::cout << "Splice 1" << std::endl;
-	l1.splice(it1, l2);
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	std::cout << "Splice 2" << std::endl;
-	l2.splice(l2.begin(), l1, it1);
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	it1 = l1.begin();
-	++it1;
-	it2 = l1.begin();
-	for (int i = 0; i < 6; i++)
-		++it2;
-
-	std::cout << "Splice 3" << std::endl;
-	l2.splice(l2.begin(), l1, it1, it2);
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	reset(l1, l2);
-	
-	std::cout << "=======   REMOVE   =======" << std::endl;
-	l1.push_back(4);
-	l1.push_back(9);
-	l1.push_back(4);
-
-	std::cout << "Before remove :" << std::endl;
-	print_list(l1, "l1");
-	l1.remove(4);
-	P("l1.remove(4);");
-	print_list(l1, "l1");
-
-	reset(l1, l2);
-	
-	P("=======   REMOVE IF   =======");
-	P("Before remove_if :");
-	print_list(l1, "l1");
-	
-	l1.remove_if(test_pair);
-	P("l1.remove_if(test_pair);");
-	print_list(l1, "l1");
-
-	reset(l1, l2);
-	
-	P("=======   UNIQUE   =======");
-	l1.push_front(1);
-	l1.push_back(5);
-	l1.push_back(5);
-	l1.push_front(2);
-	P("Before unique :");
-	print_list(l1, "l1");
-
-	l1.unique();
-	P("l1.unique();");
-	print_list(l1, "l1");
-
-
-	reset(l1, l2);
-	l1.push_front(13);
-	l1.push_front(26);
-	l1.push_front(39);
-	l1.push_front(26);
-	l1.push_back(26);
-	l1.push_back(39);
-	P("Before unique binary :");
-	print_list(l1, "l1");
-
-	l1.unique(binary13);
-	P("l1.unique(binary13());");
-	print_list(l1, "l1");
-
-	reset(l1, l2);
-
-	P("=======   MERGE   =======");
-	P("Before merge :");
-	l2.sort();
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	l1.merge(l2);
-	P("l1.merge(l2);");
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	reset(l1, l2);
-
-	P("Before merge binary :");
-	l2.sort();
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	l1.merge(l2, std::less<int>());
-	P("l1.merge(l2);");
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	reset(l1, l2);
-
-	P("=======   SORT   =======");
-	l1.push_front(19);
-	l1.push_back(42);
-	l1.push_back(-15);
-	l1.push_front(27);
-	l1.push_front(27);
-	P("Before sort :");
-	print_list(l1, "l1");
-
-	l1.sort();
-	P("l1.sort();");
-	print_list(l1, "l1");
-
-	reset(l1, l2);
-
-	l1.push_front(19);
-	l1.push_back(42);
-	l1.push_back(-15);
-	l1.push_front(27);
-	P("Before sort compare :");
-	print_list(l1, "l1");
-
-	l1.sort(std::less<int>());
-	P("l1.sort(std::less<int>());");
-	print_list(l1, "l1");
-
-	reset(l1, l2);
-
-	P("=======   REVERSE   =======");
-	P("Before reverse :");
-	l1.push_back(19);
-	print_list(l1, "l1");
-
-	l1.reverse();
-	P("l1.reverse();");
-	print_list(l1, "l1");
- 
-	P("#####  Non member operators overload == != > >= < <=  #####");
-	basic_values(l1, l2);
-	std::cout << "L1 == L2 ?? : ";
-	if (l1 == l2)
-		std::cout << "true" << std::endl;
-	else
-		std::cout << "false" << std::endl;
-	
-	std::cout << "L1 == L1 ?? : ";
-	if (l1 == l1)
-		std::cout << "true" << std::endl;
-	else
-		std::cout << "false" << std::endl;
-	
-	std::cout << "L1 != L2 ?? : ";
-	if (l1 != l2)
-		std::cout << "true" << std::endl;
-	else
-		std::cout << "false" << std::endl;
-	
-	std::cout << "L1 != L1 ?? : ";
-	if (l1 != l1)
-		std::cout << "true" << std::endl;
-	else
-		std::cout << "false" << std::endl;
-
-	std::cout << "L1 < L2 ?? : ";
-	if (l1 < l2)
-		std::cout << "true" << std::endl;
-	else
-		std::cout << "false" << std::endl;
-	
-	std::cout << "L1 < L1 ?? : ";
-	if (l1 < l1)
-		std::cout << "true" << std::endl;
-	else
-		std::cout << "false" << std::endl;
-
-	P("  -- Swap l1 & l1");
-	P("before swap :")
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-	P("after swap :")
-	ft::swap(l1, l2);
-	print_list(l1, "l1");
-	print_list(l2, "l2");
-
-	P("constructor tester");
-	P(" - ft::list<int>	l3((size_t)5, 300)");
-	ft::list<int>	l3((size_t)5, 300);
-	print_list(l3, "l3");
-
-	P(" - ft::list<int>	l4(l1.begin(),l1.end());");
-	ft::list<int>	l4(l1.begin(),l1.end());
-	print_list(l4, "l4");
-
-	P(" - ft::list<int>	l5(l2);");
-	ft::list<int>	l5(l2);
-	print_list(l5, "l5");
+	return (a >= b);
 }
 
-
-static bool compare(int a, int b)
+static bool compare_infEq(int a, int b)
 {
-	return (a % 2 == b % 2);
-    //return (a >= b);
+	return (a <= b);
 }
 
-void 	test_list_unique()
+static bool compare_Eq(int a, int b)
 {
-	std::cout << "###############  UNIQUE ###############" << std::endl;
-	int test[] = {0, 0, 0, 1, 2, 0, 5, 5, 4, 5, 1, -1, 0, 1};
-	ft::list<int> l1(test, test + 14);
-	std::list<int> l2(test, test + 14);
-	l1.unique();
-	l2.unique();
+	return (a == b);
+}
 
-	P(" ==  TEST 1 == ");
-	print_list(l1, "l1");
-	print_vraie_list(l2, "l2");
-	//check("l1 == l2", l1 == l2);
+static bool compare_inf(int a, int b)
+{
+	return (a < b);
+}
 
-	P("\n ==  TEST 2 == ");
+static bool compare_sup(int a, int b)
+{
+	return (a > b);
+}
 
-	l1.assign(test, test + 14);
-	l2.assign(test, test + 14);
-	
-	print_list(l1, "l1");
-	print_vraie_list(l2, "l2");
+bool test_pair(int &val)
+{
+	if (val % 2)
+		return (false);
+	return (true);
+}
 
-	l1.unique(compare);
-	l2.unique(compare);
-
-	print_list(l1, "l1");
-	print_vraie_list(l2, "l2");
-
-	//check("l1 == l2", l1 == l2);
+bool pred(int &val)
+{
+	if (val > 4)
+		return (false);
+	return (true);
 }
 
 void	test_list_constructor()
@@ -683,12 +424,14 @@ void	test_list_swap()
 
 	my1.swap(my2);
 	real1.swap(real2);
-	check("swap", (my1 == real1), (my2 == real2));
+	check("swap", (my1 == real1));
+	check("swap", (my2 == real2));
 
 	ft::swap(my1, my2);
 	std::swap(real1, real2);
 
-	check("swap extern", (my1 == real1), (my2 == real2));
+	check("swap extern", (my1 == real1));
+	check("swap extern", (my2 == real2));
 
 	basic_values(my1, real1);
 	my2.push_back(19);
@@ -704,11 +447,13 @@ void	test_list_swap()
 
 	my1.swap(my2);
 	real1.swap(real2);
-	check("swap", (my1 == real1), (my2 == real2));
+	check("swap", (my1 == real1));
+	check("swap", (my2 == real2));
 
 	ft::swap(my1, my2);
 	std::swap(real1, real2);
-	check("swap extern", (my1 == real1), (my2 == real2));
+	check("swap extern", (my1 == real1));
+	check("swap extern", (my2 == real2));
 }
 
 void	test_list_resize()
@@ -842,7 +587,226 @@ void 	test_list_remove()
 	my1.remove(1);
 	real1.remove(1);
 	check("Remove", (my1 == real1));
+}
 
+void	test_list_remove_if()
+{
+	print_title("Remove If");
+	ft::list<int>	my1;
+	std::list<int>	real1;
+
+	my1.remove_if(test_pair);
+	real1.remove_if(test_pair);
+	check("Remove if, empty", (my1 == real1));
+
+	basic_values(my1, real1);
+	my1.remove_if(test_pair);
+	real1.remove_if(test_pair);
+	check("Remove if", (my1 == real1));
+
+	basic_values(my1, real1);
+	my1.remove_if(pred);
+	real1.remove_if(pred);
+	check("Remove if", (my1 == real1));
+}
+
+void	test_list_unique()
+{
+	print_title("Unique");
+	ft::list<int>	my1;
+	std::list<int>	real1;
+
+	my1.unique();
+	real1.unique();
+	check("unique empty", (my1 == real1));
+	my1.unique(compare_supEq);
+	real1.unique(compare_supEq);
+	check("unique fct empty", (my1 == real1));
+	
+	basic_values(my1, real1);
+	my1.push_back(-1);
+	my1.push_back(19);
+	my1.push_back(19);
+	my1.push_front(0);
+	my1.push_front(0);
+	my1.push_front(1);
+	my1.push_front(1);
+	real1.push_back(-1);
+	real1.push_back(19);
+	real1.push_back(19);
+	real1.push_front(0);
+	real1.push_front(0);
+	real1.push_front(1);
+	real1.push_front(1);
+
+	my1.unique();
+	real1.unique();
+	check("unique", (my1 == real1));
+
+	my1.push_back(-1);
+	my1.push_back(19);
+	my1.push_back(19);
+	my1.push_front(0);
+	my1.push_front(0);
+	my1.push_front(1);
+	my1.push_front(1);
+	real1.push_back(-1);
+	real1.push_back(19);
+	real1.push_back(19);
+	real1.push_front(0);
+	real1.push_front(0);
+	real1.push_front(1);
+	real1.push_front(1);
+	my1.unique(compare_supEq);
+	real1.unique(compare_supEq);
+	check("unique", (my1 == real1));
+
+}
+
+void	test_list_merge()
+{
+	print_title("Merge");
+	ft::list<int>	my1;
+	std::list<int>	real1;
+	ft::list<int>	my2;
+	std::list<int>	real2;
+
+	my1.merge(my2);
+	real1.merge(real2);
+	check("merge empty", (my1 == real1));
+	check("merge empty", (my2 == real2));	
+
+	basic_values(my2, real2);
+	my1.merge(my2);
+	real1.merge(real2);
+	check("merge first empty", (my1 == real1));
+	check("merge first empty", (my2 == real2));
+
+	ft::list<int>	my3;
+	std::list<int>	real3;
+	basic_values(my3, real3);
+	my1.merge(my3);
+	real1.merge(real3);
+	check("merge", (my1 == real1));
+	check("merge", (my3 == real3));
+
+	ft::list<int>	my4;
+	std::list<int>	real4;
+	ft::list<int>	my5;
+	std::list<int>	real5;
+
+	my4.merge(my5, compare_infEq);
+	real4.merge(real5, compare_infEq);
+	check("merge fct empty", (my4 == real4));
+	check("merge fct empty", (my5 == real5));
+
+	basic_values(my5, real5);
+	my4.merge(my5, compare_infEq);
+	real4.merge(real5, compare_infEq);
+	check("merge fct first empty", (my4 == real4));
+	check("merge fct first empty", (my5 == real5));
+
+	ft::list<int>	my6;
+	std::list<int>	real6;
+	basic_values(my6, real6);
+	my4.merge(my6, compare_infEq);
+	real4.merge(real6, compare_infEq);
+	check("merge fct", (my4 == real4));
+	check("merge fct", (my6 == real6));
+
+	basic_values(my6, real6);
+	my4.merge(my6, compare_sup);
+	real4.merge(real6, compare_sup);
+	check("merge fct", (my4 == real4));
+	check("merge fct", (my6 == real6));
+
+	basic_values(my6, real6);
+	my4.merge(my6, compare_Eq);
+	real4.merge(real6, compare_Eq);
+	check("merge fct", (my4 == real4));
+	check("merge fct", (my6 == real6));
+}
+
+void	test_list_sort()
+{
+	print_title("Sort");
+	ft::list<int>	my1;
+	std::list<int>	real1;
+
+	my1.sort();
+	real1.sort();
+	check("sort empty", (my1 == real1));
+	
+	basic_values(my1, real1);
+	my1.sort();
+	real1.sort();
+	check("sort already sorted", (my1 == real1));
+
+	my1.push_front(19);
+	my1.push_front(42);
+	my1.push_front(-3);
+	my1.push_back(42);
+	my1.push_back(19);
+	my1.push_back(101);
+	real1.push_front(19);
+	real1.push_front(42);
+	real1.push_front(-3);
+	real1.push_back(42);
+	real1.push_back(19);
+	real1.push_back(101);
+	my1.sort();
+	real1.sort();
+	check("sort", (my1 == real1));
+
+	ft::list<int>	my2;
+	std::list<int>	real2;
+
+	my2.sort(compare_supEq);
+	real2.sort(compare_supEq);
+	check("sort fct empty", (my2 == real2));
+
+	basic_values(my2, real2);
+	my2.sort(compare_supEq);
+	real2.sort(compare_supEq);
+	check("sort fct already sorted", (my2 == real2));
+
+	my2.push_front(19);
+	my2.push_front(42);
+	my2.push_front(-3);
+	my2.push_back(42);
+	my2.push_back(19);
+	my2.push_back(101);
+	real2.push_front(19);
+	real2.push_front(42);
+	real2.push_front(-3);
+	real2.push_back(42);
+	real2.push_back(19);
+	real2.push_back(101);
+	my2.sort();
+	real2.sort();
+	check("sort fct", (my2 == real2));
+}
+
+void	test_list_reverse()
+{
+	print_title("Reverse");
+	ft::list<int>	my1;
+	std::list<int>	real1;
+
+	my1.reverse();
+	real1.reverse();
+	check("reverse empty", (my1 == real1));
+
+	basic_values(my1, real1);
+	my1.reverse();
+	real1.reverse();
+	check("reverse", (my1 == real1));
+
+	my1.push_front(19);
+	real1.push_front(19);
+	my1.reverse();
+	real1.reverse();
+	check("reverse", (my1 == real1));
 }
 
 void	test_list_modifiers()
@@ -863,24 +827,56 @@ void	test_list_modifiers()
 	test_list_clear();
 }
 
-
-
-void test_list_operations()
+void	test_list_operations()
 {
 	test_list_splice();
 	P("");
-	test_list_remove(); //need
+	test_list_remove();
 	P("");
-	// test_list_remove_if(); //need
-	// P("");
-	// test_list_unique(); //need
-	// P("");
-	// test_list_merge(); //need
-	// P("");
-	// test_list_sort(); //need
-	// P("");
-	// test_list_reverse(); //need
+	test_list_remove_if();
+	P("");
+	test_list_unique();
+	P("");
+	test_list_merge();
+	P("");
+	test_list_sort();
+	P("");
+	test_list_reverse();
 
+}
+
+void	test_list_operators()
+{
+	print_title("Relational operators");
+	ft::list<int>	my1;
+	std::list<int>	real1;
+	ft::list<int>	my2;
+	std::list<int>	real2;
+
+	check("Operator ==", (my1 == my2), (real1 == real2));
+	check("Operator !=", (my1 != my2), (real1 != real2));
+	check("Operator <=", (my1 <= my2), (real1 <= real2));
+	check("Operator <", (my1 < my2), (real1 < real2));
+	check("Operator >=", (my1 >= my2), (real1 >= real2));
+	check("Operator >", (my1 > my2), (real1 > real2));
+
+	basic_values(my1, real1);
+	basic_values(my2, real2);
+	check("Operator ==", (my1 == my2), (real1 == real2));
+	check("Operator !=", (my1 != my2), (real1 != real2));
+	check("Operator <=", (my1 <= my2), (real1 <= real2));
+	check("Operator <", (my1 < my2), (real1 < real2));
+	check("Operator >=", (my1 >= my2), (real1 >= real2));
+	check("Operator >", (my1 > my2), (real1 > real2));
+
+	my1.push_back(19);
+	real1.push_back(19);
+	check("Operator ==", (my1 == my2), (real1 == real2));
+	check("Operator !=", (my1 != my2), (real1 != real2));
+	check("Operator <=", (my1 <= my2), (real1 <= real2));
+	check("Operator <", (my1 < my2), (real1 < real2));
+	check("Operator >=", (my1 >= my2), (real1 >= real2));
+	check("Operator >", (my1 > my2), (real1 > real2));
 }
 
 void test_list()
@@ -895,6 +891,8 @@ void test_list()
 	test_list_modifiers();
 	P("");
 	test_list_operations();
+	P("");
+	test_list_operators();
 	P("");
 
 }
