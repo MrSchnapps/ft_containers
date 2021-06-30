@@ -96,45 +96,6 @@ void	reset(ft::list<T> &l1, ft::list<T> &l2)
 	basic_values(l1, l2);
 }
 
-static bool compare_supEq(int a, int b)
-{
-	return (a >= b);
-}
-
-static bool compare_infEq(int a, int b)
-{
-	return (a <= b);
-}
-
-static bool compare_Eq(int a, int b)
-{
-	return (a == b);
-}
-
-static bool compare_inf(int a, int b)
-{
-	return (a < b);
-}
-
-static bool compare_sup(int a, int b)
-{
-	return (a > b);
-}
-
-bool test_pair(int &val)
-{
-	if (val % 2)
-		return (false);
-	return (true);
-}
-
-bool pred(int &val)
-{
-	if (val > 4)
-		return (false);
-	return (true);
-}
-
 void	test_list_constructor()
 {
 	print_title("Constructors");

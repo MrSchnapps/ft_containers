@@ -22,6 +22,7 @@
 # include <stack>
 # include <queue>
 # include <map>
+# include <utility>
 
 # include "../containers/list.hpp"
 # include "../containers/stack.hpp"
@@ -48,6 +49,14 @@ void	test_stack();
 void	test_vector();
 void	test_queue();
 void	test_map();
+
+bool compare_supEq(int a, int b);
+bool compare_infEq(int a, int b);
+bool compare_Eq(int a, int b);
+bool compare_inf(int a, int b);
+bool compare_sup(int a, int b);
+bool test_pair(int &val);
+bool pred(int &val);
 
 void 	print_header(std::string str);
 void 	print_title(std::string str);
@@ -167,5 +176,15 @@ bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
 	}
 	return (true);
 };
+
+// template <class T, class S>
+// bool operator==(ft::pair<T, S> &a, std::pair<T, S> &b)
+// {
+// 	if (a.first != b.first)
+// 		return (false);
+// 	if (a.second != b.second)
+// 		return (false);
+// 	return (true);
+// };
 
 #endif

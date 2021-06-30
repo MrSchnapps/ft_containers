@@ -31,40 +31,78 @@ void	print_vector(ft::vector<T> &vct, std::string name="")
 	P("");
 }
 
-/*void	print_title(std::string title)
+template <class T>
+void	basic_val(ft::vector<T> &l1, std::vector<T> &l2)
 {
-	std::cout << "   *** " << title << " ***" << std::endl;
-}*/
+	l1.push_back(1);
+	l1.push_back(2);
+	l1.push_back(3);
+	l1.push_back(4);
+	l1.push_back(5);
+	l1.push_back(6);
+	l1.push_back(7);
 
-/*
-** Constructors etc
-*/
+	l2.push_back(1);
+	l2.push_back(2);
+	l2.push_back(3);
+	l2.push_back(4);
+	l2.push_back(5);
+	l2.push_back(6);
+	l2.push_back(7);
+}
+
+
+static bool	check_it(ft::vector<int>::iterator myIt, ft::vector<int>::iterator myEnd, std::vector<int>::iterator realIt)
+{
+	while (myIt != myEnd)
+	{
+		if (*myIt != *realIt)
+			return (false);
+		++myIt;
+		++realIt;
+	}
+	return (true);
+}
+
+static bool	check_it_rev(ft::vector<int>::reverse_iterator myIt, ft::vector<int>::reverse_iterator myEnd, std::vector<int>::reverse_iterator realIt)
+{
+	while (myIt != myEnd)
+	{
+		if (*myIt != *realIt)
+			return (false);
+		++myIt;
+		++realIt;
+	}
+	return (true);
+}
 
 void	test_vct_construct()
 {
-	/*ft::vector<int> vct;
+	print_title("Constructor");
+	ft::vector<int> my1;
+	std::vector<int> real1;
+	check("Constructor empty", (my1 == real1));
 
-	vct.insert(vct.begin(), (size_t)4, 100);
-	print_vector(vct, "vct vide : vct.insert(vct.begin(), (size_t)4, 100);");*/
+	ft::vector<int> my2((size_t)3, 19);
+	std::vector<int> real2((size_t)3, 19);
+	check("Constructor fill", (my2 == real2));
 
-	ft::vector<int> vct2((size_t)1, 19);
-	vct2.insert(vct2.begin(), 4);
-	vct2.insert(vct2.begin(), 3);
-	vct2.insert(vct2.begin(), 2);
-	vct2.insert(vct2.begin(), 1);
-	print_vector(vct2, "vct(7, 19)");
-	
+	basic_val(my2, real2);
+	ft::vector<int> my3(my2.begin(), my2.end());
+	std::vector<int> real3(real2.begin(), real2.end());
+	check("Constructor range", (my3 == real3));	
 
-	ft::vector<int> vct3(vct2.begin(), vct2.end());
-	print_vector(vct3, "vct(first, last)");
+	ft::vector<int> my4(my3);
+	std::vector<int> real4(real3);
+	check("Constructor copy", (my4 == real4));	
 
-	ft::vector<int> vct4(vct3);
-	print_vector(vct4, "vct(autre vct)");
+	ft::vector<int> my5 = my4;
+	std::vector<int> real5 = real4;
+	check("Constructor =", (my5 == real5));	
 
-/*	ft::vector<int> vct5 = vct4;
-	print_vector(vct5, "vct5 = vct4");
-	vct5 = vct;
-	print_vector(vct5, "vct5 = vct");*/
+	my5 = my3;
+	real5 = real3;
+	check("Assignation =", (my5 == real5));
 }
 
 /*
@@ -72,154 +110,148 @@ void	test_vct_construct()
 */
 void	test_vct_iterators()
 {
-	ft::vector<int> vct;
-	ft::vector<int>::iterator it;
-	ft::vector<int>::reverse_iterator rit;
+	print_title("Iterators");
+	ft::vector<int> my1;
+	std::vector<int> real1;
 
-	vct.insert(vct.end(), 19);
-	vct.insert(vct.end(), 21);
-	vct.insert(vct.end(), 36);
-	vct.insert(vct.end(), 42);
-	vct.insert(vct.end(), 56);
-	print_vector(vct);
+	ft::vector<int>::iterator myIt = my1.begin();
+	std::vector<int>::iterator realIt = real1.begin();
+	
+	if ((my1 == real1))
+		check("Iterator empty", check_it(myIt, my1.end(), realIt));
+	else
+		check("Container empty", false); //Print error
 
-	it = vct.begin();
-	std::cout << "Begin() : " << *it << std::endl;
-	std::cout << "Begin() + 3 : " << *(it + 3) << std::endl;
-	P("");
-	it = vct.end();
-	--it;
-	std::cout << "--end() : " << *it << std::endl;
-	std::cout << "end() - 2 : " << *(it - 2) << std::endl;
-	P("");
-	rit = vct.rbegin();
-	std::cout << "rbegin() : " << *rit << std::endl;
-	std::cout << "rbegin() + 3 : " << *(rit + 3) << std::endl;
-	P("");
-	rit = vct.rend();
-	--rit;
-	std::cout << "--rend() : " << *rit << std::endl;
-	std::cout << "rend() - 2 : " << *(rit - 2) << std::endl;
+	basic_val(my1, real1);
+	myIt = my1.begin();
+	realIt = real1.begin();
+	if ((my1 == real1))
+		check("Iterator basic", check_it(myIt, my1.end(), realIt));
+	else
+		check("Container basic", false); //Print error
+
+	myIt = my1.begin();
+	realIt = real1.begin();
+	check("Iterator +", *(myIt + 2), *(realIt + 2));
+	check("Iterator -", *(my1.end() - 3), *(real1.end() - 3));	
+
+	ft::vector<int> my2;
+	std::vector<int> real2;
+	ft::vector<int>::reverse_iterator myIt2 = my2.rbegin();
+	std::vector<int>::reverse_iterator realIt2 = real2.rbegin();
+
+	if ((my2 == real2))
+		check("Iterator reverse empty", check_it_rev(myIt2, my2.rend(), realIt2));
+	else
+		check("Container empty", false); //Print error
+	
+	basic_val(my2, real2);
+	myIt2 = my2.rbegin();
+	realIt2 = real2.rbegin();
+	if ((my2 == real2))
+		check("Iterator reverse basic", check_it_rev(myIt2, my2.rend(), realIt2));
+	else
+		check("Container basic", false); //Print error
+
+	myIt2 = my2.rbegin();
+	realIt2 = real2.rbegin();
+	check("reverse iterator +", *(myIt2 + 2), *(realIt2 + 2));
+	check("reverse iterator -", *(my2.rend() - 3), *(real2.rend() - 3));
+
+
+	ft::vector<int>::const_iterator mt = my2.begin();
+	std::vector<int>::const_iterator rt = real2.begin();
+
+	int ret = true;
+	while (mt != my2.end())
+	{
+		if (*mt != *rt)
+			ret = false;
+		++mt;
+		++rt;
+	}
+	check("Iterator const", ret);
+
+	ft::vector<int>::const_reverse_iterator mi = my2.rbegin();
+	ft::vector<int>::const_reverse_iterator mend = my2.rend();
+	std::vector<int>::const_reverse_iterator ri = real2.rbegin();
+
+	// *mi = 2;
+	// *ri = 2;
+	ret = true;
+	while (mi != mend)
+	{
+		if (*mi != *ri)
+			ret = false;
+		++mi;
+		++ri;
+	}
+	check("Iterator reverse const", ret);
 }
-
 
 /*
 ** Capacity
 */
-void	test_vct_size()
-{
-	ft::vector<int> vct;
-
-	print_title("Size");
-	std::cout << "      Size vct vide : " << vct.size() << std::endl;
-	vct.insert(vct.end(), (size_t)5, 100);
-	std::cout << "insert 5x 100, size : " << vct.size() << std::endl;
-	std::cout << "        Clear, size : " << vct.size() << std::endl;
-}
-
-void	test_vct_max_size()
-{
-	ft::vector<int> vct;
-	std::vector<int> rvct;
-
-	print_title("Max Size");
-	std::cout << "ma max size : " << vct.max_size() << std::endl;
-	std::cout << "vr max size : " << rvct.max_size() << std::endl;
-}
-
-void	test_vct_resize()
-{
-	ft::vector<int> vct;
-
-	print_title("Resize");
-	std::cout << "Size : " << vct.size() << std::endl;
-	vct.resize(5);
-	std::cout << "vct.resize(5), size : " << vct.size() << std::endl;
-	print_vector(vct);
-	vct.resize(2);
-	std::cout << "vct.resize(2), size : " << vct.size() << std::endl;
-	print_vector(vct);
-	vct.resize(7, 19);
-	std::cout << "vct.resize(7, 19), size : " << vct.size() << std::endl;
-	print_vector(vct);
-
-	P("");
-	ft::vector<std::string> v1;
-	std::vector<std::string> v2;
-	v1.resize(10, "test");
-	v2.resize(10, "test");
-
-	//check("v1 == v2", (v1 == v2));
-	v1.resize(2, "42");
-	v2.resize(2, "42");
-	//check("v1 == v2", (v1 == v2));
-}
-
 void	test_vct_capacity()
 {
-	ft::vector<int> vct;
+	print_title("Capacity functions");
+	ft::vector<int> my1;
+	std::vector<int> real1;
 
-	print_title("Capacity");
-	std::cout << "Capacity : " << vct.capacity() << std::endl;
-	vct.reserve(10);
-	std::cout << "vct.reserve(10), Capacity : " << vct.capacity() << std::endl;
-	vct.insert(vct.end(), 12);
-	vct.reserve(40);
-	P("vct.insert(vct.end(), 12); vct.reserve(40);");
-	std::cout << "Capacity : " << vct.capacity() << std::endl;
-	std::cout << "size : " << vct.size() << std::endl;
-}
+	check("Empty", my1.empty(), real1.empty());
+	check("Size", my1.size(), real1.size());
 
-void	test_vct_empty()
-{
-	ft::vector<int> vct;
+	basic_val(my1, real1);
+	check("Empty", my1.empty(), real1.empty());
+	check("Size", my1.size(), real1.size());
 
-	print_title("Empty");
-	std::cout << "Empty ? " << vct.empty() << std::endl;
-	vct.insert(vct.end(), 12);
-	std::cout << "Empty ? " << vct.empty() << std::endl;
-	vct.clear();
-	std::cout << "Empty ? " << vct.empty() << std::endl;
-}
+	my1.resize((size_t)2);
+	real1.resize((size_t)2);
+	check("Resize", (my1 == real1));
+	check("Size", my1.size(), real1.size());
+	my1.resize((size_t)9);
+	real1.resize((size_t)9);
+	check("Resize", (my1 == real1));
+	check("Size", my1.size(), real1.size());
 
-void	test_vct_reserve()
-{
-	print_title("Reserve");
-	P("Go to capacity tests");
+	my1.reserve((size_t)2);
+	real1.reserve((size_t)2);
+	check("Reserve", (my1 == real1));
+	check("Size", my1.size(), real1.size());
+
+	my1.reserve((size_t)20);
+	real1.reserve((size_t)20);
+	check("Reserve", (my1 == real1));
+	check("Size", my1.size(), real1.size());
 }
 
 /*
 ** Element access
 */
-
 void	test_vct_elem_access()
 {
-		ft::vector<int> vct;
+	print_title("Elements access");
+	ft::vector<int> my1;
+	std::vector<int> real1;
+	basic_val(my1, real1);
 
-		print_title("Operator [] / at / front / back");
-		vct.insert(vct.end(), 19);
-		vct.insert(vct.end(), 21);
-		vct.insert(vct.end(), 36);
-		vct.insert(vct.end(), 42);
-		vct.insert(vct.end(), 56);
-		print_vector(vct);
-
-		std::cout << "vct[0] : " << vct[0] << std::endl;
-		std::cout << "vct[3] : " << vct[3] << std::endl;
-
-		std::cout << "at(1) : " << vct.at(1) << std::endl;
-		std::cout << "at(4) : " << vct.at(4) << std::endl;
-		try
-		{
-			std::cout << "at(5) : " << vct.at(5) << std::endl;
-		}
-		catch (std::exception &e)
-		{
-			std::cout << e.what() << std::endl;
-		}
-		P("");
-		std::cout << "Front : " << vct.front() << std::endl;
-		std::cout << "Back : " << vct.back() << std::endl;
+	check("cont[0]", my1[0], real1[0]);
+	check("cont[3]", my1[3], real1[3]);
+	check("cont[4] = 19", (my1[4] = 19), (real1[4] = 19));
+	try
+	{
+		check("at(1)", my1.at(1), real1.at(1));
+		check("at(4)", my1.at(4), real1.at(4));
+		check("at(5) = 19", (my1.at(5) = 19), (real1.at(5) = 19));
+		check("at(10)", my1.at(10), real1.at(10));
+		//std::cout << "at(10) : " << vct.at(10) << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		check("at(10)", true);
+	}
+	check("front", my1.front(), real1.front());
+	check("back", my1.back(), real1.back());
 }
 
 /*
@@ -227,241 +259,266 @@ void	test_vct_elem_access()
 */
 void	test_vct_assign()
 {
-	ft::vector<int> vct;
-	ft::vector<int> vct2;
-
 	print_title("Assign");
-	vct.insert(vct.end(), 19);
-	vct.insert(vct.end(), 21);
-	vct.insert(vct.end(), 36);
-	vct.insert(vct.end(), 42);
-	vct.insert(vct.end(), 56);
-	vct2.insert(vct2.end(), 97);
-	vct2.insert(vct2.end(), 206);
-	vct2.insert(vct2.end(), 93);
-	print_vector(vct, "vct");
-	print_vector(vct2, "vct2");
-	vct.assign(vct2.begin(), vct2.end());
-	P("vct.assign(vct2.begin(), vct2.end());");
-	print_vector(vct, "vct");
-	std::cout << "Size vct : " << vct.size() << std::endl;
+	ft::vector<int> my1;
+	std::vector<int> real1;
+	ft::vector<int> my2;
+	std::vector<int> real2;
 
-	vct.insert(vct.end(), 19);
-	vct.insert(vct.end(), 21);
-	vct.insert(vct.end(), 36);
-	vct.insert(vct.end(), 42);
-	vct.insert(vct.end(), 56);
-	P("");
-	print_vector(vct, "vct");
-	vct.assign((size_t)6, 137);
-	P("vct.assign(6, 137);");
-	print_vector(vct, "vct");
+	my2.assign(my1.begin(), my1.end());
+	real2.assign(real1.begin(), real1.end());
+	check("Assign empty", (my2 == real2));
 
-	std::string test[] = {"Hey", "what's", "up", "?"};
-	ft::vector<std::string> v1;
-	ft::vector<std::string> s1;
-	std::vector<std::string> v2;
-	std::vector<std::string> s2;
-	v1.assign(s1.begin(), s1.end());
-	v2.assign(s2.begin(), s2.end());
-	//check("v1 == v2", v1 == v2);
-	v1.assign(5, "?");
-	v2.assign(5, "?");
-	//check("v1 == v2", v1 == v2);
-	//print_vector(v1);
+	my2.assign((size_t)0, 10);
+	real2.assign((size_t)0, 10);
+	check("Assign empty", (my2 == real2));
+
+	basic_val(my1, real1);
+	my2.assign(my1.begin(), my1.end());
+	real2.assign(real1.begin(), real1.end());
+	check("Assign first empty", (my2 == real2));
+
+	my2.assign(my1.begin(), my1.end());
+	real2.assign(real1.begin(), real1.end());
+	check("Assign", (my2 == real2));
+
+	my2.clear();
+	real2.clear();
+	my2.assign((size_t)3, 10);
+	real2.assign((size_t)3, 10);
+	check("Assign val", (my2 == real2));
+
+	my2.assign((size_t)5, 19);
+	real2.assign((size_t)5, 19);
+	check("Assign val", (my2 == real2));
 }
 
 void	test_vct_ppback()
 {
-	ft::vector<int> vct;
+	print_title("Push_back / Pop_back");
+	ft::vector<int> my1;
+	std::vector<int> real1;
 
-	print_title("Push Back / Pop Back");
-	P("Push : ");
-	vct.push_back(12);
-	vct.push_back(26);
-	vct.push_back(63);
-	vct.push_back(125);
-	print_vector(vct);
-	P("Pop 2x");
-	vct.pop_back();
-	vct.pop_back();
-	print_vector(vct);
+	my1.push_back(12);
+	real1.push_back(12);
+	check("push_back", (my1 == real1));
+	my1.push_back(26);
+	my1.push_back(63);
+	my1.push_back(125);
+	real1.push_back(26);
+	real1.push_back(63);
+	real1.push_back(125);
+	check("push_back", (my1 == real1));
+
+	my1.pop_back();
+	real1.pop_back();
+	check("pop_back", (my1 == real1));
+	my1.pop_back();
+	my1.pop_back();
+	my1.pop_back();
+	real1.pop_back();
+	real1.pop_back();
+	real1.pop_back();
+	check("pop_back", (my1 == real1));
 }
 
 void	test_vct_insert()
 {
-	ft::vector<int> vct;
-	ft::vector<int> vct2;
-
 	print_title("Insert");
-	vct.insert(vct.end(), 3);
-	print_vector(vct, "vct");
+	ft::vector<int> my1;
+	std::vector<int> real1;
 
-	vct.insert(vct.end(), 19);
-	print_vector(vct, "vct");
+	my1.insert(my1.begin(), 19);
+	real1.insert(real1.begin(), 19);
+	check("Insert", (my1 == real1));	
+	my1.insert(my1.end(), 42);
+	real1.insert(real1.end(), 42);
+	check("Insert", (my1 == real1));
+	my1.insert(my1.end(), 3);
+	real1.insert(real1.end(), 3);
+	my1.insert(--(my1.end()), 4);
+	real1.insert(--(real1.end()), 4);
+	check("Insert", (my1 == real1));
 
-	vct.insert(vct.begin(), 42);
-	print_vector(vct, "vct");
-	
-	ft::vector<int>::iterator it = vct.begin();
-	++it;
-	vct.insert(it, 37);
-	print_vector(vct, "vct");
+	ft::vector<int> my2;
+	std::vector<int> real2;
 
-	vct.insert(it, (size_t)8, 100);
-	print_vector(vct, "vct");
+	my2.insert(my2.begin(), (size_t)3, 19);
+	real2.insert(real2.begin(), (size_t)3, 19);
+	check("Insert fill", (my2 == real2));	
+	my2.insert(my2.end(), (size_t)3, 42);
+	real2.insert(real2.end(), (size_t)3, 42);
+	check("Insert fill", (my2 == real2));
+	my2.insert(my2.end(), (size_t)3, 3);
+	real2.insert(real2.end(), (size_t)3, 3);
+	my2.insert(--(my2.end()), (size_t)3, 4);
+	real2.insert(--(real2.end()), (size_t)3, 4);
+	check("Insert fill", (my2 == real2));
 
-	vct2.insert(vct2.end(), 97);
-	vct2.insert(vct2.end(), 206);
-	vct2.insert(vct2.end(), 93);
-	vct2.insert(vct2.end(), 207);
-	vct2.insert(vct2.end(), 13);
-	print_vector(vct2, "vct2");
-	it = vct.begin();
-	//++it;
+	ft::vector<int> my3;
+	std::vector<int> real3;
 
-	vct.insert(it, vct2.begin(), vct2.end());
-	print_vector(vct, "vct(begin, end)");
+	my3.insert(my3.begin(), my1.begin(), my1.end());
+	real3.insert(real3.begin(), real1.begin(), real1.end());
+	check("Insert range", (my3 == real3));	
+
+	my3.insert(my3.end(), my1.begin(), my1.end());
+	real3.insert(real3.end(), real1.begin(), real1.end());
+	check("Insert range", (my3 == real3));
+
+	my3.insert(my3.end(), my1.begin(), my1.end());
+	real3.insert(real3.end(), real1.begin(), real1.end());
+	my3.insert(--(my3.end()), my1.begin(), my1.end());
+	real3.insert(--(real3.end()), real1.begin(), real1.end());
+	check("Insert range", (my3 == real3));
 }
 
 void	test_vct_erase()
 {
-	ft::vector<int> vct;
-
 	print_title("Erase");
-	vct.insert(vct.end(), 97);
-	vct.insert(vct.end(), 206);
-	vct.insert(vct.end(), 93);
-	vct.insert(vct.end(), 207);
-	vct.insert(vct.end(), 13);
-	vct.insert(vct.end(), 14);
-	vct.insert(vct.end(), 190);
-	print_vector(vct);
-	
-	ft::vector<int>::iterator it = vct.end();
-	--it;
-	vct.erase(it);
-	print_vector(vct);
+	ft::vector<int> my1;
+	std::vector<int> real1;
 
-	it = vct.begin();
-	++it;
-	ft::vector<int>::iterator it2 = vct.begin();
-	++it2;
-	++it2;
-	++it2;
-	++it2;
-	vct.erase(it, it2);
-	print_vector(vct);
+	my1.erase(my1.begin(), my1.end());
+	real1.erase(real1.begin(), real1.end());
+	check("erase range empty", (my1 == real1));
+
+	basic_val(my1, real1);
+	my1.erase(++(my1.begin()));
+	real1.erase(++(real1.begin()));
+	check("erase", (my1 == real1));
+
+	basic_val(my1, real1);
+	my1.erase(my1.begin(), my1.end());
+	real1.erase(real1.begin(), real1.end());
+	check("erase range", (my1 == real1));
 }
 
 void	test_vct_clear()
 {
-	ft::vector<int> vct;
-
 	print_title("Clear");
-	vct.clear();
-	P("Clear vide");
-	vct.insert(vct.end(), (size_t)10, 42);
-	print_vector(vct);
-	P("Clear");
-	vct.clear();
-	print_vector(vct);
-	ft::vector<std::string> v1;
-	std::vector<std::string> v2;
-	v1.push_back("1");
-	v2.push_back("1");
-	v1.push_back("2");
-	v2.push_back("2");
-	v1.push_back("3");
-	v2.push_back("3");
-	v1.erase(v1.begin() + 2);
-	v2.erase(v2.begin() + 2);
-	//check("v1 == v2", v1 == v2);
-	v1.clear();
-	v2.clear();
-	//check("v1 == v2", v1 == v2);
+	ft::vector<int> my1;
+	std::vector<int> real1;
+
+	my1.clear();
+	real1.clear();
+	check("Clear empty", (my1 == real1));
+
+	basic_val(my1, real1);
+	my1.clear();
+	real1.clear();
+	check("Clear", (my1 == real1));
+
+	my1.clear();
+	real1.clear();
+	check("Clear", (my1 == real1));
 }
 
 void	test_vct_swap()
 {
-	ft::vector<int> vct1((size_t)5, 7);
-	ft::vector<int> vct2((size_t)9, 19);
 
-	print_vector(vct1, "VCT1");
-	print_vector(vct2, "VCT2");
+	print_title("Swap / Extern Swap");
+	ft::vector<int> my1;
+	ft::vector<int> my2;
+	std::vector<int> real1;
+	std::vector<int> real2;
 
-	P("SWAP");
-	vct1.swap(vct2);
-	print_vector(vct1, "VCT1");
-	print_vector(vct2, "VCT2");
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap empty", (my1 == real1));
+	check("Swap empty", (my2 == real2));
 
-	ft::vector<int>::iterator it = vct1.begin(); 
-	ft::vector<int>::iterator itend = vct1.end();
-	
-	P("SWAP");
-	vct1.swap(vct2);
-	while (it != itend)
-	{
-		std::cout << *it << std::endl;
-		++it;
-	}
+	basic_val(my1, real1);
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap", (my1 == real1));
+	check("Swap", (my2 == real2));
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap", (my1 == real1));
+	check("Swap", (my2 == real2));
+
+	my2.push_back(19);
+	my2.push_back(101);
+	my2.push_back(42);
+	real2.push_back(19);
+	real2.push_back(101);
+	real2.push_back(42);
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap", (my1 == real1));
+	check("Swap", (my2 == real2));
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap", (my1 == real1));
+	check("Swap", (my2 == real2));
+
+	ft::swap(my1, my2);
+	std::swap(real1, real2);
+	check("Swap extern", (my1 == real1));
+	check("Swap extern", (my2 == real2));
+	ft::swap(my1, my2);
+	std::swap(real1, real2);
+	check("Swap extern", (my1 == real1));
+	check("Swap extern", (my2 == real2));
+
+	my2.clear();
+	real2.clear();
+	ft::swap(my1, my2);
+	std::swap(real1, real2);
+	check("Swap extern", (my1 == real1));
+	check("Swap extern", (my2 == real2));
+	ft::swap(my1, my2);
+	std::swap(real1, real2);
+	check("Swap extern", (my1 == real1));
+	check("Swap extern", (my2 == real2));
 }
 
 void	test_vct_op()
 {
-	ft::vector<int> vct1((size_t)5, 7);
-	ft::vector<int> vct2((size_t)5, 7);
+	print_title("Relational operators");
+	ft::vector<int>		my1;
+	std::vector<int>	real1;
+	ft::vector<int>		my2;
+	std::vector<int>	real2;
 
-	print_vector(vct1, "VCT1");
-	print_vector(vct2, "VCT2");
-	PL("vct1 == vct2 : ", (vct1 == vct2));
-	PL("vct1 != vct2 : ", (vct1 != vct2));
-	PL("vct1 < vct2 : ", (vct1 < vct2));
-	PL("vct1 <= vct2 : ", (vct1 <= vct2));
-	PL("vct1 > vct2 : ", (vct1 > vct2));
-	PL("vct1 >= vct2 : ", (vct1 >= vct2));
+	check("Operator ==", (my1 == my2), (real1 == real2));
+	check("Operator !=", (my1 != my2), (real1 != real2));
+	check("Operator <=", (my1 <= my2), (real1 <= real2));
+	check("Operator <", (my1 < my2), (real1 < real2));
+	check("Operator >=", (my1 >= my2), (real1 >= real2));
+	check("Operator >", (my1 > my2), (real1 > real2));
 
-	P("vct 1 pop_back() and insert(2, 19)");
-	vct1.pop_back();
-	vct1.insert(++(vct1.begin()), 19);
-	print_vector(vct1, "VCT1");
-	print_vector(vct2, "VCT2");
-	PL("vct1 == vct2 : ", (vct1 == vct2));
-	PL("vct1 != vct2 : ", (vct1 != vct2));
-	PL("vct1 < vct2 : ", (vct1 < vct2));
-	PL("vct1 <= vct2 : ", (vct1 <= vct2));
-	PL("vct1 > vct2 : ", (vct1 > vct2));
-	PL("vct1 >= vct2 : ", (vct1 >= vct2));
+	basic_val(my1, real1);
+	basic_val(my2, real2);
+	check("Operator ==", (my1 == my2), (real1 == real2));
+	check("Operator !=", (my1 != my2), (real1 != real2));
+	check("Operator <=", (my1 <= my2), (real1 <= real2));
+	check("Operator <", (my1 < my2), (real1 < real2));
+	check("Operator >=", (my1 >= my2), (real1 >= real2));
+	check("Operator >", (my1 > my2), (real1 > real2));
+
+	my1.push_back(19);
+	real1.push_back(19);
+	check("Operator ==", (my1 == my2), (real1 == real2));
+	check("Operator !=", (my1 != my2), (real1 != real2));
+	check("Operator <=", (my1 <= my2), (real1 <= real2));
+	check("Operator <", (my1 < my2), (real1 < real2));
+	check("Operator >=", (my1 >= my2), (real1 >= real2));
+	check("Operator >", (my1 > my2), (real1 > real2));
 }
 
 void	test_vector()
 {
-	P("           #################   CONSTRUCTORS   #################");
+	print_header("VECTOR");
 	test_vct_construct();
 	P("");
-	/*P("           #################   ITERATORS   #################");
 	test_vct_iterators();
-	P("");
-
-	P("           #################   CAPACITY   #################");
-	test_vct_size();
-	P("");
-	test_vct_max_size();
-	P("");
-	test_vct_resize();
 	P("");
 	test_vct_capacity();
 	P("");
-	test_vct_empty();
-	P("");
-	test_vct_reserve();
-	P("");*/
-
-/*	P("           #################   ELEMENT ACCESS   #################");
 	test_vct_elem_access();
 	P("");
-	
-	P("           #################   MODIFIERS   #################");
 	test_vct_assign();
 	P("");
 	test_vct_ppback();
@@ -475,5 +532,5 @@ void	test_vector()
 	test_vct_swap();
 	P("");
 	test_vct_op();
-	P("");*/
+	P("");
 }

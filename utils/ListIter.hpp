@@ -37,6 +37,7 @@ class ListIter : public ft::Iterator<ft::bidirectionnal_iterator_tag, T>
 
 		ListIter() {};
 		ListIter(DL_List<T> *elem): _elem(elem) {};
+		//ListIter(pointer elem): _elem(elem) {};
 		ListIter(const ListIter &copy): _elem(copy._elem) {};
 		virtual ~ListIter() {};
 
@@ -80,6 +81,11 @@ class ListIter : public ft::Iterator<ft::bidirectionnal_iterator_tag, T>
 			operator--();
 			return (tmp);
 		}
+
+		// operator ListIter<const T> () const
+		// {
+		// 	return (ListIter<const T>(this->_elem));
+		// }
 
 		friend bool operator==(const ListIter<T> &it1, const ListIter<T> &it2)
 		{

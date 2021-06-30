@@ -43,7 +43,7 @@ void print_vraie_map_values(std::map<Key, Val> &m, std::string name)
 	}
 }
 
-void insert_map_values(ft::map<int, std::string> &m)
+void insert_map_values(ft::map<int, std::string> &m, std::map<int, std::string> &m2)
 {
 	m.insert(ft::pair<int, std::string>(1, "Julou"));
 	m.insert(ft::pair<int, std::string>(2, "julou22"));
@@ -51,283 +51,339 @@ void insert_map_values(ft::map<int, std::string> &m)
 	m.insert(ft::pair<int, std::string>(8, "mathildou"));
 	m.insert(ft::pair<int, std::string>(10, "olaaa"));
 	m.insert(ft::pair<int, std::string>(7, "bjr"));
+
+	m2.insert(std::pair<int, std::string>(1, "Julou"));
+	m2.insert(std::pair<int, std::string>(2, "julou22"));
+	m2.insert(std::pair<int, std::string>(6, "six"));
+	m2.insert(std::pair<int, std::string>(8, "mathildou"));
+	m2.insert(std::pair<int, std::string>(10, "olaaa"));
+	m2.insert(std::pair<int, std::string>(7, "bjr"));
+}
+
+static bool	check_it(ft::map<int, std::string>::iterator myIt, ft::map<int, std::string>::iterator myEnd, std::map<int, std::string>::iterator realIt)
+{
+	while (myIt != myEnd)
+	{
+		if ((*myIt).first != (*realIt).first)
+			return (false);
+		if ((*myIt).second != (*realIt).second)
+			return (false);
+		++myIt;
+		++realIt;
+	}
+	return (true);
+}
+
+static bool	check_it_rev(ft::map<int, std::string>::reverse_iterator myIt, ft::map<int, std::string>::reverse_iterator myEnd, std::map<int, std::string>::reverse_iterator realIt)
+{
+	while (myIt != myEnd)
+	{
+		if ((*myIt).first != (*realIt).first)
+			return (false);
+		if ((*myIt).second != (*realIt).second)
+			return (false);
+		++myIt;
+		++realIt;
+	}
+	return (true);
 }
 
 void    test_map_construct()
 {
-	P("           #################   CONSTRUCTORS   #################");
-	ft::map<int, std::string> m;
+	print_title("Constructors");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
 
-	ft::map<int, std::string>::iterator it;
+	check("Constructor empty", (my1 == real1));
+	insert_map_values(my1, real1);
 
-	// m.insert(ft::pair<int, std::string>(1, "Julou"));
-	// m.insert(ft::pair<int, std::string>(2, "julou22"));
-	// m.insert(ft::pair<int, std::string>(6, "six"));
-	// m.insert(ft::pair<int, std::string>(8, "mathildou"));
-	// m.insert(ft::pair<int, std::string>(10, "olaaa"));
-	// m.insert(ft::pair<int, std::string>(7, "bjr"));
+	ft::map<int, std::string>	my2(my1.begin(), my1.end());
+	std::map<int, std::string>	real2(real1.begin(), real1.end());
+	check("Constructor range", (my2 == real2));
+	
+	ft::map<int, std::string>	my3(my2);
+	std::map<int, std::string>	real3(real2);
+	check("Constructor copy", (my3 == real3));
 
-	insert_map_values(m);
+	ft::map<int, std::string>	my4 = my2;
+	std::map<int, std::string>	real4 = real2;
+	check("Constructor assignation", (my4 == real4));
 
-	it = m.begin();
-	while (it != m.end())
-	{
-		std::cout << "Key [" << it->first << "]   <>   Value : |" << it->second << "|" << std::endl;
-		++it;
-	}
-
-	std::cout << std::endl;
-
-	ft::map<int, std::string> m2(m.begin(), m.end());
-	ft::map<int, std::string>::iterator it2 = m2.begin();
-	while (it2 != m2.end())
-	{
-		std::cout << "Key [" << it2->first << "]   <>   Value : |" << it2->second << "|" << std::endl;
-		++it2;
-	}
-
-	std::cout << std::endl;
-
-	ft::map<int, std::string> m3(m);
-	ft::map<int, std::string>::iterator it3 = m3.begin();
-	while (it3 != m3.end())
-	{
-		std::cout << "Key [" << it3->first << "]   <>   Value : |" << it3->second << "|" << std::endl;
-		++it3;
-	}
+	my1.insert(ft::pair<int, std::string>(42, "Julou2"));
+	real1.insert(std::pair<int, std::string>(42, "Julou2"));
+	my4 = my1;
+	real4 = real1;
+	check("Assignation", (my4 == real4));
 }
 
-void	test_map_insert()
+void	test_map_iterators() // A terminer
 {
-	P("           #################   INSERT   #################");
-	ft::map<int, std::string> m;
-	ft::map<int, std::string> m2;
+	print_title("Iterators");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
+
+	ft::map<int, std::string>::iterator myIt = my1.begin();
+	std::map<int, std::string>::iterator realIt = real1.begin();
+	check("Iterator empty", check_it(myIt, my1.end(), realIt));
+
+	insert_map_values(my1, real1);
+	myIt = my1.begin();
+	realIt = real1.begin();
+	check("Iterator", check_it(myIt, my1.end(), realIt));
+
+	ft::map<int, std::string>::reverse_iterator myItr = my1.rbegin();
+	std::map<int, std::string>::reverse_iterator realItr = real1.rbegin();
+	check("Iterator reverse", check_it_rev(myItr, my1.rend(), realItr));
+
+	// const ft::map<int, std::string>	my2;
+	// const std::map<int, std::string> real2;
 	
-	insert_map_values(m);
-	print_map_values(m, "m");
+	// my2.insert(ft::pair<int, std::string>(1, "Julou"));
+	// my2.insert(ft::pair<int, std::string>(2, ",u"));
+	// my2.insert(ft::pair<int, std::string>(3, "test"));
+	// real2.insert(std::pair<int, std::string>(1, "Julou"));
+	// real2.insert(std::pair<int, std::string>(2, ",u"));
+	// real2.insert(std::pair<int, std::string>(3, "test"));
+	// // ft::map<int, std::string>::const_iterator myItc = my1.begin();
+	// // std::map<int, std::string>::const_iterator realItc = real1.begin();
 
-	ft::map<int, std::string>::iterator it = m.begin();
-	++it;
-	++it;
-	m2.insert(it, m.end());
-	print_map_values(m2, "m2");
+	// // *myItc = ft::pair<int, std::string>(42, "Julou2");
+	// // *realItc = std::pair<int, std::string>(42, "Julou2");
 
-	ft::map<int, std::string>::iterator it2 = m2.begin();
-	++it2;
-	++it2;
-	m2.insert(it2, ft::pair<int, std::string>(9, "JulouTwo"));
-	print_map_values(m2, "m2");
-	m2.insert(it2, ft::pair<int, std::string>(9, "JulouTwo"));
-	print_map_values(m2, "m2");
+	// // ft::map<int, std::string>::reverse_iterator myItrc = my1.rbegin();
+	// // std::map<int, std::string>::reverse_iterator realItrc = real1.rbegin();
+
+
 }
 
 void	test_map_capacity()
 {
-	P("           #################   CAPACITY   #################");
-	ft::map<int, std::string> m;
+	print_title("Capacity");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
 
-	std::cout << "Empty ? " << (m.empty() ? "Yes" : "No") << std::endl;
-	std::cout << "Size : " << m.size() << std::endl;
-	insert_map_values(m);
-	std::cout << "Empty ? " << (m.empty() ? "Yes" : "No") << std::endl;
-	std::cout << "Size : " << m.size() << std::endl;
-	m.clear();
-	std::cout << "Empty ? " << (m.empty() ? "Yes" : "No") << std::endl;
-	std::cout << "Size : " << m.size() << std::endl;
+	check("Empty", my1.empty(), real1.empty());
+	check("Size", my1.size(), real1.size());
 
-	std::cout << "Max size :" << m.max_size() << std::endl;
-	
-	// P("")
-	// std::map<int, std::string> m2;
-
-	// std::cout << "Empty ? " << (m2.empty() ? "Yes" : "No") << std::endl;
-	// std::cout << "Size : " << m2.size() << std::endl;
-	// m2.insert(std::pair<int, std::string>(1, "Julou"));
-	// m2.insert(std::pair<int, std::string>(2, "julou22"));
-	// m2.insert(std::pair<int, std::string>(6, "six"));
-	// m2.insert(std::pair<int, std::string>(8, "mathildou"));
-	// m2.insert(std::pair<int, std::string>(10, "olaaa"));
-	// m2.insert(std::pair<int, std::string>(7, "bjr"));
-	// std::cout << "Empty ? " << (m2.empty() ? "Yes" : "No") << std::endl;
-	// std::cout << "Size : " << m2.size() << std::endl;
-	// m2.clear();
-	// std::cout << "Empty ? " << (m2.empty() ? "Yes" : "No") << std::endl;
-	// std::cout << "Size : " << m2.size() << std::endl;
-
-	// std::cout << "Max size :" << m2.max_size() << std::endl;
+	insert_map_values(my1, real1);
+	check("Empty", my1.empty(), real1.empty());
+	check("Size", my1.size(), real1.size());
 }
 
 void	test_map_elements_access()
 {
-	P("           #################   ELEMENTS ACCESS   #################");
+	print_title("Element access");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
 
-	ft::map<int, std::string> m;
-
-	//insert_map_values(m);
-	m[2] = "test1";
-	//std::cout << "ICI2" << std::endl;
-	m[4] = "test2";
-	m[3] = "test3";
-
-	std::cout << "Elem[2] = " << m[2] << std::endl;
-	std::cout << "Elem[4] = " << m[4] << std::endl; 
-	std::cout << "Elem[3] = " << m[3] << std::endl;
-	print_map_values(m, "m");
-	m[2] = "Nouveau Test";
-	std::cout << "Elem[2] = " << m[2] << std::endl;
-
+	insert_map_values(my1, real1);
+	check("[1]", my1[1], real1[1]);
+	check("[2]", my1[2], real1[2]);
+	check("[10]", my1[10], real1[10]);
+	check("[10] = 'test'", (my1[1] = "test"), (real1[1] = "test"));
+	my1[53] = "cinquante trois";
+	real1[53] = "cinquante trois";
+	check("[] = val", (my1 == real1));
 }
 
-void	test_map_erase()
+void	test_map_insert()
 {
-	P("           #################   ERASE   #################");
-	ft::map<int, std::string> m;
-	insert_map_values(m);
+	print_title("Insert");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
 
-	print_map_values(m, "m");
-	ft::map<int, std::string>::iterator it = m.begin();
-	++it;
-	++it;
-	m.erase(it);
-	print_map_values(m, "m");
-	m.erase(10);
-	print_map_values(m, "m");
-	it = m.begin();
-	ft::map<int, std::string>::iterator it2 = m.end();
-	--it2;
-	m.erase(it, it2);
-	print_map_values(m, "m");
-}
-
-void test_map_swap()
-{
-	P("           #################   SWAP   #################");
-	ft::map<int, std::string> m;
-	insert_map_values(m);
-
-	ft::map<int, std::string> m2;
-	m2.insert(ft::pair<int, std::string>(42, "JUl"));
-	m2.insert(ft::pair<int, std::string>(19, "Bobobo"));
-
-	print_map_values(m, "m");
-	print_map_values(m2, "m2");
-	m.swap(m2);
-	print_map_values(m, "m");
-	print_map_values(m2, "m2");
-
-	P("");
-
-	std::map<int, std::string> m3;
-	m3.insert(std::pair<int, std::string>(1, "Julou"));
-	m3.insert(std::pair<int, std::string>(2, "julou22"));
-	m3.insert(std::pair<int, std::string>(6, "six"));
-	m3.insert(std::pair<int, std::string>(8, "mathildou"));
-	m3.insert(std::pair<int, std::string>(10, "olaaa"));
-	m3.insert(std::pair<int, std::string>(7, "bjr"));
-
-	std::map<int, std::string> m4;
-	m4.insert(std::pair<int, std::string>(42, "JUl"));
-	m4.insert(std::pair<int, std::string>(19, "Bobobo"));
+	insert_map_values(my1, real1);
+	check("Insert", (my1 == real1));
+	check("Insert return value", (my1.insert(ft::pair<int, std::string>(19, "Julou2"))).second, (real1.insert(std::pair<int, std::string>(19, "Julou2"))).second);
 	
-	print_vraie_map_values(m3, "m3");
-	print_vraie_map_values(m4, "m4");
-	m3.swap(m4);
-	print_vraie_map_values(m3, "m3");
-	print_vraie_map_values(m4, "m4");
+	ft::map<int, std::string>::iterator myIt = my1.begin();
+	std::map<int, std::string>::iterator realIt = real1.begin();
+	++myIt;
+	++realIt;
+	++myIt;
+	++realIt;
+	my1.insert(myIt, ft::pair<int, std::string>(42, "Julou29"));
+	real1.insert(realIt, std::pair<int, std::string>(42, "Julou29"));
+	check("Insert position", (my1 == real1));
+	check("Insert return value", (my1.insert(myIt, ft::pair<int, std::string>(101, "julou100")))->second, (real1.insert(realIt, std::pair<int, std::string>(101, "julou100")))->second);
 
+	ft::map<int, std::string>	my2;
+	std::map<int, std::string>	real2;
+
+	my2.insert(my1.begin(), my1.begin());
+	real2.insert(real1.begin(), real1.begin());
+	check("Insert range", (my2 == real2));
 }
 
-void 	test_map_observers()
+void 	test_map_erase()
 {
-	P("           #################   OBSERVERS   #################");
+	print_title("Erase");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
 
-	ft::map<int, std::string> m;
-	insert_map_values(m);
+	insert_map_values(my1, real1);
+	my1.erase(1);
+	real1.erase(1);
+	check("Erase value", (my1 == real1));
 
-	ft::map<int, std::string>::key_compare cmp = m.key_comp();
-	ft::map<int, std::string>::iterator it = m.begin();
-	ft::map<int, std::string>::iterator it2 = m.end();
-	--it2;
-	--it2;
-	while (cmp(it->first, 7) && it != m.end())
-	{
-		std::cout << "Key [" << it->first << "]   <>   Value : |" << it->second << "|" << std::endl;
-		++it;
-	}
+	my1.erase(6);
+	real1.erase(6);
+	check("Erase value", (my1 == real1));
+
+	my1.erase(1);
+	real1.erase(1);
+	check("Erase already erased", (my1 == real1));
+
+	ft::map<int, std::string>	my2;
+	std::map<int, std::string>	real2;
+
+	insert_map_values(my2, real2);
+	ft::map<int, std::string>::iterator myIt = my2.begin();
+	std::map<int, std::string>::iterator realIt = real2.begin();
+	++myIt;
+	++realIt;
+
+	my2.erase(myIt);
+	real2.erase(realIt);
+	check("Erase position", (my2 == real2));
+
+	my2.erase(my2.begin(), my2.end());
+	real2.erase(real2.begin(), real2.end());
+	check("Erase range", (my2 == real2));
+}
+
+void	test_map_swap()
+{
+	print_title("Swap");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
+	ft::map<int, std::string>	my2;
+	std::map<int, std::string>	real2;
+
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap empty", (my1 == real1));
+	check("Swap empty", (my2 == real2));
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap empty", (my1 == real1));
+	check("Swap empty", (my2 == real2));
+
+	insert_map_values(my1, real1);
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap first empty", (my1 == real1));
+	check("Swap first empty", (my2 == real2));
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap first empty", (my1 == real1));
+	check("Swap first empty", (my2 == real2));
+
+	insert_map_values(my2, real2);
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap", (my1 == real1));
+	check("Swap", (my2 == real2));
+	my1.swap(my2);
+	real1.swap(real2);
+	check("Swap", (my1 == real1));
+	check("Swap", (my2 == real2));
+}
+
+void	test_map_clear()
+{
+	print_title("Clear");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
+
+	my1.clear();
+	real1.clear();
+	check("Clear empty", (my1 == real1));
+
+	insert_map_values(my1, real1);
+	my1.clear();
+	real1.clear();
+	check("Clear", (my1 == real1));
+
+	my1.clear();
+	real1.clear();
+	check("Clear re empty", (my1 == real1));
+}
+
+void	test_map_observers()
+{
+	print_title("Observers");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
+
+	my1[1] = "un";
+	my1[2] = "deux";
+	my1[3] = "trois";
+	my1[4] = "quat";
+	real1[1] = "un";
+	real1[2] = "deux";
+	real1[3] = "trois";
+	real1[4] = "quat";
+
+	ft::map<int, std::string>::key_compare myComp = my1.key_comp();
+	std::map<int, std::string>::key_compare realComp = real1.key_comp();
+
+	check("Key_compare", myComp(1, 2), realComp(1, 2));
+	check("Value comp", my1.value_comp()(ft::pair<int, std::string>(1, "Julouu"), ft::pair<int, std::string>(2, "Julo")), 
+		real1.value_comp()(std::pair<int, std::string>(1, "Julouu"), std::pair<int, std::string>(2, "Julo")));
 }
 
 void	test_map_operations()
 {
-	P("           #################   OPERATIONS   #################");
-	ft::map<int, std::string> m;
-	insert_map_values(m);
+	print_title("map observations");
+	ft::map<int, std::string>	my1;
+	std::map<int, std::string>	real1;
 
-	ft::map<int, std::string>::iterator it = m.find(2);
-	std::cout << "find(2) --> Key [" << it->first << "]   <>   Value : |" << it->second << "|" << std::endl;
-	it = m.find(3);
-	if (it == m.end())
-		std::cout << "find(3) --> Not Found." << std::endl;
+	insert_map_values(my1, real1);
+	check("Find", (my1.find(1))->second, (real1.find(1))->second);
+	check("Find", (my1.find(6))->second, (real1.find(6))->second);
+	check("Find not found", (my1.find(30) == my1.end()), (real1.find(30) == real1.end()));
+	
+	check("count", my1.count(1), real1.count(1));
+	check("count", my1.count(2), real1.count(2));
+	check("count not found", my1.count(53), real1.count(53));
 
-	if (m.count(2))
-		std::cout << "count(2) --> Found." << std::endl;
-	else
-		std::cout << "count(2) --> Not Found." << std::endl;
-	if (m.count(3))
-		std::cout << "count(3) --> Found." << std::endl;
-	else
-		std::cout << "count(3) --> Not Found." << std::endl;
+	check("Lower bound", my1.lower_bound(7)->second, real1.lower_bound(7)->second);
+	check("Lower bound", my1.lower_bound(2)->second, real1.lower_bound(2)->second);
+	check("Lower bound not found", (my1.lower_bound(40) == my1.end()), (real1.lower_bound(40) == real1.end()));
 
-	it = m.lower_bound(5);
-	std::cout << "m.lower_bound(5) --> Key [" << it->first << "]   <>   Value : |" << it->second << "|" << std::endl;
-	it = m.upper_bound(6);
-	std::cout << "m.upper_bound(6) --> Key [" << it->first << "]   <>   Value : |" << it->second << "|" << std::endl;
+	check("Upper bound", my1.upper_bound(7)->second, real1.upper_bound(7)->second);
+	check("Upper bound", my1.upper_bound(2)->second, real1.upper_bound(2)->second);
+	check("Upper bound not found", (my1.upper_bound(40) == my1.end()), (real1.upper_bound(40) == real1.end()));
 
-	//P("COUCOUUUUUUUUUUUUUUUUUUUUUUUUU");
-	ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> ret;
-	ret = m.equal_range(6);
-	std::cout << "equal_range(6).first --> Key [" << ret.first->first << "]   <>   Value : |" << ret.first->second << "|" << std::endl;
-	std::cout << "equal_range(6).second --> Key [" << ret.second->first << "]   <>   Value : |" << ret.second->second << "|" << std::endl;
-
-	ret = m.equal_range(19);
-	if (ret.first == m.end())
-		std::cout << "equal_range(19).first --> Not Found." << std::endl;
-	else
-		std::cout << "equal_range(19).first --> Key [" << ret.first->first << "]   <>   Value : |" << ret.first->second << "|" << std::endl;
-	if (ret.second == m.end())
-		std::cout << "equal_range(19).second --> Not Found." << std::endl;
-	else
-		std::cout << "equal_range(19).second --> Key [" << ret.second->first << "]   <>   Value : |" << ret.second->second << "|" << std::endl;
+	// check("Equal range", my1.equal_range(7).second, real1.equal_range(7).second);
+	// check("Equal range", my1.equal_range(2).second, real1.equal_range(2).second);
+	// check("Equal range not found", (my1.equal_range(40) == my1.end()), (real1.upper_bound(40) == real1.end()));
 
 }
 
 void	test_map()
 {
-	P("           &&&&&&&&&&&&&&&&&   MAP   &&&&&&&&&&&&&&&&&");
+	print_header("MAP");
 	
-	/*test_map_construct();
+	test_map_construct();
 	P("");
-	
-	test_map_insert();
+	test_map_iterators();
 	P("");
-	
 	test_map_capacity();
 	P("");
-	
 	test_map_elements_access();
 	P("");
-
-	test_map_elements_access();
+	test_map_insert();
 	P("");
-
 	test_map_erase();
-	P("");*/
-
+	P("");
 	test_map_swap();
 	P("");
-
-	/*test_map_observers();
+	test_map_clear();
 	P("");
-
+	test_map_observers();
+	P("");
 	test_map_operations();
-	P("");*/
+	P("");
 }
