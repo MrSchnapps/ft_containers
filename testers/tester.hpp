@@ -66,7 +66,7 @@ template <typename T>
 inline void check(std::string name, T a, T b)
 {
 	std::string margin(24 - name.length(), ' ');
-	if (a ==  b /*a && b*/)
+	if (a ==  b)
 		std::cout << name << ": " << margin << BOLD << GREEN << GOOD << RESET << std::endl;
 	else
 		std::cout << name << ": " << margin << BOLD << RED << FAIL << RESET << std::endl;
@@ -132,6 +132,23 @@ bool operator==(ft::stack<T> &a, std::stack<T> &b)
 	return (true);
 };
 
+template <typename T>
+bool operator==(ft::queue<T> &a, std::queue<T> &b)
+{
+	if (a.size() != b.size())
+		return (false);
+	if (a.empty() != b.empty())
+		return (false);
+	if (!a.empty())
+	{
+		if (a.front() != b.front())
+			return (false);
+		if (a.back() != b.back())
+			return (false);
+	}
+	return (true);
+};
+
 template <typename T, typename S>
 bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
 {
@@ -150,24 +167,5 @@ bool operator==(ft::map<T, S> &a, std::map<T, S> &b)
 	}
 	return (true);
 };
-
-// template <class T>
-// static bool compare_supEq(T a, T b)
-// {
-// 	return (a >= b);
-// }
-
-// template <class T>
-// static bool compare_infEq(T a, T b)
-// {
-// 	return (a <= b);
-// }
-
-// template <class T>
-// static bool compare_eq(T a, T b)
-// {
-// 	return (a == b);
-// }
-
 
 #endif
