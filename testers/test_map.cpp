@@ -135,23 +135,39 @@ void	test_map_iterators() // A terminer
 	std::map<int, std::string>::reverse_iterator realItr = real1.rbegin();
 	check("Iterator reverse", check_it_rev(myItr, my1.rend(), realItr));
 
-	// const ft::map<int, std::string>	my2;
-	// const std::map<int, std::string> real2;
+	const ft::map<int, std::string>	my2(my1.begin(), my1.end());
+	const std::map<int, std::string> real2(real1.begin(), real1.end());
 	
-	// my2.insert(ft::pair<int, std::string>(1, "Julou"));
-	// my2.insert(ft::pair<int, std::string>(2, ",u"));
-	// my2.insert(ft::pair<int, std::string>(3, "test"));
-	// real2.insert(std::pair<int, std::string>(1, "Julou"));
-	// real2.insert(std::pair<int, std::string>(2, ",u"));
-	// real2.insert(std::pair<int, std::string>(3, "test"));
-	// // ft::map<int, std::string>::const_iterator myItc = my1.begin();
-	// // std::map<int, std::string>::const_iterator realItc = real1.begin();
+	ft::map<int, std::string>::const_iterator myItc = my2.begin();
+	ft::map<int, std::string>::const_iterator myItce = my2.end();
+	std::map<int, std::string>::const_iterator realItc = real2.begin();
 
-	// // *myItc = ft::pair<int, std::string>(42, "Julou2");
-	// // *realItc = std::pair<int, std::string>(42, "Julou2");
+	bool ret = true;
+	while (myItc != myItce)
+	{
+		if ((*myItc).second != (*realItc).second)
+			ret = false;
+		if ((*myItc).first != (*realItc).first)
+			ret = false;
+		++myItc;
+		++realItc;
+	}
+	check("Iterator const", ret);
 
-	// // ft::map<int, std::string>::reverse_iterator myItrc = my1.rbegin();
-	// // std::map<int, std::string>::reverse_iterator realItrc = real1.rbegin();
+	ft::map<int, std::string>::const_reverse_iterator myItrc = my2.rbegin();
+	ft::map<int, std::string>::const_reverse_iterator myItrce = my2.rend();
+	std::map<int, std::string>::const_reverse_iterator realItrc = real2.rbegin();
+	ret = true;
+	while (myItrc != myItrce)
+	{
+		if ((*myItrc).second != (*realItrc).second)
+			ret = false;
+		if ((*myItrc).first != (*realItrc).first)
+			ret = false;
+		++myItrc;
+		++realItrc;
+	}
+	check("Iterator rev const", ret);
 
 
 }
@@ -356,10 +372,12 @@ void	test_map_operations()
 	check("Upper bound", my1.upper_bound(2)->second, real1.upper_bound(2)->second);
 	check("Upper bound not found", (my1.upper_bound(40) == my1.end()), (real1.upper_bound(40) == real1.end()));
 
-	// check("Equal range", my1.equal_range(7).second, real1.equal_range(7).second);
-	// check("Equal range", my1.equal_range(2).second, real1.equal_range(2).second);
-	// check("Equal range not found", (my1.equal_range(40) == my1.end()), (real1.upper_bound(40) == real1.end()));
+	check("Equal range", my1.equal_range(7).second->second, real1.equal_range(7).second->second);
+	check("Equal range", my1.equal_range(2).second->second, real1.equal_range(2).second->second);
 
+	ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> ret = my1.equal_range(40);
+	std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator> ret2 = real1.equal_range(40);
+	check("Equal range not found", (ret.first == ret.second), (ret2.first == ret2.second));
 }
 
 void	test_map()
