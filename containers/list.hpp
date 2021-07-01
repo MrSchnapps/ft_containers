@@ -484,7 +484,7 @@ class list
 	void	sort()
 	{
 		DL_List<T>	*first;
-		DL_List<T>	*tmp;
+		//DL_List<T>	*tmp;
 		bool		sorted = false;
 
 		if (empty())
@@ -511,7 +511,7 @@ class list
 	void	sort(Compare comp)
 	{
 		DL_List<T>	*first;
-		DL_List<T>	*tmp;
+		//DL_List<T>	*tmp;
 		bool		sorted = false;
 
 		if (empty())

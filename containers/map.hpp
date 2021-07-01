@@ -73,9 +73,9 @@ class map
 
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
-		:	_alloc(alloc),
-			_comp(comp),
-			_endlist(NULL)
+		:	_endlist(NULL),
+			_alloc(alloc),
+			_comp(comp)
 
 		{
 			_endlist = new (DL_List<ft::pair<key_type, mapped_type> >);
